@@ -1,4 +1,5 @@
-﻿using jritchieBugTracker.Models.Helpers;
+﻿using jritchieBugTracker.Models;
+using jritchieBugTracker.Models.Helpers;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -8,73 +9,71 @@ using System.Web.Mvc;
 
 namespace jritchieBugTracker.Controllers
 {
-    public class AdminController : Controller
+    [Authorize(Roles = "Admin")]
+    public class AdminController : UniversalController
     {
-        // Instantiate Helper class.
-        private UserRoleHelper helper = new UserRoleHelper();
-
-
-        // GET: Admin
+        //GET: Admin
         public ActionResult Index()
         {
-            var userId = User.Identity.GetUserId();
-            helper.IsUserInRole(userId, "Admin");
-            return View();
+            List<AdminUserViewModels> users = new List<AdminUserViewModels>();
+            foreach (var user in db.Users.ToList())
+            {
+                UserRoleHelper helper = new UserRoleHelper();
+                AdminUserViewModels eachUser = new AdminUserViewModels();
+                eachUser.User = user;
+                eachUser.SelectedRoles = helper.ListUserRoles(user.Id).ToArray();
+
+                users.Add(eachUser);
+            }
+            return View(users.OrderBy(u => u.User.LastName).ToList());
         }
 
-
-
-        // GET: Is user in role?
-        public ActionResult UserInRole(string userId, string roleType)
+        //GET: EditUserRoles
+        public ActionResult EditUserRoles (string id)
         {
-            helper.IsUserInRole(userId, roleType);
-            return View();
+            var user = db.Users.Find(id);
+            UserRoleHelper helper = new UserRoleHelper();
+            AdminUserViewModels model = new AdminUserViewModels();
+            model.User = user;
+            model.SelectedRoles = helper.ListUserRoles(id).ToArray();
+            model.Roles = new MultiSelectList(db.Roles, "Name", "Name", model.SelectedRoles);
+
+            return View(model);
         }
 
-        // GET: List user's roles.
-        public ActionResult UserRoles(string userId)
-        {
-            helper.ListUserRoles(userId);
-            return View();
-        }
-
-
-        // GET: Edit (add) list of user's roles.
-        //[Authorize(Roles = "Admin")]
-        public ActionResult AddRole(string userId)
-        {
-            helper.ListUserRoles(userId);
-            return View();
-        }
-
-        // POST: Edit (add) role to a user.
-        //[Authorize(Roles = "Admin")]
+        //POST: EditUserRoles
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddRole(string userId, string roleName)
+        public ActionResult EditUserRoles(AdminUserViewModels model)
         {
-            helper.AddUserToRole(userId, roleName);
-            return View();
+            var user = db.Users.Find(model.User.Id);
+            UserRoleHelper helper = new UserRoleHelper();
+
+            foreach (var role in db.Roles.Select(r => r.Name).ToList())
+            {
+                helper.RemoveUserFromRole(user.Id, role);
+            }
+
+            if (model.SelectedRoles != null)
+            {
+                foreach (var role in model.SelectedRoles)
+                {
+                    helper.AddUserToRole(user.Id, role);
+                }
+
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
         }
 
-        // GET: Edit (remove) list of user's roles.
-        //[Authorize(Roles = "Admin")]
-        public ActionResult RemoveRole(string userId)
+        protected override void Dispose(bool disposing)
         {
-            helper.ListUserRoles(userId);
-            return View();
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
-
-        // POST: Edit (remove) role to a user.
-        //[Authorize(Roles = "Admin")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult RemoveRole(string userId, string roleName)
-        {
-            helper.RemoveUserFromRole(userId, roleName);
-            return View();
-        }
-
 
     }
 }

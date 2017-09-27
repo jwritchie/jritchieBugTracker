@@ -11,10 +11,8 @@ using jritchieBugTracker.Models.CodeFirst;
 
 namespace jritchieBugTracker.Controllers
 {
-    public class TicketsController : Controller
+    public class TicketsController : UniversalController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-
         // GET: Tickets
         [Authorize]
         public ActionResult Index()

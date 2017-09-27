@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace jritchieBugTracker.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : UniversalController
     {
         public ActionResult Index()
         {

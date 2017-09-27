@@ -11,10 +11,8 @@ using jritchieBugTracker.Models.CodeFirst;
 
 namespace jritchieBugTracker.Controllers
 {
-    public class ProjectsController : Controller
+    public class ProjectsController : UniversalController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-
         // GET: Projects
         [Authorize]
         public ActionResult Index()

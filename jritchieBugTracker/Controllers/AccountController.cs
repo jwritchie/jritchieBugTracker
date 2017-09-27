@@ -13,7 +13,7 @@ using jritchieBugTracker.Models;
 namespace jritchieBugTracker.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : UniversalController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;

@@ -70,6 +70,7 @@ namespace jritchieBugTracker.Models
         public DbSet<TicketStatus> TicketStatuses { get;set; }
         public DbSet<TicketType> TicketTypes { get;set; }
 
-        public System.Data.Entity.DbSet<jritchieBugTracker.Models.ApplicationUser> ApplicationUsers { get; set; }
+        // Don't need this ... added by scaffolding?
+        //public System.Data.Entity.DbSet<jritchieBugTracker.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }

@@ -73,7 +73,5 @@ namespace jritchieBugTracker.Models.Helpers
             return resultList;
         }
 
-
-
     }
 }
