@@ -301,3 +301,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+Configuration.cs
+Web.config
+private.config
+Startup.Auth.cs
