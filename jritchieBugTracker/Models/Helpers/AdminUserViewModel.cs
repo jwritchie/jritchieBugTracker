@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace jritchieBugTracker.Models.Helpers
 {
-    public class AdminUserViewModels
+    public class AdminUserViewModel
     {
         public ApplicationUser User { get; set; }
         public MultiSelectList Roles { get; set; }

@@ -8,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using jritchieBugTracker.Models;
 using jritchieBugTracker.Models.CodeFirst;
+using jritchieBugTracker.Models.Helpers;
+using Microsoft.AspNet.Identity;
+
 
 namespace jritchieBugTracker.Controllers
 {
@@ -17,7 +20,7 @@ namespace jritchieBugTracker.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            return View(db.Projects.ToList());
+            return View(db.Projects.OrderBy(p => p.Id).ToList());
         }
 
         // GET: Projects/Details/5
@@ -53,6 +56,9 @@ namespace jritchieBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                project.Created = DateTimeOffset.Now;
+                project.AuthorId = User.Identity.GetUserId();
+
                 db.Projects.Add(project);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -121,6 +127,42 @@ namespace jritchieBugTracker.Controllers
         //    db.SaveChanges();
         //    return RedirectToAction("Index");
         //}
+
+
+        //GET: Assign user(s) to project.
+        [Authorize(Roles = "Admin, ProjectManager")]
+        public ActionResult AssignProjectUser(int id)
+        {
+            var project = db.Projects.Find(id);
+            ProjectUserViewModel projectUserVM = new ProjectUserViewModel();
+            projectUserVM.AssignProject = project;
+            projectUserVM.SelectedUsers = project.Users.Select(u => u.Id).ToArray();    // existing users.
+            projectUserVM.Users = new MultiSelectList(db.Users.ToList(), "Id", "FullName", projectUserVM.SelectedUsers);    //collection, submitted value, displayed value, existing values are highlighted
+            return View(projectUserVM);
+        }
+
+        //POST: Assign user(s) to project.
+        [Authorize(Roles = "Admin, ProjectManager")]
+        [HttpPost]
+        public ActionResult AssignProjectUser(ProjectUserViewModel model)
+        {
+            var project = db.Projects.Find(model.AssignProject.Id);
+            ProjectAssignHelper helper = new ProjectAssignHelper();
+
+            // Remove existing users.
+            foreach (var userId in db.Users.Select(r => r.Id).ToList())
+            {
+                helper.RemoveUserFromProject(userId, project.Id);
+            }
+
+            // Assign new users.
+            foreach(var userId in model.SelectedUsers)
+            {
+                helper.AddUserToProject(userId, project.Id);
+            }
+
+            return RedirectToAction("Index");
+        }
 
         protected override void Dispose(bool disposing)
         {

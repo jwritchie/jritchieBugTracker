@@ -15,11 +15,11 @@ namespace jritchieBugTracker.Controllers
         //GET: Admin
         public ActionResult Index()
         {
-            List<AdminUserViewModels> users = new List<AdminUserViewModels>();
+            List<AdminUserViewModel> users = new List<AdminUserViewModel>();
             foreach (var user in db.Users.ToList())
             {
                 UserRoleHelper helper = new UserRoleHelper();
-                AdminUserViewModels eachUser = new AdminUserViewModels();
+                AdminUserViewModel eachUser = new AdminUserViewModel();
                 eachUser.User = user;
                 eachUser.SelectedRoles = helper.ListUserRoles(user.Id).ToArray();
 
@@ -33,7 +33,7 @@ namespace jritchieBugTracker.Controllers
         {
             var user = db.Users.Find(id);
             UserRoleHelper helper = new UserRoleHelper();
-            AdminUserViewModels model = new AdminUserViewModels();
+            AdminUserViewModel model = new AdminUserViewModel();
             model.User = user;
             model.SelectedRoles = helper.ListUserRoles(id).ToArray();
             model.Roles = new MultiSelectList(db.Roles, "Name", "Name", model.SelectedRoles);
@@ -43,7 +43,7 @@ namespace jritchieBugTracker.Controllers
 
         //POST: EditUserRoles
         [HttpPost]
-        public ActionResult EditUserRoles(AdminUserViewModels model)
+        public ActionResult EditUserRoles(AdminUserViewModel model)
         {
             var user = db.Users.Find(model.User.Id);
             UserRoleHelper helper = new UserRoleHelper();

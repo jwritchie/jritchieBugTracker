@@ -1,0 +1,21 @@
+﻿@model jritchieBugTracker.Models.Helpers.ProjectUserViewModel
+
+@{
+    ViewBag.Title = "ProjectUser";
+}
+
+<h2>Assign User(s) to Project</h2>
+
+@using (Html.BeginForm())
+{
+    <h3>Project Title: @Model.AssignProject.Title</h3>
+
+    @Html.HiddenFor(model => model.AssignProject.Id)
+
+    @Html.ListBox("SelectedUsers", Model.Users)
+    <button type="submit">Submit</button>
+}
+
+<div>
+    @Html.ActionLink("Back to Project List", "Index")
+</div>
