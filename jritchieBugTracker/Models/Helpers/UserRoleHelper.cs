@@ -24,9 +24,14 @@ namespace jritchieBugTracker.Models.Helpers
         }
 
         // List of user's roles.
+        //public string[] ListUserRoles(string userId)
         public ICollection<string> ListUserRoles(string userId)
         {
-            return userManager.GetRoles(userId);
+            string[] rolesArray = userManager.GetRoles(userId).ToArray();
+            Array.Sort(rolesArray, StringComparer.InvariantCulture);
+            return rolesArray;
+            
+            //return userManager.GetRoles(userId);
         }
 
         // Add role to a user.

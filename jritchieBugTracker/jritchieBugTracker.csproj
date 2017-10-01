@@ -291,6 +291,7 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\EditUserRoles.cshtml" />
     <Content Include="Views\Projects\AssignProjectUser.cshtml" />
+    <Content Include="Views\Manage\ChangeProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -41,16 +41,16 @@ namespace jritchieBugTracker.Controllers
                 try
                 {
                     var body = "<p>Email From: <bold>{0}</bold>({1})</p><p>Message:</p><p>{2}</p>";
-                    var from = "MyPortfolio<jritchie.nc@gmail.com>";
+                    var from = "BugTracker<jritchie.projects@gmail.com>";
                     //model.Body = "This is a message from your portfolio site.  The name and the email of the contacting person is above.";
                     string subject = null;
                     if (model.Subject != null)
                     {
-                        subject = "Portfolio Contact Email: " + model.Subject;
+                        subject = "BugTracker Contact Email: " + model.Subject;
                     }
                     else
                     {
-                        subject = "Portfolio Contact Email";
+                        subject = "BugTracker Contact Email";
                     }
 
 

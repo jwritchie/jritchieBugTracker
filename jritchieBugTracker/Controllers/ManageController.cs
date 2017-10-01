@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using jritchieBugTracker.Models;
+using System.Net;
+using System.Data.Entity;
 
 namespace jritchieBugTracker.Controllers
 {
@@ -320,6 +322,30 @@ namespace jritchieBugTracker.Controllers
             }
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+        }
+
+        // GET: /Manage/ChangeProfile
+        [Authorize]
+        public ActionResult ChangeProfile()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Manage/ChangeProfile
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeProfile([Bind(Include = "FirstName,LastName")] ChangeUserProfileViewModel user)
+        {
+            if (ModelState.IsValid)
+            {
+                var currentUser = UserManager.FindById(User.Identity.GetUserId());
+                currentUser.FirstName = user.FirstName;
+                currentUser.LastName = user.LastName;
+                UserManager.Update(currentUser);
+            }
+            return RedirectToAction("Index","Home",null);
         }
 
         protected override void Dispose(bool disposing)

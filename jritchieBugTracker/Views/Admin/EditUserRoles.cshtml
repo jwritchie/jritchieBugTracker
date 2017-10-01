@@ -4,20 +4,36 @@
     ViewBag.Title = "EditUserRoles";
 }
 
-<h2>EditUserRoles</h2>
+<h2>Edit User Roles</h2>
 <hr />
 
 @using (Html.BeginForm("EditUserRoles", "Admin", FormMethod.Post))
 {
-    <h4>
-        @Html.DisplayFor(model => model.User.Fullname)
-        <input type="submit" value="Assign Roles" class="btn btn-default pull-right" style="margin-top: -7px" />
-    </h4>
-    <hr />
+    @Html.AntiForgeryToken()
+
     @Html.HiddenFor(model => model.User.Id)
+
+    <h4>
+        User's name: 
+        @Html.DisplayFor(model => model.User.Fullname)
+    </h4>
+    
     @Html.ListBox("SelectedRoles", Model.Roles)
+    <input type="submit" value="Assign Roles" class="btn btn-default pull-right" style="margin-top: 0px" />
 }
 
+
+@using (Html.BeginForm("RemoveAllUserRoles", "Admin", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.User.Id)
+
+    <input type="submit" value="Remove All Roles" class="btn btn-danger pull-right" style="margin-top:-36px"/>
+}
+
+<hr />
+
 <div style="margin-top: 40px">
-    @Html.ActionLink("Back to Admin Index", "Index")
+    @Html.ActionLink("Back to Users List", "Index")
 </div>

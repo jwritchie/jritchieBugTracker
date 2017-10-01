@@ -36,7 +36,7 @@ namespace jritchieBugTracker
                 Credentials = new NetworkCredential(GmailUsername, GmailPassword)
             })
 
-            using (var email = new MailMessage("BugTracker<jritchie.nc@gmail.com>", message.Destination)
+            using (var email = new MailMessage("BugTracker<jritchie.projects@gmail.com>", message.Destination)
             {
                 Subject = message.Subject,
                 IsBodyHtml = true,

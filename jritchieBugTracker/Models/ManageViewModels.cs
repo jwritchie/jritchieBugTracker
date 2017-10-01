@@ -83,4 +83,10 @@ namespace jritchieBugTracker.Models
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
     }
+
+    public class ChangeUserProfileViewModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
 }

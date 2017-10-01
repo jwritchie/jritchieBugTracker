@@ -66,6 +66,21 @@ namespace jritchieBugTracker.Controllers
             return RedirectToAction("Index");
         }
 
+        //POST: RemoveAllUserRoles
+        [HttpPost]
+        public ActionResult RemoveAllUserRoles(AdminUserViewModel model)
+        {
+            var user = db.Users.Find(model.User.Id);
+            UserRoleHelper helper = new UserRoleHelper();
+
+            foreach (var role in db.Roles.Select(r => r.Name).ToList())
+            {
+                helper.RemoveUserFromRole(user.Id, role);
+            }
+
+            return RedirectToAction("Index");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -1,10 +1,20 @@
-﻿@model IEnumerable<jritchieBugTracker.Models.CodeFirst.Project>
+﻿@*@model IEnumerable<jritchieBugTracker.Models.CodeFirst.Project>*@
+@model IEnumerable<jritchieBugTracker.Models.Helpers.ProjectUserViewModel>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Projects Index</h2>
+@{ 
+    if (ViewBag.IndexType == "All")
+    {
+        <h2><span style="font-weight:bold">All</span> Projects Index</h2>
+    }
+    else
+    {
+        <h2><span style="font-weight:bold">Assigned</span> Projects Index</h2>
+    }
+}
 
 @{ 
     if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
@@ -17,46 +27,69 @@
 
 <table class="table">
     <tr>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.Created)
-        </th>
-        <th>
+        </th>*@
+        @*<th>
             @Html.DisplayNameFor(model => model.Updated)
+        </th>*@
+        <th>
+            Name (Title)
+            @*@Html.DisplayNameFor(model => model.Title)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model.AssignProject.Description)
+            @*@Html.DisplayNameFor(model => model.Description)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+            Owner
+            @*@Html.DisplayNameFor(model => model.Author)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AuthorId)
+            Users
         </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.Created)
-        </td>
-        <td>
+        </td>*@
+        @*<td>
             @Html.DisplayFor(modelItem => item.Updated)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.AssignProject.Title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Title)
+            @Html.DisplayFor(modelItem => item.AssignProject.Description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Description)
+            @Html.DisplayFor(modelItem => item.AssignProject.Author)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.AuthorId)
+            @foreach (var user in item.SelectedUsersName)
+            {
+                <p>@user</p>
+            }
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Assign Project User(s)", "AssignProjectUser", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.AssignProject.Id })
+                <span> |</span>
+            }
+
+            @Html.ActionLink("Details", "Details", new { id = item.AssignProject.Id })
+
+            @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+            {
+                <span> |</span>
+                @Html.ActionLink("Assign Project User(s)", "AssignProjectUser", new { id = item.AssignProject.Id })
+
+            }
+            @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
         </td>
     </tr>
 }

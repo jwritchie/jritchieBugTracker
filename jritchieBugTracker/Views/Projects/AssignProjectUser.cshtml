@@ -5,16 +5,34 @@
 }
 
 <h2>Assign User(s) to Project</h2>
+<hr />
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("AssignProjectUser", "Projects", FormMethod.Post))
 {
-    <h3>Project Title: @Model.AssignProject.Title</h3>
+    @Html.AntiForgeryToken()
 
-    @Html.HiddenFor(model => model.AssignProject.Id)
+    @Html.HiddenFor(model => model.AssignProjectId)
 
+    <h3>
+        Project Title: 
+        @Model.AssignProject.Title
+    </h3>
+    
     @Html.ListBox("SelectedUsers", Model.Users)
-    <button type="submit">Submit</button>
+    <input type="submit" value="Assign User(s)" class="btn btn-default pull-right" style="margin-top: 0px" />
+    @*<button type="submit">Submit</button>*@
 }
+
+@using (Html.BeginForm("RemoveAllUsers", "Projects", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.AssignProjectId)
+
+    <input type="submit" value="Remove All Users" class="btn btn-danger pull-right" style="margin-top: -36px" />
+}
+
+<hr />
 
 <div>
     @Html.ActionLink("Back to Project List", "Index")
