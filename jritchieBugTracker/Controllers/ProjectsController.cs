@@ -89,7 +89,24 @@ namespace jritchieBugTracker.Controllers
             {
                 return HttpNotFound();
             }
-            return View(project);
+
+            var user = db.Users.Find(User.Identity.GetUserId());
+
+            ProjectAssignHelper helper = new ProjectAssignHelper();
+            if (helper.IsUserOnProject(user.Id, project.Id))
+            {
+                ProjectUserViewModel projectUserVM = new ProjectUserViewModel();
+                projectUserVM.AssignProject = project;
+                projectUserVM.AssignProjectId = project.Id;
+                projectUserVM.SelectedUsers = project.Users.Select(u => u.Id).ToArray();
+                projectUserVM.Users = new MultiSelectList(db.Users.ToList(), "Id", "Fullname", projectUserVM.SelectedUsers);
+                projectUserVM.SelectedUsersName = project.Users.OrderBy(u => u.LastName).Select(u => u.Fullname).ToArray();
+
+                return View(projectUserVM);
+            }
+            return RedirectToAction("Index");
+            
+            //return View(project);
         }
 
         // GET: Projects/Create

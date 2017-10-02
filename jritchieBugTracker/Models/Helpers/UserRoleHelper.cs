@@ -14,7 +14,7 @@ namespace jritchieBugTracker.Models.Helpers
             new UserManager<ApplicationUser>(new UserStore<ApplicationUser>
                 (new ApplicationDbContext()));
 
-        private ApplicationDbContext db = new ApplicationDbContext();
+        //private ApplicationDbContext db = new ApplicationDbContext();
 
 
         // Check whether user is in role.

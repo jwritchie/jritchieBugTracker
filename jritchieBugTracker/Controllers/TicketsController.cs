@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using jritchieBugTracker.Models;
 using jritchieBugTracker.Models.CodeFirst;
+using Microsoft.AspNet.Identity;
 
 namespace jritchieBugTracker.Controllers
 {
@@ -60,6 +61,13 @@ namespace jritchieBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = db.Users.Find(User.Identity.GetUserId());
+                ticket.OwnerUserId = user.Id;
+
+                ticket.Created = DateTimeOffset.Now;
+
+                ticket.TicketStatusId =  4;
+
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
