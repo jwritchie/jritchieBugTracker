@@ -11,12 +11,25 @@ namespace jritchieBugTracker.Models.Helpers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // Check whether User is on a Project.
-        public bool IsUserOnTicket(string userId, int projectId)
+        public bool IsUserOnProject(string userId, int projectId)
         {
             var project = db.Projects.Find(projectId);
             var userBool = project.Users.Any(u => u.Id == userId);
             return userBool;
         }
+
+        //***************************************************************************************************
+        public bool IsUserOnTicket(string userId, int ticketId)
+        {
+            var ticket = db.Tickets.Find(ticketId);
+            var userBool = false;
+            if (ticket.AssignToUserId == userId)
+            {
+                userBool = true;
+            }
+            return userBool;
+        }
+        //***************************************************************************************************
 
 
 
@@ -28,6 +41,16 @@ namespace jritchieBugTracker.Models.Helpers
             project.Users.Add(user);
             db.SaveChanges();
         }
+
+        //***************************************************************************************************
+        //public void AddUserToTicket(string userId, int ticketId)
+        //{
+        //    var user = db.Users.Find(userId);
+        //    var ticket = db.Tickets.Find(ticketId);
+        //    ticket.AssignToUser.
+        //}
+        //***************************************************************************************************
+
 
         // Remove a User from a Project.
         public void RemoveUserFromProject(string userId, int projectId)

@@ -1,0 +1,39 @@
+﻿@model jritchieBugTracker.Models.CodeFirst.Ticket
+
+@{
+    ViewBag.Title = "TicketUser";
+}
+
+<h2>Assign User (Developer) to Ticket</h2>
+<hr />
+
+@using (Html.BeginForm("AssignTicketUser", "Tickets", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.Id)
+
+    <h3>
+        Ticket Title: 
+        @Model.Title
+    </h3>
+
+    @Html.DropDownList("AssignToUserId", null, htmlAttributes: new { @class = "form-control" })
+    <input type="submit" value="Assign User (Developer)" class="btn btn-default pull-right" style="margin-top: 0px" />
+    @*<button type="submit">Submit</button>*@
+}
+
+@*@using (Html.BeginForm("RemoveDevsInTicketProj", "Tickets", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.AssignTicketId)
+
+    <input type="submit" value="Remove User (Developer)" class="btn btn-danger pull-right" style="margin-top: -36px" />
+}*@
+
+<hr />
+
+<div>
+    @Html.ActionLink("Back to Ticket List", "Index")
+</div>
