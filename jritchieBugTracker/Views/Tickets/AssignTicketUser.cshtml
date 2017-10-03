@@ -12,25 +12,23 @@
     @Html.AntiForgeryToken()
 
     @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Title)
+    @Html.HiddenFor(model => model.Description)
+    @Html.HiddenFor(model => model.Created)
+    @Html.HiddenFor(model => model.Updated)
+    @Html.HiddenFor(model => model.ProjectId)
+    @Html.HiddenFor(model => model.TicketTypeId)
+    @Html.HiddenFor(model => model.TicketPriorityId)
+    @Html.HiddenFor(model => model.TicketStatusId)
+    @Html.HiddenFor(model => model.OwnerUserId)
 
     <h3>
-        Ticket Title: 
-        @Model.Title
+        Ticket Title: @Model.Title
     </h3>
 
     @Html.DropDownList("AssignToUserId", null, htmlAttributes: new { @class = "form-control" })
-    <input type="submit" value="Assign User (Developer)" class="btn btn-default pull-right" style="margin-top: 0px" />
-    @*<button type="submit">Submit</button>*@
+    <input type="submit" value="Assign User (Developer)" class="btn btn-primary" style="margin-top: 10px" />
 }
-
-@*@using (Html.BeginForm("RemoveDevsInTicketProj", "Tickets", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-
-    @Html.HiddenFor(model => model.AssignTicketId)
-
-    <input type="submit" value="Remove User (Developer)" class="btn btn-danger pull-right" style="margin-top: -36px" />
-}*@
 
 <hr />
 

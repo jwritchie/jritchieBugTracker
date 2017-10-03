@@ -19,8 +19,39 @@ namespace jritchieBugTracker.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            var tickets = db.Tickets.Include(t => t.AssignToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            return View(tickets.ToList());
+            //var tickets = db.Tickets.Include(t => t.AssignToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
+
+            //var tickets = db.Tickets.ToList();
+            //return View(tickets);
+
+
+            // *****************************************************************************
+            // helper.UsersInRole(string roleName)
+
+            UserRoleHelper helper = new UserRoleHelper();
+            helper.UsersInRole("Admin");
+
+            if (User.IsInRole("Admin"))
+            {
+                var tickets = db.Tickets.ToList();
+                return View(tickets);
+            }
+            if (User.IsInRole("ProjectManager"))
+            {
+
+            }
+            if (User.IsInRole("Developer"))
+            {
+                var user = db.Users.Find(User.Identity.GetUserId());
+
+                var tickets = db.Tickets.Where(t => t.AssignToUserId == user.Id);
+
+            }
+            if (User.IsInRole("Submitter"))
+            {
+
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Tickets/Details/5
@@ -123,12 +154,12 @@ namespace jritchieBugTracker.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AssignToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignToUserId);
-            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", ticket.ProjectId);
-            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
-            ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
-            ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
+            //ViewBag.AssignToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignToUserId);
+            //ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
+            //ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", ticket.ProjectId);
+            //ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
+            //ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
+            //ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
             return View(ticket);
         }
 
@@ -161,7 +192,7 @@ namespace jritchieBugTracker.Controllers
         //}
 
 
-        //GET: Assign user to ticket.
+        //GET: Assign User (Developer) to Ticket.
         [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult AssignTicketUser(int ticketId)
         {
@@ -172,61 +203,25 @@ namespace jritchieBugTracker.Controllers
             var devsInTicketProj = developers.Where(d => d.Projects.Any(p => p.Id == ticket.ProjectId));
             ViewBag.AssignToUserId = new SelectList(devsInTicketProj.OrderBy(d => d.LastName), "Id", "FullName", ticket.AssignToUserId);
 
-            // Restrict to only Projects to which Developers belong.
-            //ProjectAssignHelper helper = new ProjectAssignHelper();
-            //var projectUsers = helper.ListUsersOnProject(db.Tickets.Find(ticketId).ProjectId);
-            //List<ApplicationUser> developers = new List<ApplicationUser>();
-
-            //var project = db.Projects.Find(id);
-            //ProjectUserViewModel projectUserVM = new ProjectUserViewModel();
-            //projectUserVM.AssignProject = project;
-            //projectUserVM.AssignProjectId = id;
-            //projectUserVM.SelectedUsers = project.Users.Select(u => u.Id).ToArray();    // existing users.
-            //projectUserVM.Users = new MultiSelectList(db.Users.OrderBy(u => u.LastName).ToList(), "Id", "FullName", projectUserVM.SelectedUsers);    //collection, submitted value, displayed value, existing values are highlighted
-            //return View(projectUserVM);
             return View(ticket);
         }
 
-        //POST: Assign user(s) to project.
+        //POST: Assign User (Developer) to Ticket.
         [Authorize(Roles = "Admin, ProjectManager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AssignProjectUser(ProjectUserViewModel model)
+        public ActionResult AssignTicketUser([Bind(Include = "Id,Title,Description,Created,Updated,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignToUserId")] Ticket model, string AssignToUserId)
         {
-            ProjectAssignHelper helper = new ProjectAssignHelper();
-
-            // Remove existing users.
-            foreach (var userId in db.Users.Select(r => r.Id).ToList())
+            if (ModelState.IsValid)
             {
-                helper.RemoveUserFromProject(userId, model.AssignProjectId);
-            }
+                model.AssignToUserId = AssignToUserId;
 
-            // Assign new users.
-            foreach (var userId in model.SelectedUsers)
-            {
-                helper.AddUserToProject(userId, model.AssignProjectId);
+                db.Entry(model).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
-
-            return RedirectToAction("Index");
+            return View(model);
         }
-
-        //POST: Remove All User(s) from project.
-        [Authorize(Roles = "Admin, ProjectManager")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult RemoveAllUsers(ProjectUserViewModel model)
-        {
-            ProjectAssignHelper helper = new ProjectAssignHelper();
-
-            // Remove existing users.
-            foreach (var userId in db.Users.Select(r => r.Id).ToList())
-            {
-                helper.RemoveUserFromProject(userId, model.AssignProjectId);
-            }
-
-            return RedirectToAction("Index");
-        }
-
 
         protected override void Dispose(bool disposing)
         {
