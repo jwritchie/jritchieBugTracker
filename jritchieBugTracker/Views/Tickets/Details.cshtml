@@ -1,77 +1,23 @@
 ﻿@model jritchieBugTracker.Models.CodeFirst.Ticket
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Ticket Details";
 }
 
-<h2>Details</h2>
+<h2>Ticket Details</h2>
 
 <div>
-    <h4>Ticket</h4>
+    @*<h4>Ticket</h4>*@
     <hr />
+
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.AssignToUser.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AssignToUser.FirstName)
-        </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.OwnerUser.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OwnerUser.FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Project.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Project.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketPriority.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketPriority.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketStatus.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketStatus.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketType.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketType.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
+            Ticket Name
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
         </dd>
 
         <dt>
@@ -90,8 +36,180 @@
             @Html.DisplayFor(model => model.Updated)
         </dd>
 
+        <dt>
+            Ticket Description
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <hr />
+        <dt>
+            Project Name
+            @*@Html.DisplayNameFor(model => model.Project.Title)*@
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Project.Title)
+        </dd>
+
+        <dt>
+            Priority
+            @*@Html.DisplayNameFor(model => model.TicketPriority.Name)*@
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TicketPriority.Name)
+        </dd>
+
+        <dt>
+            Status
+            @*@Html.DisplayNameFor(model => model.TicketStatus.Name)*@
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TicketStatus.Name)
+        </dd>
+
+        <dt>
+            Type
+            @*@Html.DisplayNameFor(model => model.TicketType.Name)*@
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TicketType.Name)
+        </dd>
+
+        <hr />
+
+        <dt>
+            Ticket Owner
+            @*@Html.DisplayNameFor(model => model.OwnerUser.Fullname)*@
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerUser.Fullname)
+        </dd>
+
+        <dt>
+            Assigned Developer
+            @*@Html.DisplayNameFor(model => model.AssignToUser.Fullname)*@
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AssignToUser.Fullname)
+        </dd>
+
     </dl>
 </div>
+
+<hr />
+
+<p>Attachments here...</p>
+
+<hr />
+
+<p>Comments here...</p>
+@if (Model.Comments.Count != 0)
+{
+    if (Model.Comments.Count == 1)
+    {
+        <p style="color:#009999">@Model.Comments.Count comment.</p>
+    }
+    else
+    {
+        <p style="color:#009999">@Model.Comments.Count comments.</p>
+    }
+}
+else
+{
+    <p style="color:#009999">No Comments.</p>
+}
+
+@{
+    // Alternate background-color of Comments display.
+    bool commentFieldBlue = true;
+    foreach (var comment in Model.Comments.OrderByDescending(c => c.Id))
+    {
+        if (commentFieldBlue)   // Comment with Blue background.
+        {
+            <div style="padding:6px; background-color:rgba(30, 80, 150, 0.05); box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
+                <p style="font-size:smaller"><span style="font-weight:bold">Posted: </span>@comment.Created: &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:</p>
+                <p>@comment.Body</p>
+
+                @{  // Display Comment-Update information if available.
+                    if (comment.Updated != null)
+                    {
+                        <div style="border:1px solid #009999; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
+                            <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@comment.Updated</p>
+                            @*<p style="font-size:smaller; margin-top:-18px"><span style="font-weight:bold">Reason: </span>@comment.UpdateReason</p>*@
+                        </div>
+                    }
+                }
+
+                @{  // Allow Admin, Moderator(s), and original Commenter to Edit/Delete Comments.
+                    if (User.IsInRole("Admin") || User.IsInRole("Moderator") || ViewBag.UserId == comment.Author)
+                    {
+                        <div style="text-align:center">
+                            @Html.ActionLink("Edit Comment", "Edit", "Comments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" }) |
+                            @Html.ActionLink("Delete Comment", "Delete", "Comments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" })
+                        </div>
+                    }
+                }
+            </div>
+                        commentFieldBlue = false;
+                    }
+                    else                    // Comment with Green background.
+                    {
+                        <div style="padding:6px; background-color:rgba(0, 153, 153, 0.05); box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
+                            <p style="font-size:smaller"><span style="font-weight:bold">Posted: </span>@comment.Created: &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:</p>
+                            <p>@comment.Body</p>
+
+                            @{  // Display Comment-Update information if available.
+                                if (comment.Updated != null)
+                                //if (comment.Updated != null && comment.UpdateReason != null)
+                                    {
+                                    <div style="border:1px solid #009999; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
+                                        <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@comment.Updated</p>
+                                        @*<p style="font-size:smaller; margin-top:-18px"><span style="font-weight:bold">Reason: </span>@comment.UpdateReason</p>*@
+                                    </div>
+                                }
+                            }
+
+                            @{  // Allow Admin, Moderator(s), and original Commenter to Edit/Delete Comments.
+                                if (User.IsInRole("Admin") || User.IsInRole("Moderator") || ViewBag.UserId == comment.Author)
+                                {
+                                    <div style="text-align:center">
+                                        @Html.ActionLink("Edit Comment", "Edit", "Comments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" }) |
+                                        @Html.ActionLink("Delete Comment", "Delete", "Comments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" })
+                                    </div>
+                                }
+                            }
+                        </div>
+                                    commentFieldBlue = true;
+                                }
+                                <hr class="blue-small" />
+                                }
+}
+
+
+@{if (Request.IsAuthenticated)    // Confirm user is logged in before allowing Comment creation.
+    {
+        using (Html.BeginForm("Create", "TicketComments", new { TicketId = Model.Id }, FormMethod.Post, null))
+        {
+            @Html.AntiForgeryToken()
+            <div>
+                <textarea rows="5" name="Body" style="max-width:none !important; width:100%">@ViewBag.Comment</textarea>
+                @*<input name="Body" type="text" placeholder="Leave a Comment" value="@ViewBag.Comment" />*@
+                <button class="btn btn-primary center-block" type="submit">Submit Comment</button>
+            </div>
+        }
+    }
+}
+
+
+<hr />
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")

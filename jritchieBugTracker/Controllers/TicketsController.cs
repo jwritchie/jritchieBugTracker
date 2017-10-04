@@ -19,53 +19,72 @@ namespace jritchieBugTracker.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            //var tickets = db.Tickets.Include(t => t.AssignToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-
             //var tickets = db.Tickets.ToList();
             //return View(tickets);
 
-
-            // *****************************************************************************
-            // helper.UsersInRole(string roleName)
-
-            UserRoleHelper helper = new UserRoleHelper();
-            helper.UsersInRole("Admin");
+            var user = db.Users.Find(User.Identity.GetUserId());
+            var tickets = db.Tickets.Include(t => t.AssignToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
+            List<Ticket> Tickets = new List<Ticket>();
 
             if (User.IsInRole("Admin"))
             {
-                var tickets = db.Tickets.ToList();
-                return View(tickets);
+                return View(db.Tickets.ToList());
             }
             if (User.IsInRole("ProjectManager"))
             {
-
+                return View(db.Tickets.Where(t => t.Project.Users.Any(u => u.Id == user.Id)).ToList());
             }
             if (User.IsInRole("Developer"))
             {
-                var user = db.Users.Find(User.Identity.GetUserId());
-
-                var tickets = db.Tickets.Where(t => t.AssignToUserId == user.Id);
-
+                return View(db.Tickets.Where(t => t.AssignToUserId == user.Id).ToList());
             }
             if (User.IsInRole("Submitter"))
             {
-
+                return View(db.Tickets.Where(t => t.OwnerUserId == user.Id).ToList());
             }
-            return RedirectToAction("Index", "Home");
+            return View("NoTickets");
+
+            //return RedirectToAction("Index", "Home");
+            //return View();
         }
 
         // GET: Tickets/Details/5
         [Authorize]
         public ActionResult Details(int? id)
         {
+            var user = db.Users.Find(User.Identity.GetUserId());
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Ticket ticket = db.Tickets.Find(id);
             if (ticket == null)
             {
                 return HttpNotFound();
+            }
+
+            if (User.IsInRole("Admin"))
+            {
+                return View(ticket);
+            }
+            else if (User.IsInRole("Project Manager") && !ticket.Project.Users.Any(u => u.Id == user.Id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (User.IsInRole("Developer") && ticket.AssignToUserId != user.Id)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (User.IsInRole("Submitter") && ticket.OwnerUserId != user.Id)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (user.Roles.Count == 0)
+            {
+                return View("NoTickets");
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             return View(ticket);
         }
@@ -109,9 +128,14 @@ namespace jritchieBugTracker.Controllers
                 return RedirectToAction("Index");
             }
 
+            // Restrict to only Projects to which a Submitter belongs.
+            ProjectAssignHelper helper = new ProjectAssignHelper();
+            var projects = helper.ListUserProjects(db.Users.Find(User.Identity.GetUserId()).Id);
+            ViewBag.ProjectId = new SelectList(projects, "Id", "Title");
+
             ViewBag.AssignToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignToUserId);
             ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", ticket.ProjectId);
+            //ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", ticket.ProjectId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
@@ -131,6 +155,7 @@ namespace jritchieBugTracker.Controllers
             {
                 return HttpNotFound();
             }
+
             ViewBag.AssignToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignToUserId);
             ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", ticket.ProjectId);
@@ -150,34 +175,37 @@ namespace jritchieBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                ticket.Updated = DateTimeOffset.Now;
+
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            //ViewBag.AssignToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignToUserId);
-            //ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
-            //ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", ticket.ProjectId);
-            //ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
-            //ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
-            //ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
+
+            ViewBag.AssignToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignToUserId);
+            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", ticket.ProjectId);
+            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
+            ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
+            ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
             return View(ticket);
         }
 
         // GET: Tickets/Delete/5
-        //[Authorize]
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Ticket ticket = db.Tickets.Find(id);
-        //    if (ticket == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(ticket);
-        //}
+        [Authorize]
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Ticket ticket = db.Tickets.Find(id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+            return View(ticket);
+        }
 
         // POST: Tickets/Delete/5
         //[Authorize]

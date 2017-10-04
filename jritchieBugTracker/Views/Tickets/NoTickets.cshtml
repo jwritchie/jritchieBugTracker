@@ -1,0 +1,19 @@
+﻿@model jritchieBugTracker.Models.CodeFirst.Ticket
+
+@{
+    ViewBag.Title = "No Role(s) assigned";
+}
+
+<h2>No Tickets</h2>
+
+<div>
+
+    <hr />
+    
+    <p>Only Users who have been assigned a Role can view Tickets.</p>
+    <p>Please contact your Administrator.</p>
+
+
+    @Html.ActionLink("Back to Home", "Index", "Home")
+
+</div>

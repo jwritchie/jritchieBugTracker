@@ -223,16 +223,19 @@ namespace jritchieBugTracker.Controllers
         {
             ProjectAssignHelper helper = new ProjectAssignHelper();
 
-            // Remove existing users.
+            // Remove existing Users.
             foreach (var userId in db.Users.Select(r => r.Id).ToList())
             {
                 helper.RemoveUserFromProject(userId, model.AssignProjectId);
             }
 
-            // Assign new users.
-            foreach(var userId in model.SelectedUsers)
+            // Assign new Users.
+            if (model.SelectedUsers != null)
             {
-                helper.AddUserToProject(userId, model.AssignProjectId);
+                foreach(var userId in model.SelectedUsers)
+                {
+                    helper.AddUserToProject(userId, model.AssignProjectId);
+                }
             }
 
             return RedirectToAction("Index");

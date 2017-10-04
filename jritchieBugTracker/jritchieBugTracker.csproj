@@ -194,6 +194,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\TicketAttachmentsController.cs" />
+    <Compile Include="Controllers\TicketCommentsController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Controllers\UniversalController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1678,6 +1680,8 @@
     <Content Include="Adminto\Horizontal\ui-treeview.html" />
     <Content Include="Adminto\Horizontal\ui-typography.html" />
     <Content Include="Adminto\Horizontal\ui-widgets.html" />
+    <Content Include="Assets\multi-select\multiselect.css" />
+    <Content Include="Assets\multi-select\multiselect.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -1958,6 +1962,17 @@
     <Content Include="Views\Home\Index - Original - Copy.cshtml" />
     <Content Include="Views\Home\Index - Original.cshtml" />
     <Content Include="Views\Tickets\AssignTicketUser.cshtml" />
+    <Content Include="Views\Tickets\NoTickets.cshtml" />
+    <Content Include="Views\TicketAttachments\Create.cshtml" />
+    <Content Include="Views\TicketAttachments\Delete.cshtml" />
+    <Content Include="Views\TicketAttachments\Details.cshtml" />
+    <Content Include="Views\TicketAttachments\Edit.cshtml" />
+    <Content Include="Views\TicketAttachments\Index.cshtml" />
+    <Content Include="Views\TicketComments\Create.cshtml" />
+    <Content Include="Views\TicketComments\Delete.cshtml" />
+    <Content Include="Views\TicketComments\Details.cshtml" />
+    <Content Include="Views\TicketComments\Edit.cshtml" />
+    <Content Include="Views\TicketComments\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Adminto\Horizontal\assets\plugins\jstree\themes\default\" />

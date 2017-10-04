@@ -48,11 +48,13 @@ namespace jritchieBugTracker.Controllers
             var user = db.Users.Find(model.User.Id);
             UserRoleHelper helper = new UserRoleHelper();
 
+            // Remove existing Roles.
             foreach (var role in db.Roles.Select(r => r.Name).ToList())
             {
                 helper.RemoveUserFromRole(user.Id, role);
             }
 
+            // Add new Roles.
             if (model.SelectedRoles != null)
             {
                 foreach (var role in model.SelectedRoles)
