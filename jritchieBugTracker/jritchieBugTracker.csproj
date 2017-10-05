@@ -212,6 +212,7 @@
     <Compile Include="Models\CodeFirst\TicketStatus.cs" />
     <Compile Include="Models\CodeFirst\TicketType.cs" />
     <Compile Include="Models\EmailModel.cs" />
+    <Compile Include="Models\Helpers\CustomHelpers.cs" />
     <Compile Include="Models\Helpers\TicketUserViewModel.cs" />
     <Compile Include="Models\Helpers\TicketHelper.cs" />
     <Compile Include="Models\Helpers\ProjectUserViewModel.cs" />
@@ -1977,6 +1978,7 @@
   <ItemGroup>
     <Folder Include="Adminto\Horizontal\assets\plugins\jstree\themes\default\" />
     <Folder Include="App_Data\" />
+    <Folder Include="FileAttachments\" />
     <Folder Include="Views\Universal\" />
   </ItemGroup>
   <ItemGroup>

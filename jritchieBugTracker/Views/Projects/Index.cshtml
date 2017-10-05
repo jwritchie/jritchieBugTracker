@@ -60,6 +60,9 @@
             @Html.DisplayFor(modelItem => item.Updated)
         </td>*@
         <td>
+
+            @Html.ToUserTime(item.AssignProject.Created, ViewBag.UserTimeZone as string)
+
             @Html.DisplayFor(modelItem => item.AssignProject.Title)
         </td>
         <td>

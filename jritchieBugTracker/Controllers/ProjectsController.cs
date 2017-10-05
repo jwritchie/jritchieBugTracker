@@ -44,6 +44,8 @@ namespace jritchieBugTracker.Controllers
                     projectUserVM.Users = new MultiSelectList(db.Users.ToList(), "Id", "Fullname", projectUserVM.SelectedUsers);
                     projectUserVM.SelectedUsersName = project.Users.OrderBy(u => u.LastName).Select(u => u.Fullname).ToArray();
 
+                    ViewBag.UserTimeZone = db.Users.Find(User.Identity.GetUserId()).TimeZone;
+
                     projects.Add(projectUserVM);
                 }
 
@@ -69,6 +71,8 @@ namespace jritchieBugTracker.Controllers
                     projectUserVM.Users = new MultiSelectList(db.Users.ToList(), "Id", "Fullname", projectUserVM.SelectedUsers);
                     projectUserVM.SelectedUsersName = project.Users.OrderBy(u => u.LastName).Select(u => u.Fullname).ToArray();
 
+                    ViewBag.UserTimeZone = db.Users.Find(User.Identity.GetUserId()).TimeZone;
+
                     usersProjects.Add(projectUserVM);
                 }
 
@@ -93,7 +97,7 @@ namespace jritchieBugTracker.Controllers
             var user = db.Users.Find(User.Identity.GetUserId());
 
             ProjectAssignHelper helper = new ProjectAssignHelper();
-            if (helper.IsUserOnProject(user.Id, project.Id))
+            if (helper.IsUserOnProject(user.Id, project.Id) || User.IsInRole("Admin"))
             {
                 ProjectUserViewModel projectUserVM = new ProjectUserViewModel();
                 projectUserVM.AssignProject = project;
@@ -101,6 +105,8 @@ namespace jritchieBugTracker.Controllers
                 projectUserVM.SelectedUsers = project.Users.Select(u => u.Id).ToArray();
                 projectUserVM.Users = new MultiSelectList(db.Users.ToList(), "Id", "Fullname", projectUserVM.SelectedUsers);
                 projectUserVM.SelectedUsersName = project.Users.OrderBy(u => u.LastName).Select(u => u.Fullname).ToArray();
+
+                ViewBag.UserTimeZone = db.Users.Find(User.Identity.GetUserId()).TimeZone;
 
                 return View(projectUserVM);
             }
@@ -126,7 +132,7 @@ namespace jritchieBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                project.Created = DateTimeOffset.Now;
+                project.Created = DateTimeOffset.UtcNow;
                 project.AuthorId = User.Identity.GetUserId();
                 project.Author = ViewBag.Fullname;
 
@@ -164,7 +170,7 @@ namespace jritchieBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                project.Updated = DateTimeOffset.Now;
+                project.Updated = DateTimeOffset.UtcNow;
 
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();

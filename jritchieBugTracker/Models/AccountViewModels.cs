@@ -73,6 +73,9 @@ namespace jritchieBugTracker.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [Required]
+        [Display(Name = "Time Zone")]
+        public string TimeZone { get; set; }
 
         [Required]
         [EmailAddress]

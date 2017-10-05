@@ -18,8 +18,29 @@ namespace jritchieBugTracker.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            var ticketComments = db.TicketComments.Include(t => t.Author).Include(t => t.Ticket);
-            return View(ticketComments.ToList());
+            //var ticketComments = db.TicketComments.Include(t => t.Author).Include(t => t.Ticket);
+            //return View(ticketComments.ToList());
+
+            var user = db.Users.Find(User.Identity.GetUserId());
+            if (User.IsInRole("Admin"))
+            {
+                return View(db.Tickets.ToList());
+            }
+            if (User.IsInRole("ProjectManager"))
+            {
+                return View(db.Tickets.Where(t => t.Project.Users.Any(u => u.Id == user.Id)).ToList());
+            }
+            if (User.IsInRole("Developer"))
+            {
+                return View(db.Tickets.Where(t => t.AssignToUserId == user.Id).ToList());
+            }
+            if (User.IsInRole("Submitter"))
+            {
+                return View(db.Tickets.Where(t => t.OwnerUserId == user.Id).ToList());
+            }
+
+            //return View("NoTickets");
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: TicketComments/Details/5
@@ -35,7 +56,36 @@ namespace jritchieBugTracker.Controllers
             {
                 return HttpNotFound();
             }
-            return View(ticketComment);
+
+            var user = db.Users.Find(User.Identity.GetUserId());
+            if (User.IsInRole("Admin"))
+            {
+                return View(ticketComment);
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            
+            //else if (User.IsInRole("Project Manager") && !ticketComment.Ticket.Project.Users.Any(u => u.Id == user.Id))
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //else if (User.IsInRole("Developer") && ticketComment.Ticket.AssignToUserId != user.Id)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //else if (User.IsInRole("Submitter") && ticketComment.Ticket.OwnerUserId != user.Id)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //else if (user.Roles.Count == 0)
+            //{
+            //    return View("NoTickets");
+            //    //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+
+            //return View(ticketComment);
         }
 
         // GET: TicketComments/Create
@@ -57,7 +107,7 @@ namespace jritchieBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                ticketComment.Created = DateTimeOffset.Now;
+                ticketComment.Created = DateTimeOffset.UtcNow;
                 ticketComment.AuthorId = User.Identity.GetUserId();
 
                 db.TicketComments.Add(ticketComment);
@@ -85,9 +135,36 @@ namespace jritchieBugTracker.Controllers
             {
                 return HttpNotFound();
             }
+
+            var user = db.Users.Find(User.Identity.GetUserId());
+            if (User.IsInRole("Admin"))
+            {
+                return View(ticketComment);
+            }
+            else if (User.IsInRole("Project Manager") && !ticketComment.Ticket.Project.Users.Any(u => u.Id == user.Id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (User.IsInRole("Developer") && ticketComment.AuthorId != user.Id)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (User.IsInRole("Submitter") && ticketComment.AuthorId != user.Id)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (user.Roles.Count == 0)
+            {
+                return View("NoTickets");
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             //ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", ticketComment.AuthorId);
             //ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketComment.TicketId);
-            return View(ticketComment);
+
+
+            return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
+            //return View(ticketComment);
         }
 
         // POST: TicketComments/Edit/5
@@ -100,13 +177,15 @@ namespace jritchieBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                ticketComment.Updated = DateTimeOffset.UtcNow;
+
                 db.Entry(ticketComment).State = EntityState.Modified;
                 db.SaveChanges();
                 //return RedirectToAction("Index");
                 return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
             }
-            ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", ticketComment.AuthorId);
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketComment.TicketId);
+            //ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", ticketComment.AuthorId);
+            //ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketComment.TicketId);
             return View(ticketComment);
         }
 
@@ -123,7 +202,32 @@ namespace jritchieBugTracker.Controllers
             {
                 return HttpNotFound();
             }
-            return View(ticketComment);
+
+            var user = db.Users.Find(User.Identity.GetUserId());
+            if (User.IsInRole("Admin"))
+            {
+                return View(ticketComment);
+            }
+            else if (User.IsInRole("Project Manager") && !ticketComment.Ticket.Project.Users.Any(u => u.Id == user.Id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (User.IsInRole("Developer") && ticketComment.AuthorId != user.Id)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (User.IsInRole("Submitter") && ticketComment.AuthorId != user.Id)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (user.Roles.Count == 0)
+            {
+                return View("NoTickets");
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
+            //return View(ticketComment);
         }
 
         // POST: TicketComments/Delete/5
@@ -137,7 +241,6 @@ namespace jritchieBugTracker.Controllers
             db.SaveChanges();
             //return RedirectToAction("Index");
             return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
-
         }
 
         protected override void Dispose(bool disposing)

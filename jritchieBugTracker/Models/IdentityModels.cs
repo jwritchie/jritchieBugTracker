@@ -14,6 +14,7 @@ namespace jritchieBugTracker.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string ProfilePic { get; set; }
+        public string TimeZone { get; set; }
 
         public string Fullname
         {

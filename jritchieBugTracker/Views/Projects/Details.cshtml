@@ -18,7 +18,17 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.AssignProject.Created)
+            <span style="color:red">New: 
+                @Html.ToUserTime(Model.AssignProject.Created, ViewBag.UserTimeZone as string, "MM-dd-yyyy hh:mm:ss")
+            </span>
+            &nbsp;|&nbsp;
+            <span style="color:forestgreen">No time:
+                @Html.ToUserTime(Model.AssignProject.Created, ViewBag.UserTimeZone as string, "MM-dd-yyyy")
+            </span>
+            &nbsp;|&nbsp;
+            <span style="color:dodgerblue">Old: 
+                @Html.DisplayFor(model => model.AssignProject.Created)
+            </span>
         </dd>
 
         <dt>

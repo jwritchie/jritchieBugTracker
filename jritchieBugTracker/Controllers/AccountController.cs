@@ -139,6 +139,10 @@ namespace jritchieBugTracker.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            var timezones = TimeZoneInfo.GetSystemTimeZones();
+            var defaultTimeZone = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
+            ViewBag.TimeZone = new SelectList(timezones, "Id", "Id", defaultTimeZone);
+
             return View();
         }
 
@@ -151,7 +155,7 @@ namespace jritchieBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, TimeZone = model.TimeZone };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

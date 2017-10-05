@@ -22,10 +22,10 @@ namespace jritchieBugTracker.Controllers
             //var tickets = db.Tickets.ToList();
             //return View(tickets);
 
-            var user = db.Users.Find(User.Identity.GetUserId());
-            var tickets = db.Tickets.Include(t => t.AssignToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            List<Ticket> Tickets = new List<Ticket>();
+            //var tickets = db.Tickets.Include(t => t.AssignToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
+            //return View(tickets.ToList());
 
+            var user = db.Users.Find(User.Identity.GetUserId());
             if (User.IsInRole("Admin"))
             {
                 return View(db.Tickets.ToList());
@@ -52,8 +52,6 @@ namespace jritchieBugTracker.Controllers
         [Authorize]
         public ActionResult Details(int? id)
         {
-            var user = db.Users.Find(User.Identity.GetUserId());
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -65,6 +63,7 @@ namespace jritchieBugTracker.Controllers
                 return HttpNotFound();
             }
 
+            var user = db.Users.Find(User.Identity.GetUserId());
             if (User.IsInRole("Admin"))
             {
                 return View(ticket);
@@ -120,7 +119,7 @@ namespace jritchieBugTracker.Controllers
                 var user = db.Users.Find(User.Identity.GetUserId());
                 ticket.OwnerUserId = user.Id;
 
-                ticket.Created = DateTimeOffset.Now;
+                ticket.Created = DateTimeOffset.UtcNow;
                 ticket.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Unassigned").Id;
 
                 db.Tickets.Add(ticket);
@@ -162,6 +161,30 @@ namespace jritchieBugTracker.Controllers
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
+
+            var user = db.Users.Find(User.Identity.GetUserId());
+            if (User.IsInRole("Admin"))
+            {
+                return View(ticket);
+            }
+            else if (User.IsInRole("Project Manager") && !ticket.Project.Users.Any(u => u.Id == user.Id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (User.IsInRole("Developer") && ticket.AssignToUserId != user.Id)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (User.IsInRole("Submitter") && ticket.OwnerUserId != user.Id)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (user.Roles.Count == 0)
+            {
+                return View("NoTickets");
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             return View(ticket);
         }
 
@@ -175,7 +198,7 @@ namespace jritchieBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                ticket.Updated = DateTimeOffset.Now;
+                ticket.Updated = DateTimeOffset.UtcNow;
 
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
@@ -204,6 +227,30 @@ namespace jritchieBugTracker.Controllers
             {
                 return HttpNotFound();
             }
+
+            var user = db.Users.Find(User.Identity.GetUserId());
+            if (User.IsInRole("Admin"))
+            {
+                return View(ticket);
+            }
+            else if (User.IsInRole("Project Manager") && !ticket.Project.Users.Any(u => u.Id == user.Id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (User.IsInRole("Developer") && ticket.AssignToUserId != user.Id)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (User.IsInRole("Submitter") && ticket.OwnerUserId != user.Id)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else if (user.Roles.Count == 0)
+            {
+                return View("NoTickets");
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             return View(ticket);
         }
 
@@ -243,6 +290,8 @@ namespace jritchieBugTracker.Controllers
             if (ModelState.IsValid)
             {
                 model.AssignToUserId = AssignToUserId;
+                model.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Assigned").Id;
+
 
                 db.Entry(model).State = EntityState.Modified;
                 db.SaveChanges();
