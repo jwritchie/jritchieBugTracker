@@ -124,7 +124,11 @@ else
 @{ 
     foreach (var file in Model.Attachments.OrderByDescending(a => a.Created))
     {
-        <p>@file.FileUrl</p>
+        <a href="@file.FileUrl" target="_blank">@file.FileUrl</a>
+        <p>@file.Description</p>
+        <br />
+
+        @*<a href="@Url.Action("TicketAttachment", new { filename = "@file.FileUrl" } )"></a>*@
     }
 }
 

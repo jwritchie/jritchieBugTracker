@@ -57,20 +57,15 @@ namespace jritchieBugTracker.Controllers
             }
             if (User.IsInRole("ProjectManager"))
             {
-                //List<Ticket> tempList = db.Tickets.Where(t => t.Project.Users.Any(u => u.Id == user.Id)).ToList();
-                //UsersTickets.AddRange(tempList);
                 UsersTickets.AddRange(db.Tickets.Where(t => t.Project.Users.Any(u => u.Id == user.Id)).ToList());
-                //return View(db.Tickets.Where(t => t.Project.Users.Any(u => u.Id == user.Id)).ToList());
             }
             if (User.IsInRole("Developer"))
             {
                 UsersTickets.AddRange(db.Tickets.Where(t => t.AssignToUserId == user.Id).ToList());
-                //return View(db.Tickets.Where(t => t.AssignToUserId == user.Id).ToList());
             }
             if (User.IsInRole("Submitter"))
             {
                 UsersTickets.AddRange(db.Tickets.Where(t => t.OwnerUserId == user.Id).ToList());
-                //return View(db.Tickets.Where(t => t.OwnerUserId == user.Id).ToList());
             }
 
             if (UsersTickets.Count != 0)
@@ -79,8 +74,6 @@ namespace jritchieBugTracker.Controllers
             }
 
             return View("NoTickets");
-
-
         }
 
         // GET: Tickets/Details/5
@@ -195,29 +188,24 @@ namespace jritchieBugTracker.Controllers
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
 
             var user = db.Users.Find(User.Identity.GetUserId());
+            if (user.Roles.Count == 0)
+            {
+                return View("NoTickets");
+            }
+
             if (User.IsInRole("Admin"))
             {
                 return View(ticket);
             }
-            else if (User.IsInRole("Project Manager") && !ticket.Project.Users.Any(u => u.Id == user.Id))
+            else if (User.IsInRole("Project Manager") && ticket.Project.Users.Any(u => u.Id == user.Id))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View(ticket);
             }
-            else if (User.IsInRole("Developer") && ticket.AssignToUserId != user.Id)
+            else if (ticket.AssignToUserId == user.Id || ticket.OwnerUserId == user.Id)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View(ticket);
             }
-            else if (User.IsInRole("Submitter") && ticket.OwnerUserId != user.Id)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            else if (user.Roles.Count == 0)
-            {
-                return View("NoTickets");
-                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            return View(ticket);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         // POST: Tickets/Edit/5
@@ -261,29 +249,24 @@ namespace jritchieBugTracker.Controllers
             }
 
             var user = db.Users.Find(User.Identity.GetUserId());
+            if (user.Roles.Count == 0)
+            {
+                return View("NoTickets");
+            }
+
             if (User.IsInRole("Admin"))
             {
                 return View(ticket);
             }
-            else if (User.IsInRole("Project Manager") && !ticket.Project.Users.Any(u => u.Id == user.Id))
+            else if (User.IsInRole("Project Manager") && ticket.Project.Users.Any(u => u.Id == user.Id))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View(ticket);
             }
-            else if (User.IsInRole("Developer") && ticket.AssignToUserId != user.Id)
+            else if (ticket.AssignToUserId == user.Id || ticket.OwnerUserId == user.Id)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View(ticket);
             }
-            else if (User.IsInRole("Submitter") && ticket.OwnerUserId != user.Id)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            else if (user.Roles.Count == 0)
-            {
-                return View("NoTickets");
-                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            return View(ticket);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         // POST: Tickets/Delete/5
