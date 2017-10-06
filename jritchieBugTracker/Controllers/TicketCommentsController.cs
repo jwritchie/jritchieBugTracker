@@ -21,6 +21,30 @@ namespace jritchieBugTracker.Controllers
             //var ticketComments = db.TicketComments.Include(t => t.Author).Include(t => t.Ticket);
             //return View(ticketComments.ToList());
 
+            //*************************************************************************************
+            //var user = db.Users.Find(User.Identity.GetUserId());
+            //if (User.IsInRole("Admin"))
+            //{
+            //    return View(db.Tickets.ToList());
+            //}
+            //if (User.IsInRole("ProjectManager"))
+            //{
+            //    return View(db.Tickets.Where(t => t.Project.Users.Any(u => u.Id == user.Id)).ToList());
+            //}
+            //if (User.IsInRole("Developer"))
+            //{
+            //    return View(db.Tickets.Where(t => t.AssignToUserId == user.Id).ToList());
+            //}
+            //if (User.IsInRole("Submitter"))
+            //{
+            //    return View(db.Tickets.Where(t => t.OwnerUserId == user.Id).ToList());
+            //}
+
+            ////return View("NoTickets");
+            //return RedirectToAction("Index", "Home");
+            //*************************************************************************************
+
+            List<Ticket> UsersTickets = new List<Ticket>();
             var user = db.Users.Find(User.Identity.GetUserId());
             if (User.IsInRole("Admin"))
             {
@@ -28,18 +52,27 @@ namespace jritchieBugTracker.Controllers
             }
             if (User.IsInRole("ProjectManager"))
             {
-                return View(db.Tickets.Where(t => t.Project.Users.Any(u => u.Id == user.Id)).ToList());
+                //List<Ticket> tempList = db.Tickets.Where(t => t.Project.Users.Any(u => u.Id == user.Id)).ToList();
+                //UsersTickets.AddRange(tempList);
+                UsersTickets.AddRange(db.Tickets.Where(t => t.Project.Users.Any(u => u.Id == user.Id)).ToList());
+                //return View(db.Tickets.Where(t => t.Project.Users.Any(u => u.Id == user.Id)).ToList());
             }
             if (User.IsInRole("Developer"))
             {
-                return View(db.Tickets.Where(t => t.AssignToUserId == user.Id).ToList());
+                UsersTickets.AddRange(db.Tickets.Where(t => t.AssignToUserId == user.Id).ToList());
+                //return View(db.Tickets.Where(t => t.AssignToUserId == user.Id).ToList());
             }
             if (User.IsInRole("Submitter"))
             {
-                return View(db.Tickets.Where(t => t.OwnerUserId == user.Id).ToList());
+                UsersTickets.AddRange(db.Tickets.Where(t => t.OwnerUserId == user.Id).ToList());
+                //return View(db.Tickets.Where(t => t.OwnerUserId == user.Id).ToList());
             }
 
-            //return View("NoTickets");
+            if (UsersTickets.Count != 0)
+            {
+                return View(UsersTickets);
+            }
+
             return RedirectToAction("Index", "Home");
         }
 
