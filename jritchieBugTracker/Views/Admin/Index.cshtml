@@ -6,33 +6,44 @@
 
 <h2>Admin Index</h2>
 
-<table class="table">
-    <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Roles</th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<table id="myTable" class="table">
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Fullname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Email)
-            </td>
-            <td>
-                @foreach (var role in item.SelectedRoles)
-                {
-                    <p>@role</p>
-                }
-            </td>
-            <td>
-                @Html.ActionLink("Edit Roles", "EditUserRoles", new { id = item.User.Id })
-            </td>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th></th>
         </tr>
-    }
+    </thead>
 
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Fullname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Email)
+                </td>
+                <td>
+                    @foreach (var role in item.SelectedRoles)
+                {
+                        <p>@role</p>
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Edit Roles", "EditUserRoles", new { id = item.User.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+
+@section scripts
+{
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script>
+        $("#myTable").DataTable();
+    </script>
+}
