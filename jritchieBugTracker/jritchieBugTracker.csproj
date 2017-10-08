@@ -370,6 +370,7 @@
     <Content Include="Assets\images\users\avatar-7.jpg" />
     <Content Include="Assets\images\users\avatar-8.jpg" />
     <Content Include="Assets\images\users\avatar-9.jpg" />
+    <Content Include="Assets\images\users\GenericAvatar.png" />
     <Content Include="Assets\js\bootstrap.min.js" />
     <Content Include="Assets\js\detect.js" />
     <Content Include="Assets\js\fastclick.js" />

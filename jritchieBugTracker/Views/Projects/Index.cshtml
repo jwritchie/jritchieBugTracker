@@ -5,7 +5,7 @@
     ViewBag.Title = "Index";
 }
 
-@{ 
+@*@{
     if (ViewBag.IndexType == "All")
     {
         <h2><span style="font-weight:bold">All</span> Projects Index</h2>
@@ -14,96 +14,186 @@
     {
         <h2><span style="font-weight:bold">Assigned</span> Projects Index</h2>
     }
-}
+}*@
 
-@{ 
+@*@{
     if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
     {
         <p>
             @Html.ActionLink("Create New Project", "Create")
         </p>
     }
-}
+}*@
 
-<table id="myTable" class="table">
-    <thead>             <!-- <thead> required by datatables  -->
-        <tr>
-            @*<th>
-                    @Html.DisplayNameFor(model => model.Created)
-                </th>*@
-            @*<th>
-                    @Html.DisplayNameFor(model => model.Updated)
-                </th>*@
-            <th>
-                Name (Title)
-                @*@Html.DisplayNameFor(model => model.Title)*@
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AssignProject.Description)
-                @*@Html.DisplayNameFor(model => model.Description)*@
-            </th>
-            <th>
-                Owner
-                @*@Html.DisplayNameFor(model => model.Author)*@
-            </th>
-            <th>
-                Users
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+<div class="container">
 
-    <tbody>             <!-- <tbody> required by datatables  -->
-        @foreach (var item in Model)
-        {
-            <tr>
-                @*<td>
-                        @Html.DisplayFor(modelItem => item.Created)
-                    </td>*@
-                @*<td>
-                        @Html.DisplayFor(modelItem => item.Updated)
-                    </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.AssignProject.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AssignProject.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AssignProject.Author)
-                </td>
-                <td>
-                    @foreach (var user in item.SelectedUsersName)
-                    {
-                        <p>@user</p>
-                    }
-                </td>
-                <td>
-                    @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
-                    {
-                        @Html.ActionLink("Edit", "Edit", new { id = item.AssignProject.Id }, new { style = "display:block" } )
-                        @*<span> |</span>*@
+    <div class="row" style="margin-top:10px">
+        <div class="col-sm-12">
+            <div class="card-box table-responsive">
+                <div class="dropdown pull-right">
+
+                    @{
+                        if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                        {
+                            <p>
+                                @*@Html.ActionLink("Create New Project", "Create")*@
+                                <a href="@Url.Action("Create")" class="btn btn-default"><i class="fa fa-plus-square"></i><span> New Project </span></a>
+                            </p>
+                        }
                     }
 
-                    @Html.ActionLink("Details", "Details", new { id = item.AssignProject.Id }, new { style = "display:block" })
+                    @*<a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>*@
+                </div>
 
-                    @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                @{
+                    if (ViewBag.IndexType == "All")
                     {
-                        @*<span> |</span>*@
-                        @Html.ActionLink("Assign Project User(s)", "AssignProjectUser", new { id = item.AssignProject.Id }, new { style = "display:block" })
-
+                        @*<h2><span style="font-weight:bold">All</span> Projects Index</h2>*@
+                        <h4 class="header-title m-t-0 m-b-30"><span style="text-decoration-line:underline">All</span> Projects</h4>
                     }
-                    @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                    else
+                    {
+                        @*<h2><span style="font-weight:bold">Assigned</span> Projects Index</h2>*@
+                        <h4 class="header-title m-t-0 m-b-30"><span style="text-decoration-line:underline">Assigned</span> Projects</h4>
+                    }
+                }
+
+
+
+                <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                    @*<table id="myTable" class="table">*@
+                    <thead>
+                        <!-- <thead> required by datatables  -->
+                        <tr>
+                            @*<th>
+                                    @Html.DisplayNameFor(model => model.Created)
+                                </th>*@
+                            @*<th>
+                                    @Html.DisplayNameFor(model => model.Updated)
+                                </th>*@
+                            <th>
+                                Name (Title)
+                                @*@Html.DisplayNameFor(model => model.Title)*@
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.AssignProject.Description)
+                                @*@Html.DisplayNameFor(model => model.Description)*@
+                            </th>
+                            <th>
+                                Owner
+                                @*@Html.DisplayNameFor(model => model.Author)*@
+                            </th>
+                            <th>
+                                Users
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <!-- <tbody> required by datatables  -->
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                @*<td>
+                                        @Html.DisplayFor(modelItem => item.Created)
+                                    </td>*@
+                                @*<td>
+                                        @Html.DisplayFor(modelItem => item.Updated)
+                                    </td>*@
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AssignProject.Title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AssignProject.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AssignProject.Author)
+                                </td>
+                                <td>
+                                    @foreach (var user in item.SelectedUsersName)
+                                    {
+                                        <p>@user</p>
+                                    }
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("Details", new { id = item.AssignProject.Id } )" style="display:block"><i class="fa fa-eye"></i><span> Details </span></a>
+                                    @*@Html.ActionLink("Details", "Details", new { id = item.AssignProject.Id }, new { style = "display:block" })*@
+
+                                    @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                                    {
+                                        <a href="@Url.Action("Edit", new { id = item.AssignProject.Id } )" style="display:block" ><i class="fa fa-pencil-square-o"></i><span> Edit </span></a>
+                                        @*@Html.ActionLink("Edit", "Edit", new { id = item.AssignProject.Id }, new { style = "display:block" })*@
+                                    }
+
+                                    @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                                    {
+                                        <a href="@Url.Action("AssignProjectUser", new { id = item.AssignProject.Id } )" style="display:block"><i class="fa fa-user-plus"></i><span> Assign User </span></a>
+                                        @*@Html.ActionLink("Assign Project User(s)", "AssignProjectUser", new { id = item.AssignProject.Id }, new { style = "display:block" })*@
+
+                                    }
+                                    @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div><!-- end col -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end container -->
+
+
+@*@section scripts
+    {
+        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script>
+            $("#myTable").DataTable();
+        </script>
+    }*@
 
 @section scripts
 {
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script>
-        $("#myTable").DataTable();
+    <!-- Datatables-->
+    <script src="~/Assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/plugins/datatables/dataTables.bootstrap.js"></script>
+    <script src="~/Assets/plugins/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/Assets/plugins/datatables/buttons.bootstrap.min.js"></script>
+    <script src="~/Assets/plugins/datatables/jszip.min.js"></script>
+    <script src="~/Assets/plugins/datatables/pdfmake.min.js"></script>
+    <script src="~/Assets/plugins/datatables/vfs_fonts.js"></script>
+    <script src="~/Assets/plugins/datatables/buttons.html5.min.js"></script>
+    <script src="~/Assets/plugins/datatables/buttons.print.min.js"></script>
+    <script src="~/Assets/plugins/datatables/dataTables.fixedHeader.min.js"></script>
+    <script src="~/Assets/plugins/datatables/dataTables.keyTable.min.js"></script>
+    <script src="~/Assets/plugins/datatables/dataTables.responsive.min.js"></script>
+    <script src="~/Assets/plugins/datatables/responsive.bootstrap.min.js"></script>
+    <script src="~/Assets/plugins/datatables/dataTables.scroller.min.js"></script>
+
+    <!-- Datatable init js -->
+    <script src="~/Assets/pages/datatables.init.js"></script>
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datatable').dataTable();
+            $('#datatable-keytable').DataTable({ keys: true });
+            $('#datatable-responsive').DataTable();
+            $('#datatable-scroller').DataTable({ ajax: "~/Assets/plugins/datatables/json/scroller-demo.json", deferRender: true, scrollY: 380, scrollCollapse: true, scroller: true });
+            var table = $('#datatable-fixed-header').DataTable({ fixedHeader: true });
+        });
+        TableManageButtons.init();
     </script>
 }

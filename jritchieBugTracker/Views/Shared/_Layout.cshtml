@@ -115,16 +115,16 @@
                 <div class="menu-extras">
 
                     <ul class="nav navbar-nav navbar-right pull-right">
-                        <li>
+                        @*<li>
                             <form role="search" class="navbar-left app-search pull-left hidden-xs">
                                 <input type="text" placeholder="Search..." class="form-control">
                                 <a href=""><i class="fa fa-search"></i></a>
                             </form>
-                        </li>
+                        </li>*@
 
                         @Html.Partial("_LoginPartial")
 
-                        <li>
+                        @*<li>
                             <!-- Notification -->
                             <div class="notification-box">
                                 <ul class="list-inline m-b-0">
@@ -140,12 +140,12 @@
                                 </ul>
                             </div>
                             <!-- End Notification bar -->
-                        </li>
+                        </li>*@
 
                         <li class="dropdown user-box">
                             <a href="" class="dropdown-toggle waves-effect waves-light profile " data-toggle="dropdown" aria-expanded="true">
-                                <img src="~/assets/images/users/avatar-1.jpg" alt="user-img" class="img-circle user-img">
-                                <div class="user-status away"><i class="zmdi zmdi-dot-circle"></i></div>
+                                <img src="~/assets/images/users/GenericAvatar.png" alt="user-img" class="img-circle user-img">
+                                @*<div class="user-status away"><i class="zmdi zmdi-dot-circle"></i></div>*@
                             </a>
 
                             <ul class="dropdown-menu">
@@ -294,7 +294,7 @@
                             if (User.IsInRole("Admin"))
                             {
                                 <li class="has-submenu">
-                                    <a href="#"><i class="zmdi zmdi-accounts-add"></i><span> Users </span></a>
+                                    <a href="#"><i class="fa fa-user"></i><span> Users </span></a>
                                     <ul class="submenu">
                                         <li>@Html.ActionLink("Users", "Index", "Admin")</li>
                                         <li>@Html.ActionLink("DataTables", "Datatables", "Admin")</li>
@@ -308,7 +308,7 @@
                                 if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                                 {
                                     <li class="has-submenu">
-                                        <a href="#"><i class="zmdi zmdi-view-web"></i><span> Projects </span> </a>
+                                        <a href="#"><i class="fa fa-folder-open"></i><span> Projects </span> </a>
                                         <ul class="submenu">
                                             <li><a href="@Url.Action("Index", "Projects", new { allProjects = true } )">All Projects</a></li>
                                             <li><a href="@Url.Action("Index", "Projects", null)">Assigned Projects</a></li>
@@ -321,7 +321,7 @@
 
                                 }
                                 <li>
-                                    <a href="@Url.Action("Index","Tickets")"><i class="zmdi zmdi-file-plus"></i><span> Tickets </span></a>
+                                    <a href="@Url.Action("Index","Tickets")"><i class="fa fa-ticket"></i><span> Tickets </span></a>
                                 </li>
                             }
                         }
