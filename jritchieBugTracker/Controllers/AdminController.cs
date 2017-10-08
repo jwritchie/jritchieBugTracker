@@ -83,6 +83,25 @@ namespace jritchieBugTracker.Controllers
             return RedirectToAction("Index");
         }
 
+
+        //GET: Admin
+        public ActionResult DataTables()
+        {
+            List<AdminUserViewModel> users = new List<AdminUserViewModel>();
+            foreach (var user in db.Users.ToList())
+            {
+                UserRoleHelper helper = new UserRoleHelper();
+                AdminUserViewModel eachUser = new AdminUserViewModel();
+                eachUser.User = user;
+                eachUser.SelectedRoles = helper.ListUserRoles(user.Id).ToArray();
+
+                users.Add(eachUser);
+            }
+            return View(users.OrderBy(u => u.User.LastName).ToList());
+        }
+
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

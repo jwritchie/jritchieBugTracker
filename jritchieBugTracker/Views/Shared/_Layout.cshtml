@@ -70,11 +70,17 @@
     <link href="~/assets/css/menu.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/css/responsive.css" rel="stylesheet" type="text/css" />
 
+    <!-- DataTables -->
+    <link href="../assets/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/plugins/datatables/buttons.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/plugins/datatables/fixedHeader.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/plugins/datatables/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/plugins/datatables/scroller.bootstrap.min.css" rel="stylesheet" type="text/css" />
 
 
     @*<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />*@
     <link href="~/Assets/multi-select/multiselect.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+    @*<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />*@
 
 
 
@@ -284,11 +290,17 @@
                             </ul>
                         </li>
 
-
                         @{
                             if (User.IsInRole("Admin"))
                             {
-                            <li>@Html.ActionLink("Users", "Index", "Admin")</li>
+                                <li class="has-submenu">
+                                    <a href="#"><i class="zmdi zmdi-accounts-add"></i><span> Users </span></a>
+                                    <ul class="submenu">
+                                        <li>@Html.ActionLink("Users", "Index", "Admin")</li>
+                                        <li>@Html.ActionLink("DataTables", "Datatables", "Admin")</li>
+                                    </ul>
+                                </li>
+                            @*<li>@Html.ActionLink("Users", "Index", "Admin")</li>*@
                             }
 
                             if (User.Identity.IsAuthenticated)
@@ -296,26 +308,21 @@
                                 if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                                 {
                                     <li class="has-submenu">
-                                        <a href="#"><i class="zmdi zmdi-cake"></i><span> Projects </span> </a>
+                                        <a href="#"><i class="zmdi zmdi-view-web"></i><span> Projects </span> </a>
                                         <ul class="submenu">
                                             <li><a href="@Url.Action("Index", "Projects", new { allProjects = true } )">All Projects</a></li>
                                             <li><a href="@Url.Action("Index", "Projects", null)">Assigned Projects</a></li>
                                         </ul>
                                     </li>
-                                    @*<li class="dropdown">
-                                        <a class="dropdown-toggle" data-toggle="dropdown">Projects<span class="caret"></span></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="@Url.Action("Index", "Projects", new { allProjects = true } )">All Projects</a></li>
-                                            <li><a href="@Url.Action("Index", "Projects", null)">Assigned Projects</a></li>
-                                        </ul>
-                                    </li>*@
                                 }
                                 else
                                 {
                                     <li>@Html.ActionLink("View Assigned Projects", "Index", "Projects")</li>
 
                                 }
-                                <li>@Html.ActionLink("Tickets", "Index", "Tickets")</li>
+                                <li>
+                                    <a href="@Url.Action("Index","Tickets")"><i class="zmdi zmdi-file-plus"></i><span> Tickets </span></a>
+                                </li>
                             }
                         }
                     </ul>
@@ -464,7 +471,7 @@
     <script src="~/assets/plugins/raphael/raphael-min.js"></script>
 
     <!-- Dashboard init -->
-    <script src="~/assets/pages/jquery.dashboard.js"></script>
+    @*<script src="~/assets/pages/jquery.dashboard.js"></script>*@
 
     <!-- App js -->
     <script src="~/assets/js/jquery.core.js"></script>
