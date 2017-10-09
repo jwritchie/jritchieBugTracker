@@ -97,7 +97,7 @@ namespace jritchieBugTracker.Controllers
             var user = db.Users.Find(User.Identity.GetUserId());
 
             ProjectAssignHelper helper = new ProjectAssignHelper();
-            if (helper.IsUserOnProject(user.Id, project.Id) || User.IsInRole("Admin"))
+            if (helper.IsUserOnProject(user.Id, project.Id) || User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
             {
                 ProjectUserViewModel projectUserVM = new ProjectUserViewModel();
                 projectUserVM.AssignProject = project;

@@ -43,7 +43,7 @@
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <hr />
+
         <dt>
             Project Name
             @*@Html.DisplayNameFor(model => model.Project.Title)*@
@@ -80,8 +80,6 @@
             @Html.DisplayFor(model => model.TicketType.Name)
         </dd>
 
-        <hr />
-
         <dt>
             Ticket Owner
             @*@Html.DisplayNameFor(model => model.OwnerUser.Fullname)*@
@@ -105,166 +103,169 @@
 
 <hr />
 
-<p>Attachments here...</p>
-@if (Model.Attachments.Count != 0)
-{
-    if (Model.Attachments.Count == 1)
+<!-- Attachments -->
+<div class="row">
+    <p style="color:red">Attachments here...</p>
+    @if (Model.Attachments.Count != 0)
     {
-        <p style="color:#009999">@Model.Attachments.Count attachment.</p>
+        if (Model.Attachments.Count == 1)
+        {
+            <p style="color:#009999">@Model.Attachments.Count attachment.</p>
+        }
+        else
+        {
+            <p style="color:#009999">@Model.Attachments.Count attachments.</p>    }
     }
     else
     {
-        <p style="color:#009999">@Model.Attachments.Count attachments.</p>    }
-}
-else
-{
-    <p style="color:#009999">No attachments.</p>
-}
-
-@{ 
-    foreach (var file in Model.Attachments.OrderByDescending(a => a.Created))
-    {
-        <a href="@file.FileUrl" target="_blank">@file.FileUrl</a>
-        <p>@file.Description</p>
-        <br />
-
-        @*<a href="@Url.Action("TicketAttachment", new { filename = "@file.FileUrl" } )"></a>*@
+        <p style="color:#009999">No attachments.</p>
     }
-}
 
+    @{
+        foreach (var file in Model.Attachments.OrderByDescending(a => a.Created))
+        {
+            <div>
+                <a href="@file.FileUrl" target="_blank">@file.FileUrl</a>
+                <p style="margin-bottom:0px">@file.Description</p>
+                @*@Html.ActionLink("Edit attachment", "Edit", "TicketAttachments", new { id = file.Id }, null )*@
+            </div>
+            <br />
+        }
+    }
 
-@using (Html.BeginForm("Create", "TicketAttachments", new { TicketId = Model.Id }, FormMethod.Post, new { enctype = "Multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
+    @using (Html.BeginForm("Create", "TicketAttachments", new { TicketId = Model.Id }, FormMethod.Post, new { enctype = "Multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
 
-    <div class="form-group">
-        <label class="control-label col-md-2">Upload new attachment</label>
-            <input name="attachment" type="file" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label class="control-label col-md-2">File description</label>
-        <div class="col-md-8">
-            <input id="editor" class="form-control" name="Description" rows="5" style="margin-bottom:100px">
+        <div class="form-group">
+            <label class="control-label col-md-2">Upload new attachment</label>
+            <div class="col-md-10">
+                <input name="attachment" type="file" class="form-control" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <!-- Input/Button to submit the data. -->
-            <input type="submit" value="Create attachment" class="btn btn-primary" />
+        <div class="form-group">
+            <label class="control-label col-md-2">File description</label>
+            <div class="col-md-10">
+                <input id="editor" class="form-control" name="Description" rows="1">
+            </div>
         </div>
-    </div>
-}    
 
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <!-- Input/Button to submit the data. -->
+                <input type="submit" value="Create attachment" class="btn btn-primary" />
+            </div>
+        </div>
+    }
+</div>
 
 <hr />
 
-
-<p>Comments here...</p>
-@if (Model.Comments.Count != 0)
-{
-    if (Model.Comments.Count == 1)
+<!-- Comments -->
+<div class="row">
+    <p style="color:red">Comments here...</p>
+    @if (Model.Comments.Count != 0)
     {
-        <p style="color:#009999">@Model.Comments.Count comment.</p>
+        if (Model.Comments.Count == 1)
+        {
+            <p style="color:#009999">@Model.Comments.Count comment.</p>
+        }
+        else
+        {
+            <p style="color:#009999">@Model.Comments.Count comments.</p>
+        }
     }
     else
     {
-        <p style="color:#009999">@Model.Comments.Count comments.</p>
+        <p style="color:#009999">No Comments.</p>
     }
-}
-else
-{
-    <p style="color:#009999">No Comments.</p>
-}
 
-@{
-    // Alternate background-color of Comments display.
-    bool commentFieldBlue = true;
-    foreach (var comment in Model.Comments.OrderByDescending(c => c.Id))
-    {
-        if (commentFieldBlue)   // Comment with Blue background.
+    @{
+        // Alternate background-color of Comments display.
+        bool commentFieldBlue = true;
+        foreach (var comment in Model.Comments.OrderByDescending(c => c.Id))
         {
-            <div style="padding:6px; background-color:rgba(30, 80, 150, 0.05); box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
-                <p style="font-size:smaller"><span style="font-weight:bold">Posted: </span>@comment.Created: &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:</p>
-                <p>@comment.Body</p>
+            if (commentFieldBlue)   // Comment with Blue background.
+            {
+                <div style="padding:6px; background-color:rgba(30, 80, 150, 0.05); box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
+                    <p style="font-size:smaller"><span style="font-weight:bold">Posted: </span>@comment.Created: &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:</p>
+                    <p>@comment.Body</p>
 
-                @{  // Display Comment-Update information if available.
-                    if (comment.Updated != null)
-                    { 
-                        <div style="border:1px solid #009999; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
-                            <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@comment.Updated</p>
-                            @*<p style="font-size:smaller; margin-top:-18px"><span style="font-weight:bold">Reason: </span>@comment.UpdateReason</p>*@
-                        </div>
+                    @{  // Display Comment-Update information if available.
+                        if (comment.Updated != null)
+                        {
+                            <div style="border:1px solid #009999; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
+                                <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@comment.Updated</p>
+                                @*<p style="font-size:smaller; margin-top:-18px"><span style="font-weight:bold">Reason: </span>@comment.UpdateReason</p>*@
+                            </div>
+                        }
                     }
-                }
 
-                @{  // Allow Editing/Deleting Comments.
-                    if (User.IsInRole("Admin") ||
-                        (User.IsInRole("ProjectManager") && !Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
-                        (User.IsInRole("Developer") && comment.AuthorId == ViewBag.UserId) ||
-                        (User.IsInRole("Submitter") && comment.AuthorId == ViewBag.UserId))
-                    {
-                        <div style="text-align:center">
-                            @Html.ActionLink("Edit Comment", "Edit", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" }) |
-                            @Html.ActionLink("Delete Comment", "Delete", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" })
-                        </div>
+                    @{  // Allow Editing/Deleting Comments.
+                        if (User.IsInRole("Admin") ||
+                           (User.IsInRole("ProjectManager") && !Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
+                           comment.AuthorId == ViewBag.UserId)
+                        {
+                            <div style="text-align:center">
+                                @Html.ActionLink("Edit Comment", "Edit", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" }) |
+                                @Html.ActionLink("Delete Comment", "Delete", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" })
+                            </div>
+                        }
                     }
-                }           
-            </div>
-                        commentFieldBlue = false;
-                    }
-                    else                    // Comment with Green background.
-                    {
-                        <div style="padding:6px; background-color:rgba(0, 153, 153, 0.05); box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
-                            <p style="font-size:smaller"><span style="font-weight:bold">Posted: </span>@comment.Created: &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:</p>
-                            <p>@comment.Body</p>
+                </div>
+                            commentFieldBlue = false;
+                        }
+                        else                    // Comment with Green background.
+                        {
+                            <div style="padding:6px; background-color:rgba(0, 153, 153, 0.05); box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
+                                <p style="font-size:smaller"><span style="font-weight:bold">Posted: </span>@comment.Created: &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:</p>
+                                <p>@comment.Body</p>
 
-                            @{  // Display Comment-Update information if available.
-                                if (comment.Updated != null)
-                                //if (comment.Updated != null && comment.UpdateReason != null)
+                                @{  // Display Comment-Update information if available.
+                                    if (comment.Updated != null)
+                                    //if (comment.Updated != null && comment.UpdateReason != null)
                                     {
-                                    <div style="border:1px solid #009999; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
-                                        <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@comment.Updated</p>
-                                        @*<p style="font-size:smaller; margin-top:-18px"><span style="font-weight:bold">Reason: </span>@comment.UpdateReason</p>*@
-                                    </div>
+                                        <div style="border:1px solid #009999; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
+                                            <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@comment.Updated</p>
+                                            @*<p style="font-size:smaller; margin-top:-18px"><span style="font-weight:bold">Reason: </span>@comment.UpdateReason</p>*@
+                                        </div>
+                                    }
                                 }
-                            }
 
-                            @{  // Allow Editing/Deleting Comments.
-                                if (User.IsInRole("Admin") ||
-                                    (User.IsInRole("ProjectManager") && !Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
-                                    (User.IsInRole("Developer") && comment.AuthorId == ViewBag.UserId) ||
-                                    (User.IsInRole("Submitter") && comment.AuthorId == ViewBag.UserId))
-                                {
-                                    <div style="text-align:center">
-                                        @Html.ActionLink("Edit Comment", "Edit", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" }) |
-                                        @Html.ActionLink("Delete Comment", "Delete", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" })
-                                    </div>
+                                @{  // Allow Editing/Deleting Comments.
+                                    if (User.IsInRole("Admin") ||
+                                       (User.IsInRole("ProjectManager") && !Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
+                                       comment.AuthorId == ViewBag.UserId)
+                                    {
+                                        <div style="text-align:center">
+                                            @Html.ActionLink("Edit Comment", "Edit", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" }) |
+                                            @Html.ActionLink("Delete Comment", "Delete", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" })
+                                        </div>
+                                    }
                                 }
-                            }
-                        </div>
-                                    commentFieldBlue = true;
-                                }
-                                <hr class="blue-small" />
-                                }
-}
+                            </div>
+                                        commentFieldBlue = true;
+                                    }
+                                    <hr class="blue-small" />
+                                    }
+    }
 
 
-@{if (Request.IsAuthenticated)    // Confirm user is logged in before allowing Comment creation.
-    {
-        using (Html.BeginForm("Create", "TicketComments", new { TicketId = Model.Id }, FormMethod.Post, null))
+    @{if (Request.IsAuthenticated)    // Confirm user is logged in before allowing Comment creation.
         {
-            @Html.AntiForgeryToken()
-            <div>
-                <textarea rows="5" name="Body" style="max-width:none !important; width:100%">@ViewBag.Comment</textarea>
-                @*<input name="Body" type="text" placeholder="Leave a Comment" value="@ViewBag.Comment" />*@
-                <button class="btn btn-primary center-block" type="submit">Submit Comment</button>
-            </div>
+            using (Html.BeginForm("Create", "TicketComments", new { TicketId = Model.Id }, FormMethod.Post, null))
+            {
+                @Html.AntiForgeryToken()
+                <div>
+                    <textarea rows="5" name="Body" style="max-width:none !important; width:100%">@ViewBag.Comment</textarea>
+                    @*<input name="Body" type="text" placeholder="Leave a Comment" value="@ViewBag.Comment" />*@
+                    <button class="btn btn-primary center-block" type="submit">Submit Comment</button>
+                </div>
+            }
         }
     }
-}
-
+</div>
 
 <hr />
 

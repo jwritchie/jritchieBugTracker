@@ -92,6 +92,7 @@ namespace jritchieBugTracker.Controllers
             }
 
             var user = db.Users.Find(User.Identity.GetUserId());
+            ViewBag.UserId = user.Id;
             if (user.Roles.Count == 0)
             {
                 return View("NoTickets");
@@ -101,7 +102,7 @@ namespace jritchieBugTracker.Controllers
             {
                 return View(ticket);
             }
-            else if (User.IsInRole("Project Manager") && ticket.Project.Users.Any(u => u.Id == user.Id))
+            else if (User.IsInRole("ProjectManager") && ticket.Project.Users.Any(u => u.Id == user.Id))
             {
                 return View(ticket);
             }
@@ -109,6 +110,7 @@ namespace jritchieBugTracker.Controllers
             {
                 return View(ticket);
             }
+            //return View(ticket);
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
@@ -197,7 +199,7 @@ namespace jritchieBugTracker.Controllers
             {
                 return View(ticket);
             }
-            else if (User.IsInRole("Project Manager") && ticket.Project.Users.Any(u => u.Id == user.Id))
+            else if (User.IsInRole("ProjectManager") && ticket.Project.Users.Any(u => u.Id == user.Id))
             {
                 return View(ticket);
             }
@@ -258,7 +260,7 @@ namespace jritchieBugTracker.Controllers
             {
                 return View(ticket);
             }
-            else if (User.IsInRole("Project Manager") && ticket.Project.Users.Any(u => u.Id == user.Id))
+            else if (User.IsInRole("ProjectManager") && ticket.Project.Users.Any(u => u.Id == user.Id))
             {
                 return View(ticket);
             }
