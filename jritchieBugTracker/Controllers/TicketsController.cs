@@ -150,6 +150,17 @@ namespace jritchieBugTracker.Controllers
                 ticket.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Unassigned").Id;
 
                 db.Tickets.Add(ticket);
+
+                TicketHistory ticketHistory = new TicketHistory();
+                ticketHistory.TicketId = ticket.Id;
+                ticketHistory.Property = "Ticket Created";
+                ticketHistory.OldValue = "";
+                ticketHistory.NewValue = DateTimeOffset.UtcNow.ToString();
+                ticketHistory.Created = DateTimeOffset.UtcNow;
+                ticketHistory.AuthorId = User.Identity.GetUserId();
+                db.TicketHistories.Add(ticketHistory);
+                db.SaveChanges();
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -218,12 +229,155 @@ namespace jritchieBugTracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Title,Description,Created,Updated,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignToUserId")] Ticket ticket)
         {
+
+            //******************
+            // '.AsNoTracking' returns a new query where the entities returned will not be cached in the DbContext,
+            //  this allows the db. to see 'ticket' and 'existingTicket' as two different objects.
+            Ticket existingTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+            //******************
+
             if (ModelState.IsValid)
             {
                 ticket.Updated = DateTimeOffset.UtcNow;
 
+                //****************
+                if (ticket.Title != existingTicket.Title)
+                {
+                    TicketHistory ticketHistory = new TicketHistory();
+
+                    ticketHistory.TicketId = ticket.Id;
+                    ticketHistory.Property = "Ticket Name";
+                    ticketHistory.OldValue = existingTicket.Title.ToString();
+                    ticketHistory.NewValue = ticket.Title.ToString();
+                    ticketHistory.Created = DateTimeOffset.UtcNow;
+                    ticketHistory.AuthorId = User.Identity.GetUserId();
+                    
+                    db.TicketHistories.Add(ticketHistory);
+                    db.SaveChanges();
+                }
+                if (ticket.Description != existingTicket.Description)
+                {
+                    TicketHistory ticketHistory = new TicketHistory();
+
+                    ticketHistory.TicketId = ticket.Id;
+                    ticketHistory.Property = "Ticket Description";
+                    ticketHistory.OldValue = existingTicket.Description.ToString();
+                    ticketHistory.NewValue = ticket.Description.ToString();
+                    ticketHistory.Created = DateTimeOffset.UtcNow;
+                    ticketHistory.AuthorId = User.Identity.GetUserId();
+
+                    db.TicketHistories.Add(ticketHistory);
+                    db.SaveChanges();
+                }
+                if (ticket.Created != existingTicket.Created)
+                {
+                    TicketHistory ticketHistory = new TicketHistory();
+
+                    ticketHistory.TicketId = ticket.Id;
+                    ticketHistory.Property = "Ticket Created";
+                    ticketHistory.OldValue = existingTicket.Created.ToString();
+                    ticketHistory.NewValue = ticket.Created.ToString();
+                    ticketHistory.Created = DateTimeOffset.UtcNow;
+                    ticketHistory.AuthorId = User.Identity.GetUserId();
+
+                    db.TicketHistories.Add(ticketHistory);
+                    db.SaveChanges();
+
+                }
+                if (ticket.ProjectId != existingTicket.ProjectId)
+                {
+                    TicketHistory ticketHistory = new TicketHistory();
+
+                    ticketHistory.TicketId = ticket.Id;
+                    ticketHistory.Property = "Ticket's Project Id";
+                    ticketHistory.OldValue = existingTicket.ProjectId.ToString();
+                    ticketHistory.NewValue = ticket.ProjectId.ToString();
+                    ticketHistory.Created = DateTimeOffset.UtcNow;
+                    ticketHistory.AuthorId = User.Identity.GetUserId();
+
+                    db.TicketHistories.Add(ticketHistory);
+                    db.SaveChanges();
+
+                }
+                if (ticket.TicketTypeId != existingTicket.TicketTypeId)
+                {
+                    TicketHistory ticketHistory = new TicketHistory();
+
+                    ticketHistory.TicketId = ticket.Id;
+                    ticketHistory.Property = "Ticket Type";
+                    ticketHistory.OldValue = existingTicket.TicketType.Name;
+                    ticketHistory.NewValue = ticket.TicketType.Name;
+                    ticketHistory.Created = DateTimeOffset.UtcNow;
+                    ticketHistory.AuthorId = User.Identity.GetUserId();
+
+                    db.TicketHistories.Add(ticketHistory);
+                    db.SaveChanges();
+
+                }
+                if (ticket.TicketPriorityId != existingTicket.TicketPriorityId)
+                {
+                    TicketHistory ticketHistory = new TicketHistory();
+
+                    ticketHistory.TicketId = ticket.Id;
+                    ticketHistory.Property = "Ticket Priority";
+                    ticketHistory.OldValue = existingTicket.TicketPriority.Name;
+                    ticketHistory.NewValue = ticket.TicketPriority.Name;
+                    ticketHistory.Created = DateTimeOffset.UtcNow;
+                    ticketHistory.AuthorId = User.Identity.GetUserId();
+
+                    db.TicketHistories.Add(ticketHistory);
+                    db.SaveChanges();
+
+                }
+                if (ticket.TicketStatusId != existingTicket.TicketStatusId)
+                {
+                    TicketHistory ticketHistory = new TicketHistory();
+
+                    ticketHistory.TicketId = ticket.Id;
+                    ticketHistory.Property = "Ticket Status";
+                    ticketHistory.OldValue = existingTicket.TicketStatus.Name;
+                    ticketHistory.NewValue = ticket.TicketStatus.Name;
+                    ticketHistory.Created = DateTimeOffset.UtcNow;
+                    ticketHistory.AuthorId = User.Identity.GetUserId();
+
+                    db.TicketHistories.Add(ticketHistory);
+                    db.SaveChanges();
+
+                }
+                if (ticket.OwnerUserId != existingTicket.OwnerUserId)
+                {
+                    TicketHistory ticketHistory = new TicketHistory();
+
+                    ticketHistory.TicketId = ticket.Id;
+                    ticketHistory.Property = "Ticket Submitter";
+                    ticketHistory.OldValue = existingTicket.OwnerUser.Fullname;
+                    ticketHistory.NewValue = ticket.OwnerUser.Fullname;
+                    ticketHistory.Created = DateTimeOffset.UtcNow;
+                    ticketHistory.AuthorId = User.Identity.GetUserId();
+
+                    db.TicketHistories.Add(ticketHistory);
+                    db.SaveChanges();
+
+                }
+                if (ticket.AssignToUserId != existingTicket.AssignToUserId)
+                {
+                    TicketHistory ticketHistory = new TicketHistory();
+
+                    ticketHistory.TicketId = ticket.Id;
+                    ticketHistory.Property = "Ticket Developer";
+                    ticketHistory.OldValue = existingTicket.AssignToUser.Fullname;
+                    ticketHistory.NewValue = ticket.AssignToUser.Fullname;
+                    ticketHistory.Created = DateTimeOffset.UtcNow;
+                    ticketHistory.AuthorId = User.Identity.GetUserId();
+
+                    db.TicketHistories.Add(ticketHistory);
+                    db.SaveChanges();
+                }
+                //****************
+
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
@@ -308,6 +462,19 @@ namespace jritchieBugTracker.Controllers
             {
                 //model.AssignToUserId = AssignToUserId;
                 model.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Assigned").Id;
+
+
+                TicketHistory ticketHistory = new TicketHistory();
+                ticketHistory.TicketId = model.Id;
+                ticketHistory.Property = "Developer Assigned";
+                ticketHistory.OldValue = "No Developer";
+
+                ticketHistory.NewValue = db.Users.FirstOrDefault(u => u.Id == model.AssignToUserId).Fullname;
+
+                ticketHistory.Created = DateTimeOffset.UtcNow;
+                ticketHistory.AuthorId = User.Identity.GetUserId();
+                db.TicketHistories.Add(ticketHistory);
+                db.SaveChanges();
 
 
                 db.Entry(model).State = EntityState.Modified;

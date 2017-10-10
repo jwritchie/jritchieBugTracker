@@ -197,6 +197,7 @@
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\TicketAttachmentsController.cs" />
     <Compile Include="Controllers\TicketCommentsController.cs" />
+    <Compile Include="Controllers\TicketHistoriesController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Controllers\UniversalController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1936,6 +1937,11 @@
     <Content Include="Views\TicketComments\Edit.cshtml" />
     <Content Include="Views\TicketComments\Index.cshtml" />
     <Content Include="Views\Admin\DataTables.cshtml" />
+    <Content Include="Views\TicketHistories\Create.cshtml" />
+    <Content Include="Views\TicketHistories\Delete.cshtml" />
+    <Content Include="Views\TicketHistories\Details.cshtml" />
+    <Content Include="Views\TicketHistories\Edit.cshtml" />
+    <Content Include="Views\TicketHistories\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
