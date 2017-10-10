@@ -306,7 +306,7 @@ namespace jritchieBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.AssignToUserId = AssignToUserId;
+                //model.AssignToUserId = AssignToUserId;
                 model.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Assigned").Id;
 
 

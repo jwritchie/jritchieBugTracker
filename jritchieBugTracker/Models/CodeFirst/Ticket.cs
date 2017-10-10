@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -16,15 +17,31 @@ namespace jritchieBugTracker.Models.CodeFirst
 
         // Properties of Ticket - These turn into columns in SQL.
         public int Id { get; set; }
-        public string Title { get; set; }   
+
+        [Required]
+        public string Title { get; set; }
+        [Required]
         public string Description { get; set; }
+
         public DateTimeOffset Created { get; set; }
-        public DateTimeOffset? Updated { get; set; }    
+        public DateTimeOffset? Updated { get; set; }
+
+        [Required]
+        [Display(Name = "Project Name")]
         public int ProjectId { get; set; }
+        [Required]
+        [Display(Name = "Ticket Type")]
         public int TicketTypeId { get; set; }
+        [Required]
+        [Display(Name = "Ticket Priority")]
         public int TicketPriorityId { get; set; }
+        [Required]
+        [Display(Name = "Ticket Status")]
         public int TicketStatusId { get; set; }
+
         public string OwnerUserId { get; set; }
+
+        [Display(Name = "Assigned Developer")]
         public string AssignToUserId { get; set; }
         
         // Navigational properties for our children - These do not end up as SQL columns...

@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using jritchieBugTracker.Models;
+using jritchieBugTracker.Models.Helpers;
 
 namespace jritchieBugTracker.Controllers
 {
@@ -408,6 +409,25 @@ namespace jritchieBugTracker.Controllers
         {
             return View();
         }
+
+        // POST: DemoUserLogin
+        [AllowAnonymous]
+        public async Task<ActionResult> DemoLogin (string userType)
+        {
+            var dLogins =  DemoLoginsHelper.DemoLogins(userType);
+
+            var result = await SignInManager.PasswordSignInAsync(dLogins.Email, dLogins.Password, dLogins.RememberMe, shouldLockout: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToAction("Index", "Home");
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(dLogins);
+            }
+        }
+
 
         protected override void Dispose(bool disposing)
         {

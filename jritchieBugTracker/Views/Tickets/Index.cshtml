@@ -4,16 +4,6 @@
     ViewBag.Title = "Index";
 }
 
-@*<h2>Tickets Index</h2>*@
-
-@*@{
-    if (User.IsInRole("Submitter"))
-    {
-        <p>
-            @Html.ActionLink("Create New Ticket", "Create")
-        </p>
-    }
-}*@
 
 <div class="container">
 
@@ -25,9 +15,7 @@
                     @{
                         if (User.IsInRole("Submitter"))
                         {
-                            @*<a href="@Url.Action("Create")" class="btn btn-default">Create New Ticket</a>*@
                             <a href="@Url.Action("Create")" class="btn btn-default"><i class="fa fa-plus-square"></i><span> New Ticket </span></a>
-
                         }
                     }
 

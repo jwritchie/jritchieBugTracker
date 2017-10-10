@@ -210,7 +210,7 @@
                             </ul>
                         </li>
 
-                        <li class="has-submenu">
+                        @*<li class="has-submenu">
                             <a href="#"><i class="zmdi zmdi-collection-text"></i><span> Forms </span> </a>
                             <ul class="submenu">
                                 <li><a href="~/Adminto/form-elements.html">General Elements</a></li>
@@ -221,9 +221,9 @@
                                 <li><a href="~/Adminto/form-wysiwig.html">Wysiwig Editors</a></li>
                                 <li><a href="~/Adminto/form-xeditable.html">X-editable</a></li>
                             </ul>
-                        </li>
+                        </li>*@
 
-                        <li class="has-submenu">
+                        @*<li class="has-submenu">
                             <a href="#"><i class="zmdi zmdi-view-list"></i> <span> Tables </span> </a>
                             <ul class="submenu">
                                 <li><a href="~/Adminto/tables-basic.html">Basic Tables</a></li>
@@ -232,7 +232,7 @@
                                 <li><a href="~/Adminto/tables-editable.html">Editable Table</a></li>
                                 <li><a href="~/Adminto/tables-tablesaw.html">Tablesaw Table</a></li>
                             </ul>
-                        </li>
+                        </li>*@
 
                         @*<li class="has-submenu">
                             <a href="#"><i class="zmdi zmdi-chart"></i><span> Charts </span> </a>
@@ -245,7 +245,7 @@
                             </ul>
                         </li>*@
 
-                        <li class="has-submenu">
+                        @*<li class="has-submenu">
                             <a href="#"><i class="zmdi zmdi-collection-item"></i><span> Pages </span> </a>
                             <ul class="submenu">
                                 <li><a href="~/Adminto/page-starter.html">Starter Page</a></li>
@@ -257,7 +257,7 @@
                                 <li><a href="~/Adminto/page-404.html">Error 404</a></li>
                                 <li><a href="~/Adminto/page-500.html">Error 500</a></li>
                             </ul>
-                        </li>
+                        </li>*@
 
                         <li class="has-submenu">
                             <a href="#"><i class="zmdi zmdi-layers"></i><span>Extra Pages </span> </a>
@@ -325,6 +325,9 @@
                                 </li>
                             }
                         }
+
+                        <li><a href="@Url.Action("DemoLogin", "Account", new { userType = "Admin" } )">Admin DemoUser</a></li>
+
                     </ul>
 
                     <!-- End navigation menu  -->

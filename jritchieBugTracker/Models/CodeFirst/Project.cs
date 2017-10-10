@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -17,7 +18,9 @@ namespace jritchieBugTracker.Models.CodeFirst
         public int Id { get; set; } 
         public DateTimeOffset Created { get; set; } 
         public DateTimeOffset? Updated { get; set; }
+        [Required]
         public string Title { get; set; }   
+        [Required]
         public string Description { get; set; } 
         public string AuthorId { get; set; }            // Person who created project.
         public string Author { get; set; }

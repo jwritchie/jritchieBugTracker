@@ -306,3 +306,4 @@ Configuration.cs
 Web.config
 private.config
 Startup.Auth.cs
+DemoLoginsHelper.cs

@@ -7,10 +7,10 @@
 <h2>Create Ticket</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         @*<h4>Ticket</h4>*@
 
@@ -21,7 +21,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ProjectId, "Project Name", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("ProjectId", null, htmlAttributes: new { @class = "form-control" })
+                @*@Html.DropDownList("ProjectId", null, htmlAttributes: new { @class = "form-control" })*@
+                @Html.DropDownListFor(model => model.ProjectId, (SelectList)ViewBag.ProjectId, "--  Select  --", new { @class = "form-control" })
+
                 @Html.ValidationMessageFor(model => model.ProjectId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -61,7 +63,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.TicketTypeId, "Ticket Type", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("TicketTypeId", null, htmlAttributes: new { @class = "form-control" })
+                @*@Html.DropDownList("TicketTypeId", null, htmlAttributes: new { @class = "form-control" })*@
+                @Html.DropDownListFor(model => model.TicketTypeId, (SelectList)ViewBag.TicketTypeId, "--  Select  --", new { @class = "form-control" })
+
                 @Html.ValidationMessageFor(model => model.TicketTypeId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -69,8 +73,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.TicketPriorityId, "Ticket Priority", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("TicketPriorityId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.TicketPriorityId, "", new { @class = "text-danger" })
+                <!-- Original -->
+                @*@Html.DropDownList("TicketPriorityId", null, htmlAttributes: new { @class = "form-control" })*@
+                @Html.DropDownListFor(model => model.TicketPriorityId, (SelectList)ViewBag.TicketPriorityId, "--  Select  --", new { @class = "form-control" } )
+
+                @Html.ValidationMessageFor(model => model.TicketPriorityId, "",  new { @class = "text-danger" } )
             </div>
         </div>
 
