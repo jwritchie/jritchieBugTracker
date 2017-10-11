@@ -193,6 +193,7 @@ namespace jritchieBugTracker.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.Description = ticket.Description;
             ViewBag.AssignToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignToUserId);
             ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", ticket.ProjectId);

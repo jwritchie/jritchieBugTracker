@@ -26,12 +26,28 @@
         Ticket Title: @Model.Title
     </h3>
 
-    @Html.DropDownList("AssignToUserId", null, htmlAttributes: new { @class = "form-control" } )
-    <input type="submit" value="Assign User (Developer)" class="btn btn-primary" style="margin-top: 10px" />
+    <div class="form-group">
+        @Html.LabelFor(model => model.AssignToUserId, "Assign to Developer", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.AssignToUserId, (SelectList)ViewBag.AssignToUserId, "--  Select  --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.AssignToUserId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+        @*@Html.DropDownList("AssignToUserId", null, htmlAttributes: new { @class = "form-control" } )*@
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Assign Developer" class="btn btn-default" />
+            </div>
+        </div>
+
+        @*<input type="submit" value="Assign User (Developer)" class="btn btn-primary" style="margin-top: 10px" />*@
 }
 
 <hr />
 
 <div>
-    @Html.ActionLink("Back to Ticket List", "Index")
+    @Html.ActionLink("Return to Tickets", "Index")
 </div>

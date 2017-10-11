@@ -29,7 +29,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Title, "Ticket Title", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Title, "Ticket Name", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
@@ -39,7 +39,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @style = "max-width:none !important; width:100%" } )
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -65,7 +65,6 @@
             <div class="col-md-10">
                 @*@Html.DropDownList("TicketTypeId", null, htmlAttributes: new { @class = "form-control" })*@
                 @Html.DropDownListFor(model => model.TicketTypeId, (SelectList)ViewBag.TicketTypeId, "--  Select  --", new { @class = "form-control" })
-
                 @Html.ValidationMessageFor(model => model.TicketTypeId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -76,7 +75,6 @@
                 <!-- Original -->
                 @*@Html.DropDownList("TicketPriorityId", null, htmlAttributes: new { @class = "form-control" })*@
                 @Html.DropDownListFor(model => model.TicketPriorityId, (SelectList)ViewBag.TicketPriorityId, "--  Select  --", new { @class = "form-control" } )
-
                 @Html.ValidationMessageFor(model => model.TicketPriorityId, "",  new { @class = "text-danger" } )
             </div>
         </div>
@@ -114,7 +112,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Return to Tickets", "Index")
 </div>
 
 @section Scripts {

@@ -108,9 +108,9 @@
     @{ 
         if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
         {
-            @Html.ActionLink("Edit", "Edit", new { id = Model.AssignProject.Id })
+            @Html.ActionLink("Edit Project", "Edit", new { id = Model.AssignProject.Id })
             <span> |</span>
         }
     }
-    @Html.ActionLink("Back to Project List", "Index")
+    @Html.ActionLink("Return to Projects", "Index")
 </p>
