@@ -66,7 +66,6 @@ namespace jritchieBugTracker.Controllers
                     await svc.SendAsync(email);             // Sends email.
 
                     return View(new EmailModel());          // Return to View (need to send empty Email model)
-                    //return RedirectToAction("Sent");
                 }
                 catch (Exception ex)
                 {

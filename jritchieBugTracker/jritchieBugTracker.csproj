@@ -216,6 +216,7 @@
     <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\Helpers\CustomHelpers.cs" />
     <Compile Include="Models\Helpers\DemoLoginsHelper.cs" />
+    <Compile Include="Models\Helpers\TicketNotification.cs" />
     <Compile Include="Models\Helpers\TicketUserViewModel.cs" />
     <Compile Include="Models\Helpers\TicketHelper.cs" />
     <Compile Include="Models\Helpers\ProjectUserViewModel.cs" />
