@@ -13,83 +13,94 @@
 
                 <h4 class="header-title m-t-0 m-b-30">Ticket Details</h4>
 
-                <dl class="dl-horizontal">
-                    <dt>
-                        Ticket Name
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Title)
-                    </dd>
+                <div class="row">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            Ticket Name
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Title)
+                        </dd>
 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Created)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Created)
-                    </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Created)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Created)
+                        </dd>
 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Updated)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Updated)
-                    </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Updated)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Updated)
+                        </dd>
 
-                    <dt>
-                        Ticket Description
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Description)
-                    </dd>
+                        <dt>
+                            Ticket Description
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
 
-                    <dt>
-                        Project Name
-                        @*@Html.DisplayNameFor(model => model.Project.Title)*@
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Project.Title)
-                    </dd>
+                        <dt>
+                            Project Name
+                            @*@Html.DisplayNameFor(model => model.Project.Title)*@
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Project.Title)
+                        </dd>
 
-                    <dt>
-                        Priority
-                        @*@Html.DisplayNameFor(model => model.TicketPriority.Name)*@
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.TicketPriority.Name)
-                    </dd>
+                        <dt>
+                            Priority
+                            @*@Html.DisplayNameFor(model => model.TicketPriority.Name)*@
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.TicketPriority.Name)
+                        </dd>
 
-                    <dt>
-                        Status
-                        @*@Html.DisplayNameFor(model => model.TicketStatus.Name)*@
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.TicketStatus.Name)
-                    </dd>
+                        <dt>
+                            Status
+                            @*@Html.DisplayNameFor(model => model.TicketStatus.Name)*@
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.TicketStatus.Name)
+                        </dd>
 
-                    <dt>
-                        Type
-                        @*@Html.DisplayNameFor(model => model.TicketType.Name)*@
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.TicketType.Name)
-                    </dd>
+                        <dt>
+                            Type
+                            @*@Html.DisplayNameFor(model => model.TicketType.Name)*@
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.TicketType.Name)
+                        </dd>
 
-                    <dt>
-                        Ticket Owner
-                        @*@Html.DisplayNameFor(model => model.OwnerUser.Fullname)*@
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.OwnerUser.Fullname)
-                    </dd>
+                        <dt>
+                            Ticket Owner
+                            @*@Html.DisplayNameFor(model => model.OwnerUser.Fullname)*@
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.OwnerUser.Fullname)
+                        </dd>
 
-                    <dt>
-                        Assigned Developer
-                        @*@Html.DisplayNameFor(model => model.AssignToUser.Fullname)*@
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.AssignToUser.Fullname)
-                    </dd>
-                </dl>
+                        <dt>
+                            Assigned Developer
+                            @*@Html.DisplayNameFor(model => model.AssignToUser.Fullname)*@
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.AssignToUser.Fullname)
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12" style="align-content:center">
+                        <p>
+                            @Html.ActionLink("Edit Ticket", "Edit", new { id = Model.Id }) |
+                            @Html.ActionLink("Return to Tickets", "Index")
+                        </p>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -116,10 +127,9 @@
                 <h4 class="header-title m-t-0 m-b-30">Additional Information</h4>
 
                 <div class="row">
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-                    <!-- Comments -->
-                    <div class="panel-group" id="accordion" role="tablist"
-                         aria-multiselectable="true">
+                        <!-- Comments -->
                         <div class="panel panel-default bx-shadow-none">
                             <div class="panel-heading" role="tab" id="headingOne">
                                 <p class="panel-title" style="font-weight:500">
@@ -238,67 +248,401 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Attachments -->
                         <div class="panel panel-default bx-shadow-none">
                             <div class="panel-heading" role="tab" id="headingTwo">
                                 <p class="panel-title" style="font-weight:500">
                                     <a class="collapsed" role="button" data-toggle="collapse"
                                        data-parent="#accordion" href="#collapseTwo"
                                        aria-expanded="false" aria-controls="collapseTwo">
-                                        Attachments
+                                        @if (Model.Attachments.Count != 0)
+                                        {
+                                            if (Model.Attachments.Count == 1)
+                                            {
+                                                @Model.Attachments.Count<span> Attachment</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.Attachments.Count<span> Attachments</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span>No Attachments</span>
+                                        }
                                     </a>
                                 </p>
                             </div>
                             <div id="collapseTwo" class="panel-collapse collapse"
                                  role="tabpanel" aria-labelledby="headingTwo">
                                 <div class="panel-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life
-                                    accusamus terry richardson ad squid. 3 wolf moon officia
-                                    aute, non cupidatat skateboard dolor brunch. Food truck
-                                    quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                    sunt aliqua put a bird on it squid single-origin coffee
-                                    nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                    helvetica, craft beer labore wes anderson cred nesciunt
-                                    sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                    Leggings occaecat craft beer farm-to-table, raw denim
-                                    aesthetic synth nesciunt you probably haven't heard of them
-                                    accusamus labore sustainable VHS.
+
+                                    <table id="datatable-responsive-attachments" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Date Added
+                                                </th>
+                                                <th>
+                                                    File(s)
+                                                </th>
+                                                <th>
+                                                    Description
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @foreach (var file in Model.Attachments.OrderByDescending(a => a.Created))
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @file.Created
+                                                    </td>
+                                                    <td>
+                                                        <a href="@file.FileUrl" target="_blank">@file.FileUrl</a>
+                                                    </td>
+                                                    <td>
+                                                        @file.Description
+                                                        @*@Html.ActionLink("Edit attachment", "Edit", "TicketAttachments", new { id = file.Id }, null )*@
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                    @using (Html.BeginForm("Create", "TicketAttachments", new { TicketId = Model.Id }, FormMethod.Post, new { enctype = "Multipart/form-data" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        <p style="font-weight:bold">Upload attachment(s)</p>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">New file(s)</label>
+                                                <div class="col-md-10">
+                                                    <input name="attachment" type="file" class="form-control" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">File description</label>
+                                                <div class="col-md-10">
+                                                    <textarea name="Description" class="form-control" style="max-width:none !important; width:100%"></textarea>
+                                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-offset-2 col-md-10">
+                                                    <!-- Input/Button to submit the data. -->
+                                                    <input type="submit" value="Create attachment" class="btn btn-primary" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Histories -->
                         <div class="panel panel-default bx-shadow-none">
                             <div class="panel-heading" role="tab" id="headingThree">
-                                <h4 class="panel-title">
+                                <p class="panel-title" style="font-weight:500">
                                     <a class="collapsed" role="button" data-toggle="collapse"
                                        data-parent="#accordion" href="#collapseThree"
                                        aria-expanded="false" aria-controls="collapseThree">
                                         Ticket History
                                     </a>
-                                </h4>
+                                </p>
                             </div>
                             <div id="collapseThree" class="panel-collapse collapse"
                                  role="tabpanel" aria-labelledby="headingThree">
                                 <div class="panel-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life
-                                    accusamus terry richardson ad squid. 3 wolf moon officia
-                                    aute, non cupidatat skateboard dolor brunch. Food truck
-                                    quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                    sunt aliqua put a bird on it squid single-origin coffee
-                                    nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                    helvetica, craft beer labore wes anderson cred nesciunt
-                                    sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                    Leggings occaecat craft beer farm-to-table, raw denim
-                                    aesthetic synth nesciunt you probably haven't heard of them
-                                    accusamus labore sustainable VHS.
+
+                                    <ul class="nav nav-tabs nav-justified">
+                                        <li role="presentation" class="active">
+                                            <a href="#timeline-display" id="timeline-tab" role="tab" data-toggle="tab" aria-controls="timeline" aria-expanded="true">Timeline View</a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="#table-display" role="tab" id="table-tab" data-toggle="tab" aria-controls="table">Table View</a>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content">
+                                        <div role="tabpanel" class="tab-pane fade in active" id="timeline-display" aria-labelledby="timeline-tab">
+
+                                            <div class="row">
+                                                <div class="col-sm-12">
+
+                                                    <!-- Timeline's color is set in a "pre" block -->
+                                                    <!-- Timeline background-color -->
+                                                    <div class="timeline" style="background-color:antiquewhite">
+
+                                                        <article class="timeline-item alt">
+                                                            <div class="text-right">
+                                                                <div class="time-show first">
+                                                                    <a href="#" class="btn btn-custom w-lg">Latest Event</a>
+                                                                </div>
+                                                            </div>
+                                                        </article>
+
+                                                        <!-- -->
+
+                                                        @foreach (var history in Model.Histories.OrderByDescending(h => h.Created))
+                                                        {
+                                                            <article class="timeline-item alt">
+                                                                <div class="timeline-desk">
+                                                                    <div class="panel" style="margin-left:30px">
+                                                                        <div class="panel-body">
+                                                                            <span class="arrow-alt"></span>
+                                                                            <span class="timeline-icon bg-danger"><i class="zmdi zmdi-circle"></i></span>
+                                                                            <h4 class="text-danger">@history.Property</h4>
+                                                                            <p class="timeline-date text-muted"><small>@history.Created</small></p>
+                                                                            <p style="text-align:left"><span style="font-weight:bold">Old Value: </span>@history.OldValue</p>
+                                                                            <p style="margin-top:-4px !important; text-align:left"><span style="font-weight:bold">New Value: </span>@history.NewValue</p>
+                                                                            <p style="text-align:left"><span style="font-weight:bold">Updated by: </span>@history.Author.Fullname</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </article>
+                                                        }
+
+
+
+
+
+                                                        <!-- -->
+
+                                                        <article class="timeline-item alt">
+                                                            <div class="timeline-desk">
+                                                                <div class="panel" style="margin-left:30px">
+                                                                    <div class="panel-body">
+                                                                        <span class="arrow-alt"></span>
+                                                                        <span class="timeline-icon bg-danger"><i class="zmdi zmdi-circle"></i></span>
+                                                                        <h4 class="text-danger">1 hour ago</h4>
+                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
+                                                                        <p>Dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </article>
+
+                                                        <article class="timeline-item ">
+                                                            <div class="timeline-desk">
+                                                                <div class="panel" style="margin-right:30px">
+                                                                    <div class="panel-body">
+                                                                        <span class="arrow"></span>
+                                                                        <span class="timeline-icon bg-success"><i class="zmdi zmdi-circle"></i></span>
+                                                                        <h4 class="text-success">2 hours ago</h4>
+                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
+                                                                        <p>consectetur adipisicing elit. Iusto, optio, dolorum <a href="#">John deon</a> provident rerum aut hic quasi placeat iure tempora laudantium </p>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </article>
+
+                                                        <article class="timeline-item alt">
+                                                            <div class="timeline-desk">
+                                                                <div class="panel" style="margin-left:30px">
+                                                                    <div class="panel-body">
+                                                                        <span class="arrow-alt"></span>
+                                                                        <span class="timeline-icon bg-primary"><i class="zmdi zmdi-circle"></i></span>
+                                                                        <h4 class="text-primary">10 hours ago</h4>
+                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
+                                                                        <p>3 new photo Uploaded on facebook fan page</p>
+                                                                        <div class="album">
+                                                                            <a href="#">
+                                                                                <img alt="" src="assets/images/small/img1.jpg">
+                                                                            </a>
+                                                                            <a href="#">
+                                                                                <img alt="" src="assets/images/small/img2.jpg">
+                                                                            </a>
+                                                                            <a href="#">
+                                                                                <img alt="" src="assets/images/small/img3.jpg">
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </article>
+
+                                                        <article class="timeline-item">
+                                                            <div class="timeline-desk">
+                                                                <div class="panel" style="margin-right:30px">
+                                                                    <div class="panel-body">
+                                                                        <span class="arrow"></span>
+                                                                        <span class="timeline-icon bg-purple"><i class="zmdi zmdi-circle"></i></span>
+                                                                        <h4 class="text-purple">14 hours ago</h4>
+                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
+                                                                        <p>
+                                                                            Outdoor visit at California State Route 85 with John Boltana &
+                                                                            Harry Piterson regarding to setup a new show room.
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </article>
+
+                                                        <article class="timeline-item alt">
+                                                            <div class="timeline-desk">
+                                                                <div class="panel" style="margin-left:30px">
+                                                                    <div class="panel-body">
+                                                                        <span class="arrow-alt"></span>
+                                                                        <span class="timeline-icon"><i class="zmdi zmdi-circle"></i></span>
+                                                                        <h4 class="text-muted">19 hours ago</h4>
+                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
+                                                                        <p>
+                                                                            Jonatha Smith added new milestone <span><a href="#">Pathek</a></span>
+                                                                            Lorem ipsum dolor sit amet consiquest dio
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </article>
+
+                                                        @*<article class="timeline-item alt">
+                                                            <div class="text-right">
+                                                                <div class="time-show">
+                                                                    <a href="#" class="btn btn-custom w-lg">Yesterday</a>
+                                                                </div>
+                                                            </div>
+                                                        </article>*@
+
+                                                        <article class="timeline-item">
+                                                            <div class="timeline-desk">
+                                                                <div class="panel" style="margin-right:30px">
+                                                                    <div class="panel-body">
+                                                                        <span class="arrow"></span>
+                                                                        <span class="timeline-icon bg-warning"><i class="zmdi zmdi-circle"></i></span>
+                                                                        <h4 class="text-warning">07 January 2016</h4>
+                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
+                                                                        <p>
+                                                                            Montly Regular Medical check up at Greenland Hospital by the
+                                                                            doctor <span><a href="#"> Johm meon </a></span>
+                                                                        </p>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </article>
+
+                                                        <article class="timeline-item alt">
+                                                            <div class="timeline-desk">
+                                                                <div class="panel" style="margin-left:30px">
+                                                                    <div class="panel-body">
+                                                                        <span class="arrow-alt"></span>
+                                                                        <span class="timeline-icon bg-primary"><i class="zmdi zmdi-circle"></i></span>
+                                                                        <h4 class="text-primary">07 January 2016</h4>
+                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
+                                                                        <p>Download the new updates of Ubold admin dashboard</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </article>
+
+                                                        <article class="timeline-item">
+                                                            <div class="timeline-desk">
+                                                                <div class="panel" style="margin-right:30px">
+                                                                    <div class="panel-body">
+                                                                        <span class="arrow"></span>
+                                                                        <span class="timeline-icon bg-success"><i class="zmdi zmdi-circle"></i></span>
+                                                                        <h4 class="text-success">07 January 2016</h4>
+                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
+                                                                        <p>
+                                                                            Jonatha Smith added new milestone <span><a class="blue" href="#">crishtian</a></span>
+                                                                            Lorem ipsum dolor sit amet consiquest dio
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </article>
+
+                                                        @*<article class="timeline-item alt">
+                                                            <div class="text-right">
+                                                                <div class="time-show">
+                                                                    <a href="#" class="btn btn-custom w-lg">Last Month</a>
+                                                                </div>
+                                                            </div>
+                                                        </article>*@
+
+                                                        <article class="timeline-item alt">
+                                                            <div class="timeline-desk">
+                                                                <div class="panel" style="margin-left:30px">
+                                                                    <div class="panel-body">
+                                                                        <span class="arrow-alt"></span>
+                                                                        <span class="timeline-icon"><i class="zmdi zmdi-circle"></i></span>
+                                                                        <h4 class="text-muted">31 December 2015</h4>
+                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
+                                                                        <p>Download the new updates of Ubold admin dashboard</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </article>
+
+                                                        <article class="timeline-item">
+                                                            <div class="timeline-desk">
+                                                                <div class="panel" style="margin-right:30px">
+                                                                    <div class="panel-body">
+                                                                        <span class="arrow"></span>
+                                                                        <span class="timeline-icon bg-danger"><i class="zmdi zmdi-circle"></i></span>
+                                                                        <h4 class="text-danger">16 Decembar 2015</h4>
+                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
+                                                                        <p>
+                                                                            Jonatha Smith added new milestone <span><a href="#">prank</a></span>
+                                                                            Lorem ipsum dolor sit amet consiquest dio
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </article>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <p>
+                                                Raw denim you probably haven't heard
+                                                @*of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro
+                                                synth master cleanse. Mustache cliche tempor, williamsburg carles
+                                                vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher
+                                                synth. Cosby sweater eu banh mi, qui irure terry richardson ex
+                                                squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis
+                                                cardigan american apparel, butcher voluptate nisi qui.*@
+                                            </p>
+
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade" id="table-display" aria-labelledby="table-tab">
+                                            <p>
+                                                Food truck fixie locavore,
+                                                accusamus mcsweeney's marfa nulla single-origin coffee squid.
+                                                Exercitation +1 labore velit, blog sartorial PBR leggings next level
+                                                wes anderson artisan four loko farm-to-table craft beer twee. Qui
+                                                photo booth letterpress, commodo enim craft beer mlkshk aliquip jean
+                                                shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda
+                                                labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia
+                                                yr, vero magna velit sapiente labore stumptown. Vegan fanny pack
+                                                odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY
+                                                ethical culpa terry richardson biodiesel. Art party scenester
+                                                stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed
+                                                echo park.
+                                            </p>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
-                    </div>
+
+                    </div><!-- end panel group -->
                 </div><!-- end row -->
 
-            </div>
+            </div><!-- card-box table-responsive -->
         </div><!-- end col -->
-    </div>
-    <!-- end row -->
+    </div><!-- end row -->
 </div>
 
 
