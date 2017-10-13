@@ -101,6 +101,8 @@ namespace jritchieBugTracker.Controllers
                 return View("NoTickets");
             }
 
+            ViewBag.UserTimeZone = db.Users.Find(User.Identity.GetUserId()).TimeZone;
+
             if (User.IsInRole("Admin"))
             {
                 return View(ticket);
@@ -162,6 +164,8 @@ namespace jritchieBugTracker.Controllers
                 ticketHistory.NewValue = "Ticket Created";
                 ticketHistory.Created = DateTimeOffset.UtcNow;
                 ticketHistory.AuthorId = User.Identity.GetUserId();
+                ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                ticketHistory.HistoricStatus = ticket.TicketStatusId;
                 db.TicketHistories.Add(ticketHistory);
                 db.SaveChanges();
 
@@ -170,6 +174,8 @@ namespace jritchieBugTracker.Controllers
                 ticketHistory.NewValue = ticket.Title.ToString();
                 ticketHistory.Created = DateTimeOffset.UtcNow;
                 ticketHistory.AuthorId = User.Identity.GetUserId();
+                ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                ticketHistory.HistoricStatus = ticket.TicketStatusId;
                 db.TicketHistories.Add(ticketHistory);
                 db.SaveChanges();
 
@@ -178,17 +184,18 @@ namespace jritchieBugTracker.Controllers
                 ticketHistory.NewValue = ticket.Description.ToString();
                 ticketHistory.Created = DateTimeOffset.UtcNow;
                 ticketHistory.AuthorId = User.Identity.GetUserId();
+                ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                ticketHistory.HistoricStatus = ticket.TicketStatusId;
                 db.TicketHistories.Add(ticketHistory);
                 db.SaveChanges();
 
                 ticketHistory.Property = "Ticket's Project";
                 ticketHistory.OldValue = "-";
-
-                //ticketHistory.NewValue = ticket.ProjectId.ToString();
                 ticketHistory.NewValue = db.Projects.FirstOrDefault(p => p.Id == ticket.ProjectId).Title;
-
                 ticketHistory.Created = DateTimeOffset.UtcNow;
                 ticketHistory.AuthorId = User.Identity.GetUserId();
+                ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                ticketHistory.HistoricStatus = ticket.TicketStatusId;
                 db.TicketHistories.Add(ticketHistory);
                 db.SaveChanges();
 
@@ -197,6 +204,8 @@ namespace jritchieBugTracker.Controllers
                 ticketHistory.NewValue = db.TicketTypes.FirstOrDefault(t => t.Id == ticket.TicketTypeId).Name;
                 ticketHistory.Created = DateTimeOffset.UtcNow;
                 ticketHistory.AuthorId = User.Identity.GetUserId();
+                ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                ticketHistory.HistoricStatus = ticket.TicketStatusId;
                 db.TicketHistories.Add(ticketHistory);
                 db.SaveChanges();
 
@@ -205,6 +214,8 @@ namespace jritchieBugTracker.Controllers
                 ticketHistory.NewValue = db.TicketPriorities.FirstOrDefault(t => t.Id == ticket.TicketPriorityId).Name;
                 ticketHistory.Created = DateTimeOffset.UtcNow;
                 ticketHistory.AuthorId = User.Identity.GetUserId();
+                ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                ticketHistory.HistoricStatus = ticket.TicketStatusId;
                 db.TicketHistories.Add(ticketHistory);
                 db.SaveChanges();
 
@@ -213,6 +224,8 @@ namespace jritchieBugTracker.Controllers
                 ticketHistory.NewValue = db.TicketStatuses.FirstOrDefault(t => t.Id == ticket.TicketStatusId).Name;
                 ticketHistory.Created = DateTimeOffset.UtcNow;
                 ticketHistory.AuthorId = User.Identity.GetUserId();
+                ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                ticketHistory.HistoricStatus = ticket.TicketStatusId;
                 db.TicketHistories.Add(ticketHistory);
                 db.SaveChanges();
 
@@ -221,6 +234,8 @@ namespace jritchieBugTracker.Controllers
                 ticketHistory.NewValue = db.Users.FirstOrDefault(u => u.Id == ticket.OwnerUserId).Fullname;
                 ticketHistory.Created = DateTimeOffset.UtcNow;
                 ticketHistory.AuthorId = User.Identity.GetUserId();
+                ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                ticketHistory.HistoricStatus = ticket.TicketStatusId;
                 db.TicketHistories.Add(ticketHistory);
                 db.SaveChanges();
 
@@ -229,6 +244,8 @@ namespace jritchieBugTracker.Controllers
                 ticketHistory.NewValue = "No Developer assigned";
                 ticketHistory.Created = DateTimeOffset.UtcNow;
                 ticketHistory.AuthorId = User.Identity.GetUserId();
+                ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                ticketHistory.HistoricStatus = ticket.TicketStatusId;
                 db.TicketHistories.Add(ticketHistory);
                 db.SaveChanges();
                 //*****************************************************************
@@ -324,6 +341,8 @@ namespace jritchieBugTracker.Controllers
                     ticketHistory.NewValue = ticket.Title.ToString();
                     ticketHistory.Created = DateTimeOffset.UtcNow;
                     ticketHistory.AuthorId = User.Identity.GetUserId();
+                    ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                    ticketHistory.HistoricStatus = ticket.TicketStatusId;
                     db.TicketHistories.Add(ticketHistory);
                     db.SaveChanges();
                 }
@@ -337,6 +356,8 @@ namespace jritchieBugTracker.Controllers
                     ticketHistory.NewValue = ticket.Description.ToString();
                     ticketHistory.Created = DateTimeOffset.UtcNow;
                     ticketHistory.AuthorId = User.Identity.GetUserId();
+                    ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                    ticketHistory.HistoricStatus = ticket.TicketStatusId;
                     db.TicketHistories.Add(ticketHistory);
                     db.SaveChanges();
                 }
@@ -350,6 +371,8 @@ namespace jritchieBugTracker.Controllers
                     ticketHistory.NewValue = ticket.ProjectId.ToString();
                     ticketHistory.Created = DateTimeOffset.UtcNow;
                     ticketHistory.AuthorId = User.Identity.GetUserId();
+                    ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                    ticketHistory.HistoricStatus = ticket.TicketStatusId;
                     db.TicketHistories.Add(ticketHistory);
                     db.SaveChanges();
 
@@ -364,6 +387,8 @@ namespace jritchieBugTracker.Controllers
                     ticketHistory.NewValue = db.TicketTypes.FirstOrDefault(t => t.Id == ticket.TicketTypeId).Name;
                     ticketHistory.Created = DateTimeOffset.UtcNow;
                     ticketHistory.AuthorId = User.Identity.GetUserId();
+                    ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                    ticketHistory.HistoricStatus = ticket.TicketStatusId;
                     db.TicketHistories.Add(ticketHistory);
                     db.SaveChanges();
 
@@ -378,6 +403,8 @@ namespace jritchieBugTracker.Controllers
                     ticketHistory.NewValue = db.TicketPriorities.FirstOrDefault(t => t.Id == ticket.TicketPriorityId).Name;
                     ticketHistory.Created = DateTimeOffset.UtcNow;
                     ticketHistory.AuthorId = User.Identity.GetUserId();
+                    ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                    ticketHistory.HistoricStatus = ticket.TicketStatusId;
                     db.TicketHistories.Add(ticketHistory);
                     db.SaveChanges();
 
@@ -392,6 +419,8 @@ namespace jritchieBugTracker.Controllers
                     ticketHistory.NewValue = db.TicketStatuses.FirstOrDefault(t => t.Id == ticket.TicketStatusId).Name;
                     ticketHistory.Created = DateTimeOffset.UtcNow;
                     ticketHistory.AuthorId = User.Identity.GetUserId();
+                    ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                    ticketHistory.HistoricStatus = ticket.TicketStatusId;
                     db.TicketHistories.Add(ticketHistory);
                     db.SaveChanges();
 
@@ -406,6 +435,8 @@ namespace jritchieBugTracker.Controllers
                     ticketHistory.NewValue = db.Users.FirstOrDefault(u => u.Id == ticket.OwnerUserId).Fullname;
                     ticketHistory.Created = DateTimeOffset.UtcNow;
                     ticketHistory.AuthorId = User.Identity.GetUserId();
+                    ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                    ticketHistory.HistoricStatus = ticket.TicketStatusId;
                     db.TicketHistories.Add(ticketHistory);
                     db.SaveChanges();
 
@@ -420,6 +451,8 @@ namespace jritchieBugTracker.Controllers
                     ticketHistory.NewValue = db.Users.FirstOrDefault(u => u.Id == ticket.AssignToUserId).Fullname;
                     ticketHistory.Created = DateTimeOffset.UtcNow;
                     ticketHistory.AuthorId = User.Identity.GetUserId();
+                    ticketHistory.HistoricPriority = ticket.TicketPriorityId;
+                    ticketHistory.HistoricStatus = ticket.TicketStatusId;
                     db.TicketHistories.Add(ticketHistory);
                     db.SaveChanges();
                 }
@@ -549,6 +582,8 @@ namespace jritchieBugTracker.Controllers
                 ticketHistory.NewValue = db.Users.FirstOrDefault(u => u.Id == model.AssignToUserId).Fullname;
                 ticketHistory.Created = DateTimeOffset.UtcNow;
                 ticketHistory.AuthorId = User.Identity.GetUserId();
+                ticketHistory.HistoricPriority = model.TicketPriorityId;
+                ticketHistory.HistoricStatus = model.TicketStatusId;
                 db.TicketHistories.Add(ticketHistory);
                 db.SaveChanges();
 

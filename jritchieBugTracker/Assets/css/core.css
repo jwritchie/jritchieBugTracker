@@ -657,6 +657,24 @@ textarea.form-control {
   letter-spacing: 0.05em;
   padding: .3em .6em .3em;
 }
+
+.label-urgent {
+    background-color: rgb(255,0,0);
+    color:white;
+}
+.label-high {
+    background-color: rgb(255,128,0);
+    color:white;
+}
+.label-medium {
+    background-color: rgb(255,255,0);
+    color:black;
+}
+.label-low {
+    background-color: rgb(64,255,0);
+    color:black;
+}
+
 .label-default {
   background-color: #71b6f9;
 }

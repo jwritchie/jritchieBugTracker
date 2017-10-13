@@ -14,6 +14,8 @@ namespace jritchieBugTracker.Models.CodeFirst
         public string NewValue { get; set; }                // Property's new value.
         public DateTimeOffset Created { get; set; }
         public string AuthorId { get; set; }
+        public int HistoricStatus { get; set; }             // Status at time record is created.
+        public int HistoricPriority { get; set; }           // Priority at time record is created.
 
         public virtual Ticket Ticket { get; set; }
         public virtual ApplicationUser Author { get; set; }
