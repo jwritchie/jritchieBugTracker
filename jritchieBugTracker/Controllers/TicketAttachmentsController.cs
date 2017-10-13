@@ -10,6 +10,8 @@ using jritchieBugTracker.Models;
 using jritchieBugTracker.Models.CodeFirst;
 using System.IO;
 using Microsoft.AspNet.Identity;
+using System.Threading.Tasks;
+using System.Net.Mail;
 
 namespace jritchieBugTracker.Controllers
 {
@@ -89,7 +91,7 @@ namespace jritchieBugTracker.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketId,Description,Created,AuthorId,FileUrl")] TicketAttachment ticketAttachment, HttpPostedFileBase attachment)
+        public async Task<ActionResult> Create([Bind(Include = "Id,TicketId,Description,Created,AuthorId,FileUrl")] TicketAttachment ticketAttachment, HttpPostedFileBase attachment)
         {
 
             // Validate file.
@@ -117,6 +119,31 @@ namespace jritchieBugTracker.Controllers
 
                     db.TicketAttachments.Add(ticketAttachment);
                     db.SaveChanges();
+
+                    // Notify Developer of new Attachment.
+                    try
+                    {
+                        var body = "<p>{0}</p><p>{1}</p>";
+                        var from = "BugTracker<jritchie.projects@gmail.com>";
+                        var developer = db.Users.Find(ticketAttachment.Ticket.AssignToUserId).Fullname;
+
+                        var email = new MailMessage(from, db.Users.Find(ticketAttachment.Ticket.OwnerUserId).Email)
+                        {
+                            Subject = "BugTracker Notification Email: New ticket assigned",
+                            Body = string.Format(body, "Message from BugTracker:", "Your ticket: '" + ticketAttachment.Ticket.Title + "', has a new Attachment."),
+                            IsBodyHtml = true
+                        };
+
+                        var svc = new PersonalEmail();
+                        await svc.SendAsync(email);
+                    }
+
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        await Task.FromResult(0);
+                    }
+
                     //return RedirectToAction("Index");
                     return RedirectToAction("Details", "Tickets", new { id = ticketAttachment.TicketId });
                 }
@@ -173,7 +200,7 @@ namespace jritchieBugTracker.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,TicketId,Description,Created,AuthorId,FileUrl")] TicketAttachment ticketAttachment, string fileUrl, HttpPostedFileBase attachment)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,TicketId,Description,Created,AuthorId,FileUrl")] TicketAttachment ticketAttachment, string fileUrl, HttpPostedFileBase attachment)
         {
             // Validate file.
             if (attachment != null && attachment.ContentLength > 0)                                         // Confirm file has data
@@ -203,6 +230,32 @@ namespace jritchieBugTracker.Controllers
 
                     db.Entry(ticketAttachment).State = EntityState.Modified;
                     db.SaveChanges();
+
+
+                    // Notify Developer of edited Attachment.
+                    try
+                    {
+                        var body = "<p>{0}</p><p>{1}</p>";
+                        var from = "BugTracker<jritchie.projects@gmail.com>";
+                        var developer = db.Users.Find(ticketAttachment.Ticket.AssignToUserId).Fullname;
+
+                        var email = new MailMessage(from, db.Users.Find(ticketAttachment.Ticket.OwnerUserId).Email)
+                        {
+                            Subject = "BugTracker Notification Email: New ticket assigned",
+                            Body = string.Format(body, "Message from BugTracker:", "Your ticket: '" + ticketAttachment.Ticket.Title + "', has an edited attachment."),
+                            IsBodyHtml = true
+                        };
+
+                        var svc = new PersonalEmail();
+                        await svc.SendAsync(email);
+                    }
+
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        await Task.FromResult(0);
+                    }
+
                     //return RedirectToAction("Index");
                     return RedirectToAction("Details", "Tickets", new { id = ticketAttachment.TicketId });
                 }

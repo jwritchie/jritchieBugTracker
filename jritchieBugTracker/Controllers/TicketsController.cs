@@ -542,20 +542,18 @@ namespace jritchieBugTracker.Controllers
                 //model.AssignToUserId = AssignToUserId;
                 model.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Assigned").Id;
 
-                // ********************************************************************   Re-enable when Notifications are working!
-                //TicketHistory ticketHistory = new TicketHistory();
-                //ticketHistory.TicketId = model.Id;
-                //ticketHistory.Property = "Ticket Developer";
-                //ticketHistory.OldValue = "No Developer Assigned";
-                //ticketHistory.NewValue = db.Users.FirstOrDefault(u => u.Id == model.AssignToUserId).Fullname;
-                //ticketHistory.Created = DateTimeOffset.UtcNow;
-                //ticketHistory.AuthorId = User.Identity.GetUserId();
-                //db.TicketHistories.Add(ticketHistory);
-                //db.SaveChanges();
+                TicketHistory ticketHistory = new TicketHistory();
+                ticketHistory.TicketId = model.Id;
+                ticketHistory.Property = "Ticket Developer";
+                ticketHistory.OldValue = "No Developer Assigned";
+                ticketHistory.NewValue = db.Users.FirstOrDefault(u => u.Id == model.AssignToUserId).Fullname;
+                ticketHistory.Created = DateTimeOffset.UtcNow;
+                ticketHistory.AuthorId = User.Identity.GetUserId();
+                db.TicketHistories.Add(ticketHistory);
+                db.SaveChanges();
 
-                //db.Entry(model).State = EntityState.Modified;
-                //db.SaveChanges();
-                // ********************************************************************   Re-enable when Notifications are working!
+                db.Entry(model).State = EntityState.Modified;
+                db.SaveChanges();
 
 
                 // Notify Submitter that a Developer has been assigned.

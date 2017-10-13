@@ -377,7 +377,7 @@
 
                                                     <!-- Timeline's color is set in a "pre" block -->
                                                     <!-- Timeline background-color -->
-                                                    <div class="timeline" style="background-color:antiquewhite">
+                                                    <div class="timeline" style="background-color:#ebeff2">
 
                                                         <article class="timeline-item alt">
                                                             <div class="text-right">
@@ -388,26 +388,78 @@
                                                         </article>
 
                                                         <!-- -->
+                                                        @{
+                                                            bool alternateLeft = true;
 
-                                                        @foreach (var history in Model.Histories.OrderByDescending(h => h.Created))
-                                                        {
-                                                            <article class="timeline-item alt">
-                                                                <div class="timeline-desk">
-                                                                    <div class="panel" style="margin-left:30px">
-                                                                        <div class="panel-body">
-                                                                            <span class="arrow-alt"></span>
-                                                                            <span class="timeline-icon bg-danger"><i class="zmdi zmdi-circle"></i></span>
-                                                                            <h4 class="text-danger">@history.Property</h4>
-                                                                            <p class="timeline-date text-muted"><small>@history.Created</small></p>
-                                                                            <p style="text-align:left"><span style="font-weight:bold">Old Value: </span>@history.OldValue</p>
-                                                                            <p style="margin-top:-4px !important; text-align:left"><span style="font-weight:bold">New Value: </span>@history.NewValue</p>
-                                                                            <p style="text-align:left"><span style="font-weight:bold">Updated by: </span>@history.Author.Fullname</p>
+                                                            foreach (var history in Model.Histories.OrderByDescending(h => h.Created))
+                                                            {
+                                                                if (alternateLeft)
+                                                                {
+                                                                    <article class="timeline-item alt">
+                                                                        <div class="timeline-desk">
+                                                                            <div class="panel" style="margin-left:30px">
+                                                                                <div class="panel-body">
+                                                                            
+                                                                                    <span class="arrow-alt"></span>
+
+                                                                                    @*@{
+                                                                                        if (history.Ticket.TicketPriority.Id == 1)
+                                                                                        {
+                                                                                            <span class="timeline-icon"><i class="zmdi zmdi-circle"></i></span>
+                                                                                        }
+                                                                                        else if (history.Ticket.TicketPriority.Id == 2)
+                                                                                        {
+                                                                                            <span class="timeline-icon"><i class="zmdi zmdi-circle"></i></span>
+                                                                                        }
+                                                                                        else if (history.Ticket.TicketPriority.Id == 3)
+                                                                                        {
+                                                                                            <span class="timeline-icon bg-info"><i class="zmdi zmdi-circle"></i></span>
+                                                                                        }
+                                                                                        else if (history.Ticket.TicketPriority.Id == 4)
+                                                                                        {
+                                                                                            <span class="timeline-icon bg-success"><i class="zmdi zmdi-circle"></i></span>
+                                                                                        }
+                                                                                    }*@
+
+                                                                                    <span class="timeline-icon bg-danger"><i class="zmdi zmdi-circle"></i></span>
+
+                                                                                    @*<span class="label label-warning">High</span>*@
+
+                                                                                    <h4 class="text-danger" style="margin-top:-30px">@history.Property</h4>
+                                                                                    <p class="timeline-date text-muted"><small>@history.Created</small></p>
+                                                                                    <p style="text-align:left"><span style="font-weight:bold">Old Value: </span>@history.OldValue</p>
+                                                                                    <p style="margin-top:-4px !important; text-align:left"><span style="font-weight:bold">New Value: </span>@history.NewValue</p>
+                                                                                    <p style="text-align:left"><span style="font-weight:bold">Updated by: </span>@history.Author.Fullname</p>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-                                                            </article>
-                                                        }
+                                                                    </article>
 
+                                                                    alternateLeft = false;
+                                                                }
+                                                                else
+                                                                {
+                                                                    <article class="timeline-item ">
+                                                                        <div class="timeline-desk">
+                                                                            <div class="panel" style="margin-right:30px">
+                                                                                <div class="panel-body">
+                                                                                    <span class="arrow"></span>
+                                                                                    <span class="timeline-icon bg-success"><i class="zmdi zmdi-circle"></i></span>
+                                                                                    <h4 class="text-success">@history.Property</h4>
+                                                                                    <p class="timeline-date text-muted"><small>@history.Created</small></p>
+                                                                                    <p style="text-align:left"><span style="font-weight:bold">Old Value: </span>@history.OldValue</p>
+                                                                                    <p style="margin-top:-4px !important; text-align:left"><span style="font-weight:bold">New Value: </span>@history.NewValue</p>
+                                                                                    <p style="text-align:left"><span style="font-weight:bold">Updated by: </span>@history.Author.Fullname</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </article>
+
+                                                                    alternateLeft = true;
+                                                                }
+                                                            }
+
+                                                        }
 
 
 
@@ -963,148 +1015,3 @@
     </script>
 }
 
-
-
-
-<!--
-
-                    <div class="row">
-                    <div class="col-sm-12">
-                        <div class="card-box">
-
-                            <div class="dropdown pull-right">
-                                <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="zmdi zmdi-more-vert"></i>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                </ul>
-                            </div>
-
-                            <h4 class="header-title m-t-0 m-b-30">Accordions</h4>
-
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="p-b-10">
-                                        <p><a class="btn btn-primary waves-effect waves-light" role="button" data-toggle="collapse"
-                                              href="#collapseExample" aria-expanded="false"
-                                              aria-controls="collapseExample"> Link with href </a>
-                                            <button class="btn btn-primary waves-effect waves-light" type="button" data-toggle="collapse"
-                                                    data-target="#collapseExample" aria-expanded="false"
-                                                    aria-controls="collapseExample"> Button with data-target
-                                            </button>
-                                        </p>
-                                        <div class="collapse in" id="collapseExample">
-                                            <div class="well"> Anim pariatur cliche reprehenderit, enim eiusmod
-                                                high life accusamus terry richardson ad squid. Nihil anim
-                                                keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
-                                                sapiente ea proident.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-// end col
-
-
-                                <div class="col-lg-6">
-                                    <div class="panel-group" id="accordion" role="tablist"
-                                         aria-multiselectable="true">
-                                        <div class="panel panel-default bx-shadow-none">
-                                            <div class="panel-heading" role="tab" id="headingOne">
-                                                <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse"
-                                                       data-parent="#accordion" href="#collapseOne"
-                                                       aria-expanded="true" aria-controls="collapseOne">
-                                                        Collapsible Group Item #1
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne" class="panel-collapse collapse in"
-                                                 role="tabpanel" aria-labelledby="headingOne">
-                                                <div class="panel-body">
-                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life
-                                                    accusamus terry richardson ad squid. 3 wolf moon officia
-                                                    aute, non cupidatat skateboard dolor brunch. Food truck
-                                                    quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                                    sunt aliqua put a bird on it squid single-origin coffee
-                                                    nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                                    helvetica, craft beer labore wes anderson cred nesciunt
-                                                    sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                                    Leggings occaecat craft beer farm-to-table, raw denim
-                                                    aesthetic synth nesciunt you probably haven't heard of them
-                                                    accusamus labore sustainable VHS.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-default bx-shadow-none">
-                                            <div class="panel-heading" role="tab" id="headingTwo">
-                                                <h4 class="panel-title">
-                                                    <a class="collapsed" role="button" data-toggle="collapse"
-                                                       data-parent="#accordion" href="#collapseTwo"
-                                                       aria-expanded="false" aria-controls="collapseTwo">
-                                                        Collapsible Group Item #2
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseTwo" class="panel-collapse collapse"
-                                                 role="tabpanel" aria-labelledby="headingTwo">
-                                                <div class="panel-body">
-                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life
-                                                    accusamus terry richardson ad squid. 3 wolf moon officia
-                                                    aute, non cupidatat skateboard dolor brunch. Food truck
-                                                    quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                                    sunt aliqua put a bird on it squid single-origin coffee
-                                                    nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                                    helvetica, craft beer labore wes anderson cred nesciunt
-                                                    sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                                    Leggings occaecat craft beer farm-to-table, raw denim
-                                                    aesthetic synth nesciunt you probably haven't heard of them
-                                                    accusamus labore sustainable VHS.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-default bx-shadow-none">
-                                            <div class="panel-heading" role="tab" id="headingThree">
-                                                <h4 class="panel-title">
-                                                    <a class="collapsed" role="button" data-toggle="collapse"
-                                                       data-parent="#accordion" href="#collapseThree"
-                                                       aria-expanded="false" aria-controls="collapseThree">
-                                                        Collapsible Group Item #3
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseThree" class="panel-collapse collapse"
-                                                 role="tabpanel" aria-labelledby="headingThree">
-                                                <div class="panel-body">
-                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life
-                                                    accusamus terry richardson ad squid. 3 wolf moon officia
-                                                    aute, non cupidatat skateboard dolor brunch. Food truck
-                                                    quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                                    sunt aliqua put a bird on it squid single-origin coffee
-                                                    nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                                    helvetica, craft beer labore wes anderson cred nesciunt
-                                                    sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                                    Leggings occaecat craft beer farm-to-table, raw denim
-                                                    aesthetic synth nesciunt you probably haven't heard of them
-                                                    accusamus labore sustainable VHS.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-// end col
-
-                            </div>
-// end row
-
-                        </div>
-                    </div>
-// end col
-                </div>
-// end row
-
--->

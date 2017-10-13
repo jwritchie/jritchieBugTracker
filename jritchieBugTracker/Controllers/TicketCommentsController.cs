@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using jritchieBugTracker.Models;
 using jritchieBugTracker.Models.CodeFirst;
 using Microsoft.AspNet.Identity;
+using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace jritchieBugTracker.Controllers
 {
@@ -112,7 +114,7 @@ namespace jritchieBugTracker.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Body,Created,Updated,TicketId,AuthorId")] TicketComment ticketComment)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Body,Created,Updated,TicketId,AuthorId")] TicketComment ticketComment)
         {
             if (ModelState.IsValid)
             {
@@ -122,6 +124,30 @@ namespace jritchieBugTracker.Controllers
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
                 //return RedirectToAction("Index");
+
+                // Notify Developer of new Comment
+                try
+                {
+                    var body = "<p>{0}</p><p>{1}</p>";
+                    var from = "BugTracker<jritchie.projects@gmail.com>";
+                    var developer = db.Users.Find(ticketComment.Ticket.AssignToUserId).Fullname;
+
+                    var email = new MailMessage(from, db.Users.Find(ticketComment.Ticket.OwnerUserId).Email)
+                    {
+                        Subject = "BugTracker Notification Email: New ticket assigned",
+                        Body = string.Format(body, "Message from BugTracker:", "Your ticket: '" + ticketComment.Ticket.Title + "', has a new Comment."),
+                        IsBodyHtml = true
+                    };
+
+                    var svc = new PersonalEmail();
+                    await svc.SendAsync(email);
+                }
+
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    await Task.FromResult(0);
+                }
             }
 
             //ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", ticketComment.AuthorId);
@@ -175,7 +201,7 @@ namespace jritchieBugTracker.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Body,Created,Updated,TicketId,AuthorId")] TicketComment ticketComment)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Body,Created,Updated,TicketId,AuthorId")] TicketComment ticketComment)
         {
             if (ModelState.IsValid)
             {
@@ -184,6 +210,31 @@ namespace jritchieBugTracker.Controllers
                 db.Entry(ticketComment).State = EntityState.Modified;
                 db.SaveChanges();
                 //return RedirectToAction("Index");
+
+                // Notify Developer of edited Comment
+                try
+                {
+                    var body = "<p>{0}</p><p>{1}</p>";
+                    var from = "BugTracker<jritchie.projects@gmail.com>";
+                    var developer = db.Users.Find(ticketComment.Ticket.AssignToUserId).Fullname;
+
+                    var email = new MailMessage(from, db.Users.Find(ticketComment.Ticket.OwnerUserId).Email)
+                    {
+                        Subject = "BugTracker Notification Email: New ticket assigned",
+                        Body = string.Format(body, "Message from BugTracker:", "Your ticket: '" + ticketComment.Ticket.Title + "', has an edited Comment."),
+                        IsBodyHtml = true
+                    };
+
+                    var svc = new PersonalEmail();
+                    await svc.SendAsync(email);
+                }
+
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    await Task.FromResult(0);
+                }
+
                 return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
             }
             //ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", ticketComment.AuthorId);
@@ -231,12 +282,37 @@ namespace jritchieBugTracker.Controllers
         [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
             TicketComment ticketComment = db.TicketComments.Find(id);
             db.TicketComments.Remove(ticketComment);
             db.SaveChanges();
             //return RedirectToAction("Index");
+
+            // Notify Developer of deleted Comment.
+            try
+            {
+                var body = "<p>{0}</p><p>{1}</p>";
+                var from = "BugTracker<jritchie.projects@gmail.com>";
+                var developer = db.Users.Find(ticketComment.Ticket.AssignToUserId).Fullname;
+
+                var email = new MailMessage(from, db.Users.Find(ticketComment.Ticket.OwnerUserId).Email)
+                {
+                    Subject = "BugTracker Notification Email: New ticket assigned",
+                    Body = string.Format(body, "Message from BugTracker:", "A Comment has been deleted from your ticket: '" + ticketComment.Ticket.Title + "'."),
+                    IsBodyHtml = true
+                };
+
+                var svc = new PersonalEmail();
+                await svc.SendAsync(email);
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                await Task.FromResult(0);
+            }
+
             return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
         }
 
