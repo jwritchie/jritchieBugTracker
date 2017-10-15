@@ -12,6 +12,11 @@ namespace jritchieBugTracker.Controllers
 {
     public class HomeController : UniversalController
     {
+        public ActionResult LandingPage()
+        {
+            return View();
+        }
+
         public ActionResult Index()
         {
             return View();

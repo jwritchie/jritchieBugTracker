@@ -1,53 +1,4 @@
-﻿@*<!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>@ViewBag.Title - My ASP.NET Application</title>
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-
-    </head>
-    <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    </ul>
-                    @Html.Partial("_LoginPartial")
-                </div>
-            </div>
-        </div>
-        <div class="container body-content">
-            @RenderBody()
-            <hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>
-        </div>
-
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", required: false)
-    </body>
-    </html>*@
-
-
-
-
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -57,7 +8,7 @@
 
     <link rel="shortcut icon" href="~/assets/images/favicon.ico">
 
-    <title>jRitchieBugTracker</title>
+    <title>Resolve()</title>
 
     <!--Morris Chart CSS -->
     <link rel="stylesheet" href="~/assets/plugins/morris/morris.css">
@@ -105,7 +56,8 @@
 
                 <!-- LOGO -->
                 <div class="topbar-left">
-                    <a href="@Url.Action("Index", "Home")" class="logo"><span>jritchie<span> Bug Tracker</span></span></a>
+                    <a href="@Url.Action("Index", "Home")" class="logo"><span style="color:#188ae2 !important">Resolve<span>()</span></span></a>
+                    @*<a href="@Url.Action("Index", "Home")" class="logo"><span style="color:#188ae2 !important">Resolve<span style="color:linear-gradient(to bottom right, #ff6600 0%, #ffff00 100%) !important">()</span></span></a>*@
                     @*<a href="index.html" class="logo"><span>Admin<span>to</span></span></a>*@
                 </div>
                 <!-- End Logo container-->
@@ -177,11 +129,15 @@
                 <div id="navigation">
                     <!-- Navigation Menu-->
                     <ul class="navigation-menu">
-                        <li>
-                            <a href="@Url.Action("Index", "Home")"><i class="zmdi zmdi-view-dashboard"></i> <span> Dashboard </span> </a>
-                        </li>
 
-                        <li class="has-submenu">
+                        @if (User.Identity.IsAuthenticated)
+                         {
+                            <li>
+                                <a href="@Url.Action("Index", "Home")"><i class="zmdi zmdi-view-dashboard"></i> <span> Dashboard </span> </a>
+                            </li>
+                         }
+
+                        @*<li class="has-submenu">
                             <a href="#"><i class="fa fa-folder-open"></i><span> Demo Users </span> </a>
                             <ul class="submenu">
                                 <li><a href="@Url.Action("DemoLogin", "Account", new { userType = "Admin" } )">Admin</a></li>
@@ -189,7 +145,7 @@
                                 <li><a href="@Url.Action("DemoLogin", "Account", new { userType = "Developer" } )">Developer</a></li>
                                 <li><a href="@Url.Action("DemoLogin", "Account", new { userType = "Submitter" } )">Submitter</a></li>
                             </ul>
-                        </li>
+                        </li>*@
 
                         @*<li class="has-submenu">
                                 <a href="#"><i class="zmdi zmdi-invert-colors"></i> <span> User Interface </span> </a>
