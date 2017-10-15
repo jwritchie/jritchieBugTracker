@@ -1943,6 +1943,7 @@
     <Content Include="Views\TicketHistories\Details.cshtml" />
     <Content Include="Views\TicketHistories\Edit.cshtml" />
     <Content Include="Views\TicketHistories\Index.cshtml" />
+    <Content Include="Views\Projects\AssignProjectUser - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -578,7 +578,15 @@ namespace jritchieBugTracker.Controllers
                 TicketHistory ticketHistory = new TicketHistory();
                 ticketHistory.TicketId = model.Id;
                 ticketHistory.Property = "Ticket Developer";
-                ticketHistory.OldValue = "No Developer Assigned";
+
+                if (model.AssignToUserId == null)
+                {
+                    ticketHistory.OldValue = "No Developer Assigned";
+                }
+                else
+                {
+                    ticketHistory.OldValue = db.Users.FirstOrDefault(u => u.Id == (db.Tickets.FirstOrDefault(t => t.Id == model.Id).AssignToUserId)).Fullname;
+                }
                 ticketHistory.NewValue = db.Users.FirstOrDefault(u => u.Id == model.AssignToUserId).Fullname;
                 ticketHistory.Created = DateTimeOffset.UtcNow;
                 ticketHistory.AuthorId = User.Identity.GetUserId();

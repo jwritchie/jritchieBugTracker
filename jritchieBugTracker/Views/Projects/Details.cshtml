@@ -18,17 +18,7 @@
         </dt>
 
         <dd>
-            <span style="color:red">New: 
-                @Html.ToUserTime(Model.AssignProject.Created, ViewBag.UserTimeZone as string, "MM-dd-yyyy hh:mm:ss")
-            </span>
-            <span> | </span>
-            <span style="color:forestgreen">No time:
-                @Html.ToUserTime(Model.AssignProject.Created, ViewBag.UserTimeZone as string, "MM-dd-yyyy")
-            </span>
-            <span> | </span>
-            <span style="color:dodgerblue">Old: 
-                @Html.DisplayFor(model => model.AssignProject.Created)
-            </span>
+            @Html.ToUserTime(Model.AssignProject.Created, ViewBag.UserTimeZone as string, "MM-dd-yyyy | hh:mm:ss")
         </dd>
 
         <dt>
@@ -40,20 +30,7 @@
             @{
                 if (Model.AssignProject.Updated != null)
                 {
-                    <span style="color:red">
-                        New:
-                        @Html.ToUserTime(Model.AssignProject.Updated.Value, ViewBag.UserTimeZone as string, "MM-dd-yyyy hh:mm:ss")
-                    </span>
-                    <span> | </span>
-                    <span style="color:forestgreen">
-                        No time:
-                        @Html.ToUserTime(Model.AssignProject.Updated.Value, ViewBag.UserTimeZone as string, "MM-dd-yyyy")
-                    </span>
-                    <span> | </span>
-                    <span style="color:dodgerblue">
-                        Old:
-                        @Html.ToUserTime(Model.AssignProject.Updated.Value, ViewBag.UserTimeZone as string)
-                    </span>
+                    @Html.ToUserTime(Model.AssignProject.Updated.Value, ViewBag.UserTimeZone as string, "MM-dd-yyyy | hh:mm:ss")
                 }
             }
             @*@Html.DisplayFor(model => model.AssignProject.Updated)*@

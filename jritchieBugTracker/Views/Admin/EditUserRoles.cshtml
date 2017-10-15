@@ -4,56 +4,91 @@
     ViewBag.Title = "Edit User Roles";
 }
 
-<h2>Edit User Roles</h2>
-<hr />
 
-@using (Html.BeginForm("EditUserRoles", "Admin", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box m-t-10" style="padding-bottom:40px">
 
-    @Html.HiddenFor(model => model.User.Id)
+            <h4 class="header-title m-t-0 m-b-30">Edit <span style="font-style:italic">@Model.User.Fullname's</span> Role(s)</h4>
 
-    <h4>
-        User's name: 
-        @Html.DisplayFor(model => model.User.Fullname)
-    </h4>
-    
-    @Html.ListBox("SelectedRoles", Model.Roles, new { @class = "multi-select"} )
-    @*@Html.ListBox("SelectedRoles", Model.Roles)*@
-    <input type="submit" value="Assign Roles" class="btn btn-primary pull-right" />
-    @*<input type="submit" value="Assign Roles" class="btn btn-primary pull-right" style="margin-top: 10px" />*@
-}
+            @using (Html.BeginForm("EditUserRoles", "Admin", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.User.Id)
 
+                @Html.ListBox("SelectedRoles", Model.Roles, new { @class = "multi-select", @id = "my_multi_select3" })
+                <input type="submit" value="Assign Roles" class="btn btn-primary center-block" style="width:140px; margin-top:10px" />
+            }
 
-@using (Html.BeginForm("RemoveAllUserRoles", "Admin", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
+            @using (Html.BeginForm("RemoveAllUserRoles", "Admin", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.User.Id)
 
-    @Html.HiddenFor(model => model.User.Id)
+                <input type="submit" value="Remove All Roles" class="btn btn-danger center-block" style="width:140px; margin-top:6px" />
+            }
 
-    <input type="submit" value="Remove All Roles" class="btn btn-danger pull-right" />
-    @*<input type="submit" value="Remove All Roles" class="btn btn-danger pull-right" style="margin-top: 60px" />*@
-}
+            <hr />
 
-<hr />
+            <div class="col-lg-12" style="text-align:center; margin-bottom:20px">
+                @Html.ActionLink("Back to Users List", "Index")
+            </div>
 
-<div style="margin-top: 40px">
-    @Html.ActionLink("Back to Users List", "Index")
+        </div>
+    </div><!-- end col -->
 </div>
 
 
 @section Scripts {
-    <script src="~/Assets/multi-select/multiselect.js"></script>
+
+    <!-- Template's Multi-select -->
+    <script type="text/javascript" src="~/assets/plugins/multiselect/js/jquery.multi-select.js"></script>
+    <script type="text/javascript" src="~/assets/plugins/jquery-quicksearch/jquery.quicksearch.js"></script>
+
     <script type="text/javascript">
-        /* Multiselect inputs */
-        $(function () { "use strict";
-            $('.multi-select').multiSelect({
-                selectableHeader: "<div style='text-align:center; background-color:black; color:white'><strong>Available Roles</strong></div>",
-                selectionHeader: "<div style='text-align:center; background-color:black; color:white'><strong>User Roles</strong></div>"
+
+        jQuery(document).ready(function () {
+
+            //advance multiselect start
+            $('#my_multi_select3').multiSelect({
+                selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+                selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+                afterInit: function (ms) {
+                    var that = this,
+                        $selectableSearch = that.$selectableUl.prev(),
+                        $selectionSearch = that.$selectionUl.prev(),
+                        selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                        selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+
+                    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                        .on('keydown', function (e) {
+                            if (e.which === 40) {
+                                that.$selectableUl.focus();
+                                return false;
+                            }
+                        });
+
+                    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                        .on('keydown', function (e) {
+                            if (e.which == 40) {
+                                that.$selectionUl.focus();
+                                return false;
+                            }
+                        });
+                },
+                afterSelect: function () {
+                    this.qs1.cache();
+                    this.qs2.cache();
+                },
+                afterDeselect: function () {
+                    this.qs1.cache();
+                    this.qs2.cache();
+                }
             });
 
-            //$(".ms-container").append('<i class="material-icons" style="font-size:50px; text-align:center; margin:80px 0px 0px 20px">swap_horiz</i>');
-            //$(".ms-container").append('<i class="glyph-icon icon-exchange"></i>');
+            $('.ms-selectable').prepend("<div style='text-align:center; font-weight:bold'>Available Role(s)</div>");
+            $('.ms-selection').prepend("<div style='text-align:center; font-weight:bold'>Assigned Role(s)</div>");
+
         });
     </script>
 }

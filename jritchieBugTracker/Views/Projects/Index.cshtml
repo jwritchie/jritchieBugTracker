@@ -2,7 +2,7 @@
 @model IEnumerable<jritchieBugTracker.Models.Helpers.ProjectUserViewModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Projects Index";
 }
 
 @*@{
@@ -127,21 +127,18 @@
                                 </td>
                                 <td>
                                     <a href="@Url.Action("Details", new { id = item.AssignProject.Id } )" style="display:block"><i class="fa fa-eye"></i><span> Details </span></a>
-                                    @*@Html.ActionLink("Details", "Details", new { id = item.AssignProject.Id }, new { style = "display:block" })*@
 
                                     @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                                     {
                                         <a href="@Url.Action("Edit", new { id = item.AssignProject.Id } )" style="display:block" ><i class="fa fa-pencil-square-o"></i><span> Edit </span></a>
-                                        @*@Html.ActionLink("Edit", "Edit", new { id = item.AssignProject.Id }, new { style = "display:block" })*@
                                     }
 
                                     @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                                     {
                                         <a href="@Url.Action("AssignProjectUser", new { id = item.AssignProject.Id } )" style="display:block"><i class="fa fa-user-plus"></i><span> Assign User </span></a>
-                                        @*@Html.ActionLink("Assign Project User(s)", "AssignProjectUser", new { id = item.AssignProject.Id }, new { style = "display:block" })*@
-
+                                        
+                                        @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
                                     }
-                                    @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
                                 </td>
                             </tr>
                         }
@@ -188,11 +185,11 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#datatable').dataTable();
-            $('#datatable-keytable').DataTable({ keys: true });
+            //$('#datatable').dataTable();
+            //$('#datatable-keytable').DataTable({ keys: true });
             $('#datatable-responsive').DataTable();
-            $('#datatable-scroller').DataTable({ ajax: "~/Assets/plugins/datatables/json/scroller-demo.json", deferRender: true, scrollY: 380, scrollCollapse: true, scroller: true });
-            var table = $('#datatable-fixed-header').DataTable({ fixedHeader: true });
+            //$('#datatable-scroller').DataTable({ ajax: "~/Assets/plugins/datatables/json/scroller-demo.json", deferRender: true, scrollY: 380, scrollCollapse: true, scroller: true });
+            //var table = $('#datatable-fixed-header').DataTable({ fixedHeader: true });
         });
         TableManageButtons.init();
     </script>

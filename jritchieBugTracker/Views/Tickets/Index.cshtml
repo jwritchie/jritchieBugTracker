@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<jritchieBugTracker.Models.CodeFirst.Ticket>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Tickets Index";
 }
 
 
@@ -20,15 +20,15 @@
                     }
 
                     @*<a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
-                        <i class="zmdi zmdi-more-vert"></i>
-                    </a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                    </ul>*@
+                            <i class="zmdi zmdi-more-vert"></i>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>*@
                 </div>
 
                 <h4 class="header-title m-t-0 m-b-30">Tickets</h4>
@@ -37,6 +37,9 @@
                     @*<table id="myTable" class="table">*@
                     <thead>
                         <tr>
+                            <th>
+                                Id
+                            </th>
                             <th>
                                 Ticket Owner
                             </th>
@@ -61,7 +64,6 @@
                             <th>
                                 Assigned Developer
                             </th>
-                            <th>Id</th>
                             <th></th>
                             @*<th>
                                     Ticket Created
@@ -76,6 +78,9 @@
                         @foreach (var item in Model)
                         {
                             <tr>
+                                <td>
+                                    @item.Id
+                                </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.OwnerUser.Fullname)
                                 </td>
@@ -100,16 +105,20 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.AssignToUser.Fullname)
                                 </td>
-                                <td>@item.Id</td>
                                 <td>
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { style = "display:block" })
-                                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { style = "display:block" })
-                                    @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
+                                    @*@Html.ActionLink("Details", "Details", new { id = item.Id }, new { style = "display:block" })*@
+                                    <a href="@Url.Action("Details", new { id = item.Id } )" style="display:block"><i class="fa fa-eye"></i><span> Details </span></a>
+
+                                    @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { style = "display:block" })*@
+                                    <a href="@Url.Action("Edit", new { id = item.Id } )" style="display:block"><i class="fa fa-pencil-square-o"></i><span> Edit </span></a>
+
 
                                     @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                                     {
-                                        @*<span> |</span>*@
-                                        @Html.ActionLink("Assign Developer", "AssignTicketUser", new { ticketId = item.Id }, new { style = "display:block" })
+                                        <a href="@Url.Action("AssignTicketUser", new { ticketId = item.Id } )" style="display:block"><i class="fa fa-user-plus"></i><span> Assign Dev. </span></a>
+                                        @*@Html.ActionLink("Assign Developer", "AssignTicketUser", new { ticketId = item.Id }, new { style = "display:block" })*@
+
+                                        @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
                                     }
                                 </td>
                                 @*<td>
@@ -129,17 +138,13 @@
 
 </div>
 <!-- end container -->
-
-
-
-
 @*@section scripts
-{
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script>
-        $("#myTable").DataTable();
-    </script>
-}*@
+    {
+        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script>
+            $("#myTable").DataTable();
+        </script>
+    }*@
 
 
 @section scripts
@@ -167,11 +172,11 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#datatable').dataTable();
-            $('#datatable-keytable').DataTable({ keys: true });
+            //$('#datatable').dataTable();
+            //$('#datatable-keytable').DataTable({ keys: true });
             $('#datatable-responsive').DataTable();
-            $('#datatable-scroller').DataTable({ ajax: "~/Assets/plugins/datatables/json/scroller-demo.json", deferRender: true, scrollY: 380, scrollCollapse: true, scroller: true });
-            var table = $('#datatable-fixed-header').DataTable({ fixedHeader: true });
+            //$('#datatable-scroller').DataTable({ ajax: "~/Assets/plugins/datatables/json/scroller-demo.json", deferRender: true, scrollY: 380, scrollCollapse: true, scroller: true });
+            //var table = $('#datatable-fixed-header').DataTable({ fixedHeader: true });
         });
         TableManageButtons.init();
     </script>

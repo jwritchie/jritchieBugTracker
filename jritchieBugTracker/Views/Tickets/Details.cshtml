@@ -26,14 +26,16 @@
                             @Html.DisplayNameFor(model => model.Created)
                         </dt>
                         <dd>
-                            @Html.DisplayFor(model => model.Created)
+                            @*@Html.DisplayFor(model => model.Created)*@
+                            @Html.ToUserTime(Model.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")
                         </dd>
 
                         <dt>
                             @Html.DisplayNameFor(model => model.Updated)
                         </dt>
                         <dd>
-                            @Html.DisplayFor(model => model.Updated)
+                            @*@Html.DisplayFor(model => model.Updated)*@
+                            @Html.ToUserTime(Model.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")
                         </dd>
 
                         <dt>
@@ -144,12 +146,12 @@
                                             }
                                             else
                                             {
-                                                @Model.Comments.Count<span> Comments</span >
+                                                @Model.Comments.Count<span> Comments</span>
                                             }
                                         }
                                         else
                                         {
-                                                <span>No Comments</span>
+                                            <span>No Comments</span>
                                         }
                                     </a>
                                 </p>
@@ -170,21 +172,25 @@
                                                 if (commentFieldBlue)   // Comment with Blue background.
                                                 {
                                                     <div style="padding:6px; background-color:rgba(30, 80, 150, 0.05); box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
-                                                        <p style="font-size:smaller"><span style="font-weight:bold">Posted: </span>@comment.Created: &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:</p>
+                                                        <p style="font-size:smaller">
+                                                            <span style="font-weight:bold">
+                                                                Posted:
+                                                            </span>@Html.ToUserTime(comment.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss"): &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:
+                                                        </p>
                                                         <p>@comment.Body</p>
 
                                                         @{  // Display Comment-Update information if available.
                                                             if (comment.Updated != null)
                                                             {
                                                                 <div style="border:1px solid #009999; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
-                                                                    <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@comment.Updated</p>
+                                                                    <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@Html.ToUserTime(comment.Updated.Value, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")</p>
                                                                 </div>
                                                             }
                                                         }
 
                                                         @{  // Allow Editing/Deleting Comments.
                                                             if (User.IsInRole("Admin") ||
-                                                               (User.IsInRole("ProjectManager") && !Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
+                                                               (User.IsInRole("ProjectManager") && Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
                                                                comment.AuthorId == ViewBag.UserId)
                                                             {
                                                                 <div style="text-align:center">
@@ -194,39 +200,43 @@
                                                             }
                                                         }
                                                     </div>
-                                                    commentFieldBlue = false;
-                                            }
-                                            else                    // Comment with Green background.
-                                            {
-                                                <div style="padding:6px; background-color:rgba(0, 153, 153, 0.05); box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
-                                                    <p style="font-size:smaller"><span style="font-weight:bold">Posted: </span>@comment.Created: &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:</p>
-                                                    <p>@comment.Body</p>
+                                                                commentFieldBlue = false;
+                                                            }
+                                                            else                    // Comment with Green background.
+                                                            {
+                                                                <div style="padding:6px; background-color:rgba(0, 153, 153, 0.05); box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
+                                                                    <p style="font-size:smaller">
+                                                                        <span style="font-weight:bold">
+                                                                            Posted:
+                                                                        </span>@Html.ToUserTime(comment.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss"): &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:
+                                                                    </p>
+                                                                    <p>@comment.Body</p>
 
-                                                    @{  // Display Comment-Update information if available.
-                                                        if (comment.Updated != null)
-                                                        {
-                                                            <div style="border:1px solid #009999; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
-                                                                <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@comment.Updated</p>
-                                                            </div>
-                                                        }
-                                                    }
+                                                                    @{  // Display Comment-Update information if available.
+                                                                        if (comment.Updated != null)
+                                                                        {
+                                                                            <div style="border:1px solid #009999; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
+                                                                                <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@Html.ToUserTime(comment.Updated.Value, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")</p>
+                                                                            </div>
+                                                                        }
+                                                                    }
 
-                                                    @{  // Allow Editing/Deleting Comments.
-                                                        if (User.IsInRole("Admin") ||
-                                                            (User.IsInRole("ProjectManager") && !Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
-                                                            comment.AuthorId == ViewBag.UserId)
-                                                        {
-                                                            <div style="text-align:center">
-                                                                @Html.ActionLink("Edit Comment", "Edit", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" }) |
-                                                                @Html.ActionLink("Delete Comment", "Delete", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" })
-                                                            </div>
-                                                        }
-                                                    }
-                                                </div>
-                                                    commentFieldBlue = true;
-                                            }
-                                                <hr class="blue-small" />
-                                            }
+                                                                    @{  // Allow Editing/Deleting Comments.
+                                                                        if (User.IsInRole("Admin") ||
+                                                                            (User.IsInRole("ProjectManager") && Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
+                                                                            comment.AuthorId == ViewBag.UserId)
+                                                                        {
+                                                                            <div style="text-align:center">
+                                                                                @Html.ActionLink("Edit Comment", "Edit", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" }) |
+                                                                                @Html.ActionLink("Delete Comment", "Delete", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" })
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                                            commentFieldBlue = true;
+                                                                        }
+                                                                        <hr class="blue-small" />
+                                                                        }
                                         }
 
 
@@ -243,7 +253,6 @@
                                             }
                                         }
                                     </div>
-
 
                                 </div>
                             </div>
@@ -298,7 +307,8 @@
                                             {
                                                 <tr>
                                                     <td>
-                                                        @file.Created
+                                                        @*@file.Created*@
+                                                        @Html.ToUserTime(file.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")
                                                     </td>
                                                     <td>
                                                         <a href="@file.FileUrl" target="_blank">@file.FileUrl</a>
@@ -352,7 +362,15 @@
                                     <a class="collapsed" role="button" data-toggle="collapse"
                                        data-parent="#accordion" href="#collapseThree"
                                        aria-expanded="false" aria-controls="collapseThree">
-                                        Ticket History
+                                        Ticket History:&nbsp;&nbsp;
+                                        @if (Model.Histories.Count == 1)
+                                        {
+                                            <span>@Model.Histories.Count transaction</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@Model.Histories.Count transactions</span>
+                                        }
                                     </a>
                                 </p>
                             </div>
@@ -373,6 +391,80 @@
                                         <div role="tabpanel" class="tab-pane fade in active" id="timeline-display" aria-labelledby="timeline-tab">
 
                                             <div class="row">
+                                                <div class="col-sm-4 col-sm-offset-1">
+                                                    <div class="panel panel-custom panel-border">
+                                                        <div class="panel-heading">
+                                                            <h3 class="panel-title">Ticket Status</h3>
+                                                        </div>
+                                                        <div class="panel-body" style="background-color:#ebeff2; margin-bottom:10px">
+                                                            <div class="row">
+                                                                <div class="col-sm-1">
+                                                                    <span class="timeline timeline-icon bg-success" style="border-radius:50%; width:20px; margin-bottom:10px"><i class="zmdi zmdi-circle" style="margin:4px 0px 0px 4px; color:#ebeff2"></i></span>
+                                                                </div>
+                                                                <div class="col-sm-8 col-sm-offset-1 text-success">
+                                                                    Resolved
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-1">
+                                                                    <span class="timeline timeline-icon bg-info" style="border-radius:50%; width:20px; margin-bottom:10px"><i class="zmdi zmdi-circle" style="margin:4px 0px 0px 4px; color:#ebeff2"></i></span>
+                                                                </div>
+                                                                <div class="col-sm-8 col-sm-offset-1 text-info">
+                                                                    In-progress
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-1">
+                                                                    <span class="timeline timeline-icon bg-purple" style="border-radius:50%; width:20px; margin-bottom:10px"><i class="zmdi zmdi-circle" style="margin:4px 0px 0px 4px; color:#ebeff2"></i></span>
+                                                                </div>
+                                                                <div class="col-sm-8 col-sm-offset-1 text-purple">
+                                                                    Assigned
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-1">
+                                                                    <span class="timeline timeline-icon bg-inverse" style="border-radius:50%; width:20px; margin-bottom:0px"><i class="zmdi zmdi-circle" style="margin:4px 0px 0px 4px; color:#ebeff2"></i></span>
+                                                                </div>
+                                                                <div class="col-sm-8 col-sm-offset-1 text-inverse">
+                                                                    Unassigned
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- end col -->
+                                                <div class="col-sm-4 col-sm-offset-2">
+                                                    <div class="panel panel-custom panel-border">
+                                                        <div class="panel-heading">
+                                                            <h3 class="panel-title">Ticket Priority</h3>
+                                                        </div>
+                                                        <div class="panel-body" style="background-color:#ebeff2; margin-bottom:10px">
+                                                            <div class="row">
+                                                                <div class="col-sm-12" style="text-align:center; margin-bottom:10px">
+                                                                    <span class="label label-urgent" style="width:55px">Urgent</span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-12" style="text-align:center; margin-bottom:10px">
+                                                                    <span class="label label-high" style="width:55px !important">High</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12" style="text-align:center; margin-bottom:10px">
+                                                                    <span class="label label-medium" style="width:55px">Medium</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12" style="text-align:center; margin-bottom:8px">
+                                                                    <span class="label label-low" style="width:55px">Low</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- end col -->
+                                            </div>
+
+                                            <div class="row">
                                                 <div class="col-sm-12">
 
                                                     <!-- Timeline's color is set in a "pre" block -->
@@ -387,7 +479,6 @@
                                                             </div>
                                                         </article>
 
-                                                        <!-- -->
                                                         @{
                                                             bool alternateLeft = true;
 
@@ -404,23 +495,23 @@
                                                                                     @{
                                                                                         if (history.HistoricStatus == 1)
                                                                                         {
-                                                                                            <span class="timeline-icon bg-success"><i class="zmdi zmdi-circle"></i></span>
+                                                                                            <span class="timeline-icon bg-success"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
                                                                                         }
                                                                                         else if (history.HistoricStatus == 2)
                                                                                         {
-                                                                                            <span class="timeline-icon bg-info"><i class="zmdi zmdi-circle"></i></span>
+                                                                                            <span class="timeline-icon bg-info"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
                                                                                         }
                                                                                         else if (history.HistoricStatus == 3)
                                                                                         {
-                                                                                            <span class="timeline-icon bg-purple"><i class="zmdi zmdi-circle"></i></span>
+                                                                                            <span class="timeline-icon bg-purple"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
                                                                                         }
                                                                                         else if (history.HistoricStatus == 4)
                                                                                         {
-                                                                                            <span class="timeline-icon bg-inverse"><i class="zmdi zmdi-circle"></i></span>
+                                                                                            <span class="timeline-icon bg-inverse"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
                                                                                         }
                                                                                         else
                                                                                         {
-                                                                                            <span class="timeline-icon bg-muted"><i class="zmdi zmdi-circle"></i></span>
+                                                                                            <span class="timeline-icon bg-muted"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
                                                                                         }
 
 
@@ -467,8 +558,7 @@
                                                                                             <h4 class="text text-muted" style="margin-top:-30px">@history.Property</h4>
                                                                                         }
                                                                                     }
-
-                                                                                    <p class="timeline-date text-muted"><small>@Html.ToUserTime(history.Created, ViewBag.UserTimeZone as string, "MM-dd-yyyy hh:mm:ss")</small></p>
+                                                                                    <p class="timeline-date text-muted"><small>@Html.ToUserTime(history.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")</small></p>
                                                                                     <p style="text-align:left"><span style="font-weight:bold">Old Value: </span>@history.OldValue</p>
                                                                                     <p style="margin-top:-4px !important; text-align:left"><span style="font-weight:bold">New Value: </span>@history.NewValue</p>
                                                                                     <p style="text-align:left"><span style="font-weight:bold">Updated by: </span>@history.Author.Fullname</p>
@@ -477,259 +567,135 @@
                                                                         </div>
                                                                     </article>
 
-                                                                    alternateLeft = false;
-                                                                }
-                                                                else
-                                                                {
-                                                                    <article class="timeline-item ">
-                                                                        <div class="timeline-desk">
-                                                                            <div class="panel" style="margin-right:30px">
-                                                                                <div class="panel-body">
-                                                                                    <span class="arrow"></span>
-                                                                                    @{
-                                                                                        if (history.HistoricStatus == 1)
-                                                                                        {
-                                                                                            <span class="timeline-icon bg-success"><i class="zmdi zmdi-circle"></i></span>
+                                                                                            alternateLeft = false;
                                                                                         }
-                                                                                        else if (history.HistoricStatus == 2)
+                                                                                        else
                                                                                         {
-                                                                                            <span class="timeline-icon bg-info"><i class="zmdi zmdi-circle"></i></span>
-                                                                                        }
-                                                                                        else if (history.HistoricStatus == 3)
-                                                                                        {
-                                                                                            <span class="timeline-icon bg-purple"><i class="zmdi zmdi-circle"></i></span>
-                                                                                        }
-                                                                                        else if (history.HistoricStatus == 4)
-                                                                                        {
-                                                                                            <span class="timeline-icon bg-inverse"><i class="zmdi zmdi-circle"></i></span>
-                                                                                        }
-                                                                                    }
+                                                                                            <article class="timeline-item ">
+                                                                                                <div class="timeline-desk">
+                                                                                                    <div class="panel" style="margin-right:30px">
+                                                                                                        <div class="panel-body">
+                                                                                                            <span class="arrow"></span>
+                                                                                                            @{
+                                                                                                                if (history.HistoricStatus == 1)
+                                                                                                                {
+                                                                                                                    <span class="timeline-icon bg-success"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
+                                                                                                                }
+                                                                                                                else if (history.HistoricStatus == 2)
+                                                                                                                {
+                                                                                                                    <span class="timeline-icon bg-info"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
+                                                                                                                }
+                                                                                                                else if (history.HistoricStatus == 3)
+                                                                                                                {
+                                                                                                                    <span class="timeline-icon bg-purple"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
+                                                                                                                }
+                                                                                                                else if (history.HistoricStatus == 4)
+                                                                                                                {
+                                                                                                                    <span class="timeline-icon bg-inverse"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                    <span class="timeline-icon bg-muted"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
+                                                                                                                }
 
-                                                                                    <h4 class="text-success">@history.Property</h4>
 
-                                                                                    <p class="timeline-date text-muted"><small>@Html.ToUserTime(history.Created, ViewBag.UserTimeZone as string, "MM-dd-yyyy hh:mm:ss")</small></p>
-                                                                                    <p style="text-align:left"><span style="font-weight:bold">Old Value: </span>@history.OldValue</p>
-                                                                                    <p style="margin-top:-4px !important; text-align:left"><span style="font-weight:bold">New Value: </span>@history.NewValue</p>
-                                                                                    <p style="text-align:left"><span style="font-weight:bold">Updated by: </span>@history.Author.Fullname</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </article>
+                                                                                                                if (history.HistoricPriority == 1)
+                                                                                                                {
+                                                                                                                    <span class="label label-urgent pull-right">Urgent</span>
+                                                                                                                }
+                                                                                                                else if (history.HistoricPriority == 2)
+                                                                                                                {
+                                                                                                                    <span class="label label-high pull-right">High</span>
+                                                                                                                }
+                                                                                                                else if (history.HistoricPriority == 3)
+                                                                                                                {
+                                                                                                                    <span class="label label-medium pull-right">Medium</span>
+                                                                                                                }
+                                                                                                                else if (history.HistoricPriority == 4)
+                                                                                                                {
+                                                                                                                    <span class="label label-low pull-right">Low</span>
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                    <span class="label pull-right" style="color:rgb(0,0,0)"></span>
+                                                                                                                }
 
-                                                                    alternateLeft = true;
-                                                                }
-                                                            }
+
+                                                                                                                if (history.HistoricStatus == 1)
+                                                                                                                {
+                                                                                                                    <h4 class="text text-success" style="margin-top:-10px">@history.Property</h4>
+                                                                                                                }
+                                                                                                                else if (history.HistoricStatus == 2)
+                                                                                                                {
+                                                                                                                    <h4 class="text text-info" style="margin-top:-10px">@history.Property</h4>
+                                                                                                                }
+                                                                                                                else if (history.HistoricStatus == 3)
+                                                                                                                {
+                                                                                                                    <h4 class="text text-purple" style="margin-top:-10px">@history.Property</h4>
+                                                                                                                }
+                                                                                                                else if (history.HistoricStatus == 4)
+                                                                                                                {
+                                                                                                                    <h4 class="text text-inverse" style="margin-top:-10px">@history.Property</h4>
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                    <h4 class="text text-muted" style="margin-top:-10px">@history.Property</h4>
+                                                                                                                }
+                                                                                                            }
+                                                                                                            <p class="timeline-date text-muted"><small>@Html.ToUserTime(history.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")</small></p>
+                                                                                                            <p style="text-align:left"><span style="font-weight:bold">Old Value: </span>@history.OldValue</p>
+                                                                                                            <p style="margin-top:-4px !important; text-align:left"><span style="font-weight:bold">New Value: </span>@history.NewValue</p>
+                                                                                                            <p style="text-align:left"><span style="font-weight:bold">Updated by: </span>@history.Author.Fullname</p>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </article>
+
+                                                                                                                        alternateLeft = true;
+                                                                                                                    }
+                                                                                                                }
 
                                                         }
-
-
-
-
-                                                        <!-- -->
-
-                                                        @*<article class="timeline-item alt">
-                                                            <div class="timeline-desk">
-                                                                <div class="panel" style="margin-left:30px">
-                                                                    <div class="panel-body">
-                                                                        <span class="arrow-alt"></span>
-                                                                        <span class="timeline-icon bg-danger"><i class="zmdi zmdi-circle"></i></span>
-                                                                        <h4 class="text-danger">1 hour ago</h4>
-                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                                                        <p>Dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </article>*@
-
-                                                        @*<article class="timeline-item ">
-                                                            <div class="timeline-desk">
-                                                                <div class="panel" style="margin-right:30px">
-                                                                    <div class="panel-body">
-                                                                        <span class="arrow"></span>
-                                                                        <span class="timeline-icon bg-success"><i class="zmdi zmdi-circle"></i></span>
-                                                                        <h4 class="text-success">2 hours ago</h4>
-                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                                                        <p>consectetur adipisicing elit. Iusto, optio, dolorum <a href="#">John deon</a> provident rerum aut hic quasi placeat iure tempora laudantium </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </article>*@
-
-                                                        @*<article class="timeline-item alt">
-                                                            <div class="timeline-desk">
-                                                                <div class="panel" style="margin-left:30px">
-                                                                    <div class="panel-body">
-                                                                        <span class="arrow-alt"></span>
-                                                                        <span class="timeline-icon bg-primary"><i class="zmdi zmdi-circle"></i></span>
-                                                                        <h4 class="text-primary">10 hours ago</h4>
-                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                                                        <p>3 new photo Uploaded on facebook fan page</p>
-                                                                        <div class="album">
-                                                                            <a href="#">
-                                                                                <img alt="" src="assets/images/small/img1.jpg">
-                                                                            </a>
-                                                                            <a href="#">
-                                                                                <img alt="" src="assets/images/small/img2.jpg">
-                                                                            </a>
-                                                                            <a href="#">
-                                                                                <img alt="" src="assets/images/small/img3.jpg">
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </article>*@
-
-                                                        @*<article class="timeline-item">
-                                                            <div class="timeline-desk">
-                                                                <div class="panel" style="margin-right:30px">
-                                                                    <div class="panel-body">
-                                                                        <span class="arrow"></span>
-                                                                        <span class="timeline-icon bg-purple"><i class="zmdi zmdi-circle"></i></span>
-                                                                        <h4 class="text-purple">14 hours ago</h4>
-                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                                                        <p>
-                                                                            Outdoor visit at California State Route 85 with John Boltana &
-                                                                            Harry Piterson regarding to setup a new show room.
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </article>*@
-
-                                                        @*<article class="timeline-item alt">
-                                                            <div class="timeline-desk">
-                                                                <div class="panel" style="margin-left:30px">
-                                                                    <div class="panel-body">
-                                                                        <span class="arrow-alt"></span>
-                                                                        <span class="timeline-icon"><i class="zmdi zmdi-circle"></i></span>
-                                                                        <h4 class="text-muted">19 hours ago</h4>
-                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                                                        <p>
-                                                                            Jonatha Smith added new milestone <span><a href="#">Pathek</a></span>
-                                                                            Lorem ipsum dolor sit amet consiquest dio
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </article>*@
-
-                                                        @*<article class="timeline-item alt">
-                                                            <div class="text-right">
-                                                                <div class="time-show">
-                                                                    <a href="#" class="btn btn-custom w-lg">Yesterday</a>
-                                                                </div>
-                                                            </div>
-                                                        </article>*@
-
-                                                        @*<article class="timeline-item">
-                                                            <div class="timeline-desk">
-                                                                <div class="panel" style="margin-right:30px">
-                                                                    <div class="panel-body">
-                                                                        <span class="arrow"></span>
-                                                                        <span class="timeline-icon bg-warning"><i class="zmdi zmdi-circle"></i></span>
-                                                                        <h4 class="text-warning">07 January 2016</h4>
-                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                                                        <p>
-                                                                            Montly Regular Medical check up at Greenland Hospital by the
-                                                                            doctor <span><a href="#"> Johm meon </a></span>
-                                                                        </p>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </article>*@
-
-                                                        @*<article class="timeline-item alt">
-                                                            <div class="timeline-desk">
-                                                                <div class="panel" style="margin-left:30px">
-                                                                    <div class="panel-body">
-                                                                        <span class="arrow-alt"></span>
-                                                                        <span class="timeline-icon bg-primary"><i class="zmdi zmdi-circle"></i></span>
-                                                                        <h4 class="text-primary">07 January 2016</h4>
-                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                                                        <p>Download the new updates of Ubold admin dashboard</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </article>*@
-
-                                                        @*<article class="timeline-item">
-                                                            <div class="timeline-desk">
-                                                                <div class="panel" style="margin-right:30px">
-                                                                    <div class="panel-body">
-                                                                        <span class="arrow"></span>
-                                                                        <span class="timeline-icon bg-success"><i class="zmdi zmdi-circle"></i></span>
-                                                                        <h4 class="text-success">07 January 2016</h4>
-                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                                                        <p>
-                                                                            Jonatha Smith added new milestone <span><a class="blue" href="#">crishtian</a></span>
-                                                                            Lorem ipsum dolor sit amet consiquest dio
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </article>*@
-
-                                                        @*<article class="timeline-item alt">
-                                                            <div class="text-right">
-                                                                <div class="time-show">
-                                                                    <a href="#" class="btn btn-custom w-lg">Last Month</a>
-                                                                </div>
-                                                            </div>
-                                                        </article>*@
-
-                                                        @*<article class="timeline-item alt">
-                                                            <div class="timeline-desk">
-                                                                <div class="panel" style="margin-left:30px">
-                                                                    <div class="panel-body">
-                                                                        <span class="arrow-alt"></span>
-                                                                        <span class="timeline-icon"><i class="zmdi zmdi-circle"></i></span>
-                                                                        <h4 class="text-muted">31 December 2015</h4>
-                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                                                        <p>Download the new updates of Ubold admin dashboard</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </article>*@
-
-                                                        @*<article class="timeline-item">
-                                                            <div class="timeline-desk">
-                                                                <div class="panel" style="margin-right:30px">
-                                                                    <div class="panel-body">
-                                                                        <span class="arrow"></span>
-                                                                        <span class="timeline-icon bg-danger"><i class="zmdi zmdi-circle"></i></span>
-                                                                        <h4 class="text-danger">16 Decembar 2015</h4>
-                                                                        <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                                                        <p>
-                                                                            Jonatha Smith added new milestone <span><a href="#">prank</a></span>
-                                                                            Lorem ipsum dolor sit amet consiquest dio
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </article>*@
-
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div role="tabpanel" class="tab-pane fade" id="table-display" aria-labelledby="table-tab">
-                                            <p>
-                                                Food truck fixie locavore,
-                                                accusamus mcsweeney's marfa nulla single-origin coffee squid.
-                                                Exercitation +1 labore velit, blog sartorial PBR leggings next level
-                                                wes anderson artisan four loko farm-to-table craft beer twee. Qui
-                                                photo booth letterpress, commodo enim craft beer mlkshk aliquip jean
-                                                shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda
-                                                labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia
-                                                yr, vero magna velit sapiente labore stumptown. Vegan fanny pack
-                                                odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY
-                                                ethical culpa terry richardson biodiesel. Art party scenester
-                                                stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed
-                                                echo park.
-                                            </p>
+                                            <table id="datatable-responsive-histories" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date Created</th>
+                                                        <th>Property</th>
+                                                        <th>Old Value</th>
+                                                        <th>New Value</th>
+                                                        <th>Submitter</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    @foreach (var history in Model.Histories.OrderByDescending(h => h.Created))
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @Html.ToUserTime(history.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")
+                                                            </td>
+                                                            <td>
+                                                                @history.Property
+                                                            </td>
+                                                            <td>
+                                                                @history.OldValue
+                                                            </td>
+                                                            <td>
+                                                                @history.NewValue
+                                                            </td>
+                                                            <td>
+                                                                @history.Author.Fullname
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
 
@@ -744,286 +710,6 @@
         </div><!-- end col -->
     </div><!-- end row -->
 </div>
-
-
-
-
-<!-- Attachments -->
-<hr />
-<hr />
-<p style="color:red">Attachments here...</p>
-@*@if (Model.Attachments.Count != 0)
-    {
-        if (Model.Attachments.Count == 1)
-        {
-            <p style="color:#009999">@Model.Attachments.Count attachment.</p>
-        }
-        else
-        {
-            <p style="color:#009999">@Model.Attachments.Count attachments.</p>    }
-    }
-    else
-    {
-        <p style="color:#009999">No attachments.</p>
-    }*@
-
-
-<table id="datatable-responsive-attachments" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>
-                Date Added
-            </th>
-            <th>
-                File(s)
-            </th>
-            <th>
-                Description
-            </th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var file in Model.Attachments.OrderByDescending(a => a.Created))
-        {
-            <tr>
-                <td>
-                    @file.Created
-                </td>
-                <td>
-                    <a href="@file.FileUrl" target="_blank">@file.FileUrl</a>
-                </td>
-                <td>
-                    @file.Description
-                    @*@Html.ActionLink("Edit attachment", "Edit", "TicketAttachments", new { id = file.Id }, null )*@
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-
-@*<div class="row">*@
-
-@*@{
-        foreach (var file in Model.Attachments.OrderByDescending(a => a.Created))
-        {
-            <div>
-                <a href="@file.FileUrl" target="_blank">@file.FileUrl</a>
-                <p style="margin-bottom:0px">@file.Description</p>
-            </div>
-            <br />
-        }
-    }*@
-
-@using (Html.BeginForm("Create", "TicketAttachments", new { TicketId = Model.Id }, FormMethod.Post, new { enctype = "Multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-
-    <p style="font-weight:bold">Upload attachment(s)</p>
-    <div class="row">
-        <div class="form-group">
-            <label class="control-label col-md-2">New file(s)</label>
-            <div class="col-md-10">
-                <input name="attachment" type="file" class="form-control" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2">File description</label>
-            <div class="col-md-10">
-                <textarea name="Description" class="form-control" style="max-width:none !important; width:100%"></textarea>
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                @*<input id="editor" class="form-control" name="Description" rows="1">*@
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <!-- Input/Button to submit the data. -->
-                <input type="submit" value="Create attachment" class="btn btn-primary" />
-            </div>
-        </div>
-    </div>
-}
-@*</div>*@
-
-
-<!-- Comments -->
-<hr />
-<p style="color:red">Comments here...</p>
-@*@if (Model.Comments.Count != 0)
-    {
-        if (Model.Comments.Count == 1)
-        {
-            <p style="color:#009999">@Model.Comments.Count comment.</p>
-        }
-        else
-        {
-            <p style="color:#009999">@Model.Comments.Count comments.</p>
-        }
-    }
-    else
-    {
-        <p style="color:#009999">No Comments.</p>
-    }*@
-
-<div class="row">
-    @{
-        // Alternate background-color of Comments display.
-        bool commentFieldBlue1 = true;
-        foreach (var comment in Model.Comments.OrderByDescending(c => c.Id))
-        {
-            if (commentFieldBlue)   // Comment with Blue background.
-            {
-                <div style="padding:6px; background-color:rgba(30, 80, 150, 0.05); box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
-                    <p style="font-size:smaller"><span style="font-weight:bold">Posted: </span>@comment.Created: &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:</p>
-                    <p>@comment.Body</p>
-
-                    @{  // Display Comment-Update information if available.
-                        if (comment.Updated != null)
-                        {
-                            <div style="border:1px solid #009999; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
-                                <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@comment.Updated</p>
-                                @*<p style="font-size:smaller; margin-top:-18px"><span style="font-weight:bold">Reason: </span>@comment.UpdateReason</p>*@
-                            </div>
-                        }
-                    }
-
-                    @{  // Allow Editing/Deleting Comments.
-                        if (User.IsInRole("Admin") ||
-                           (User.IsInRole("ProjectManager") && !Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
-                           comment.AuthorId == ViewBag.UserId)
-                        {
-                            <div style="text-align:center">
-                                @Html.ActionLink("Edit Comment", "Edit", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" }) |
-                                @Html.ActionLink("Delete Comment", "Delete", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" })
-                            </div>
-                        }
-                    }
-                </div>
-                            commentFieldBlue1 = false;
-                        }
-                        else                    // Comment with Green background.
-                        {
-                            <div style="padding:6px; background-color:rgba(0, 153, 153, 0.05); box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
-                                <p style="font-size:smaller"><span style="font-weight:bold">Posted: </span>@comment.Created: &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:</p>
-                                <p>@comment.Body</p>
-
-                                @{  // Display Comment-Update information if available.
-                                    if (comment.Updated != null)
-                                    //if (comment.Updated != null && comment.UpdateReason != null)
-                                    {
-                                        <div style="border:1px solid #009999; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
-                                            <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@comment.Updated</p>
-                                            @*<p style="font-size:smaller; margin-top:-18px"><span style="font-weight:bold">Reason: </span>@comment.UpdateReason</p>*@
-                                        </div>
-                                    }
-                                }
-
-                                @{  // Allow Editing/Deleting Comments.
-                                    if (User.IsInRole("Admin") ||
-                                        (User.IsInRole("ProjectManager") && !Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
-                                        comment.AuthorId == ViewBag.UserId)
-                                    {
-                                        <div style="text-align:center">
-                                            @Html.ActionLink("Edit Comment", "Edit", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" }) |
-                                            @Html.ActionLink("Delete Comment", "Delete", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" })
-                                        </div>
-                                    }
-                                }
-                            </div>
-                                        commentFieldBlue1 = true;
-                                    }
-                                    <hr class="blue-small" />
-                                    }
-    }
-
-
-    @{if (Request.IsAuthenticated)    // Confirm user is logged in before allowing Comment creation.
-        {
-            using (Html.BeginForm("Create", "TicketComments", new { TicketId = Model.Id }, FormMethod.Post, null))
-            {
-                @Html.AntiForgeryToken()
-                <div>
-                    <textarea rows="5" name="Body" style="max-width:none !important; width:100%">@ViewBag.Comment</textarea>
-                    @*<input name="Body" type="text" placeholder="Leave a Comment" value="@ViewBag.Comment" />*@
-                    <button class="btn btn-primary center-block" type="submit">Submit Comment</button>
-                </div>
-            }
-        }
-    }
-</div>
-
-
-<!-- Historical transactions -->
-<hr />
-<hr />
-<p style="color:red">Historical transactions here...</p>
-@*@if (Model.Histories.Count != 0)
-    {
-        if (Model.Histories.Count == 1)
-        {
-            <p style="color:#009999">@Model.Histories.Count transaction.</p>
-        }
-        else
-        {
-            <p style="color:#009999">@Model.Histories.Count transactions.</p>
-        }
-    }
-    else
-    {
-        <p style="color:#009999">No transactions.</p>
-    }*@
-
-<table id="datatable-responsive-histories" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>Created</th>
-            <th>Property</th>
-            <th>OldValue</th>
-            <th>NewValue</th>
-            <th>AuthorId</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var history in Model.Histories.OrderByDescending(h => h.Created))
-        {
-            <tr>
-                <td>
-                    @history.Created
-                </td>
-                <td>
-                    @history.Property
-                </td>
-                <td>
-                    @history.OldValue
-                </td>
-                <td>
-                    @history.NewValue
-                </td>
-                <td>
-                    @history.Author.Fullname
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<p>
-    @Html.ActionLink("Edit Ticket", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Return to Tickets", "Index")
-</p>
-
 
 
 @section scripts
@@ -1047,14 +733,12 @@
     <!-- Datatable init js -->
     <script src="~/Assets/pages/datatables.init.js"></script>
 
-
-
     <script type="text/javascript">
         $(document).ready(function () {
             $('#datatable').dataTable();
             $('#datatable-keytable').DataTable({ keys: true });
             $('#datatable-responsive-attachments').DataTable();
-            $('#datatable-responsive-comments').DataTable();
+            //$('#datatable-responsive-comments').DataTable();
             $('#datatable-responsive-histories').DataTable();
             $('#datatable-scroller').DataTable({ ajax: "~/Assets/plugins/datatables/json/scroller-demo.json", deferRender: true, scrollY: 380, scrollCollapse: true, scroller: true });
             var table = $('#datatable-fixed-header').DataTable({ fixedHeader: true });
@@ -1062,4 +746,3 @@
         TableManageButtons.init();
     </script>
 }
-
