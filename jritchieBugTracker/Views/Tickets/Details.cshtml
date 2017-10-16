@@ -311,7 +311,7 @@
                                                         @Html.ToUserTime(file.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")
                                                     </td>
                                                     <td>
-                                                        <a href="@file.FileUrl" target="_blank">@file.FileUrl</a>
+                                                        <a href="@file.FileUrl" target="_blank">@file.FileUrl.Substring(file.FileUrl.LastIndexOf("/") + 1)</a>
                                                     </td>
                                                     <td>
                                                         @file.Description
@@ -735,13 +735,13 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#datatable').dataTable();
-            $('#datatable-keytable').DataTable({ keys: true });
+            //$('#datatable').dataTable();
+            //$('#datatable-keytable').DataTable({ keys: true });
             $('#datatable-responsive-attachments').DataTable();
             //$('#datatable-responsive-comments').DataTable();
             $('#datatable-responsive-histories').DataTable();
-            $('#datatable-scroller').DataTable({ ajax: "~/Assets/plugins/datatables/json/scroller-demo.json", deferRender: true, scrollY: 380, scrollCollapse: true, scroller: true });
-            var table = $('#datatable-fixed-header').DataTable({ fixedHeader: true });
+            //$('#datatable-scroller').DataTable({ ajax: "~/Assets/plugins/datatables/json/scroller-demo.json", deferRender: true, scrollY: 380, scrollCollapse: true, scroller: true });
+            //var table = $('#datatable-fixed-header').DataTable({ fixedHeader: true });
         });
         TableManageButtons.init();
     </script>
