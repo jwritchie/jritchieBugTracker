@@ -274,8 +274,8 @@ namespace jritchieBugTracker.Controllers
                 return View("NoTickets");
             }
 
-            return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
-            //return View(ticketComment);
+            //return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
+            return View(ticketComment);
         }
 
         // POST: TicketComments/Delete/5

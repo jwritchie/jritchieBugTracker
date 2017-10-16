@@ -11,95 +11,156 @@
         <div class="col-sm-12">
             <div class="card-box table-responsive">
 
-                <h4 class="header-title m-t-0 m-b-30">Ticket Details</h4>
-
                 <div class="row">
-                    <dl class="dl-horizontal">
-                        <dt>
-                            Ticket Name
-                        </dt>
-                        <dd>
-                            @Html.DisplayFor(model => model.Title)
-                        </dd>
+                    <h4 class="header-title m-t-0 m-b-30">Ticket Details</h4>
 
-                        <dt>
-                            @Html.DisplayNameFor(model => model.Created)
-                        </dt>
-                        <dd>
-                            @*@Html.DisplayFor(model => model.Created)*@
-                            @Html.ToUserTime(Model.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")
-                        </dd>
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Ticket ID
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Id)
+                            </dd>
+                            <dt>
+                                Ticket Name
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Title)
+                            </dd>
+                            <dt>
+                                Type of issue
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.TicketType.Name)
+                            </dd>
+                            <dt>
+                                Project
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Project.Title)
+                            </dd>
+                            <dt>&nbsp;</dt>
+                            <dd>&nbsp;</dd>
+                            <dt>
+                                Priority
+                            </dt>
+                            <dd>
+                                @if (Model.TicketPriority.Name == "Urgent")
+                                {
+                                    <span class="label label-urgent">Urgent</span>
+                                }
+                                else if (Model.TicketPriority.Name == "High")
+                                {
+                                    <span class="label label-high">High</span>
+                                }
+                                else if (Model.TicketPriority.Name == "Medium")
+                                {
+                                    <span class="label label-medium">Medium</span>
+                                }
+                                else if (Model.TicketPriority.Name == "Low")
+                                {
+                                    <span class="label label-low">Low</span>
+                                }
+                            </dd>
+                            <dt>
+                                Status
+                            </dt>
+                            <dd>
+                                @if (Model.TicketStatus.Name == "Resolved")
+                                {
+                                    <span class="label label-success">Resolved</span>
+                                }
+                                else if (Model.TicketStatus.Name == "In Progress")
+                                {
+                                    <span class="label label-info">In Progress</span>
+                                }
+                                else if (Model.TicketStatus.Name == "Assigned")
+                                {
+                                    <span class="label label-purple">Assigned</span>
+                                }
+                                else if (Model.TicketStatus.Name == "Unassigned")
+                                {
+                                    <span class="label label-inverse">Unassigned</span>
+                                }
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Created:
+                            </dt>
+                            <dd>
+                                @Html.ToUserTime(Model.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Updated)
+                            </dt>
+                            <dd>
+                                @if (Model.Updated == null)
+                                {
+                                    <span>-</span>
+                                }
+                                else
+                                {
+                                    @Html.ToUserTime(Model.Updated.Value, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")
+                                }
+                            </dd>
+                            <dt>&nbsp;</dt>
+                            <dd>&nbsp;</dd>
+                            <dt>
+                                Ticket Submitter
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.OwnerUser.Fullname)
+                            </dd>
 
-                        <dt>
-                            @Html.DisplayNameFor(model => model.Updated)
-                        </dt>
-                        <dd>
-                            @*@Html.DisplayFor(model => model.Updated)*@
-                            @Html.ToUserTime(Model.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")
-                        </dd>
-
-                        <dt>
-                            Ticket Description
-                        </dt>
-                        <dd>
-                            @Html.DisplayFor(model => model.Description)
-                        </dd>
-
-                        <dt>
-                            Project Name
-                            @*@Html.DisplayNameFor(model => model.Project.Title)*@
-                        </dt>
-                        <dd>
-                            @Html.DisplayFor(model => model.Project.Title)
-                        </dd>
-
-                        <dt>
-                            Priority
-                            @*@Html.DisplayNameFor(model => model.TicketPriority.Name)*@
-                        </dt>
-                        <dd>
-                            @Html.DisplayFor(model => model.TicketPriority.Name)
-                        </dd>
-
-                        <dt>
-                            Status
-                            @*@Html.DisplayNameFor(model => model.TicketStatus.Name)*@
-                        </dt>
-                        <dd>
-                            @Html.DisplayFor(model => model.TicketStatus.Name)
-                        </dd>
-
-                        <dt>
-                            Type
-                            @*@Html.DisplayNameFor(model => model.TicketType.Name)*@
-                        </dt>
-                        <dd>
-                            @Html.DisplayFor(model => model.TicketType.Name)
-                        </dd>
-
-                        <dt>
-                            Ticket Owner
-                            @*@Html.DisplayNameFor(model => model.OwnerUser.Fullname)*@
-                        </dt>
-                        <dd>
-                            @Html.DisplayFor(model => model.OwnerUser.Fullname)
-                        </dd>
-
-                        <dt>
-                            Assigned Developer
-                            @*@Html.DisplayNameFor(model => model.AssignToUser.Fullname)*@
-                        </dt>
-                        <dd>
-                            @Html.DisplayFor(model => model.AssignToUser.Fullname)
-                        </dd>
-                    </dl>
+                            <dt>
+                                Assigned Developer
+                            </dt>
+                            <dd>
+                                @if (Model.AssignToUserId == null)
+                                {
+                                    <span>-</span>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(model => model.AssignToUser.Fullname)
+                                }
+                            </dd>
+                        </dl>
+                    </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-12" style="align-content:center">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Issue Description
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Description)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-12" style="text-align:center">
                         <p>
-                            @Html.ActionLink("Edit Ticket", "Edit", new { id = Model.Id }) |
-                            @Html.ActionLink("Return to Tickets", "Index")
+                            <a href="@Url.Action("Edit", new { id = Model.Id } )"><i class="fa fa-pencil-square-o"></i><span> Edit Ticket</span></a> 
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                            {
+                                <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                                <a href="@Url.Action("AssignTicketUser", new { ticketId = Model.Id } )"><i class="fa fa-user-plus"></i><span> Assign Developer </span></a>
+                                @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
+                            }
+                            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                            <a href="@Url.Action("Index", new { id = Model.Id } )"><i class="fa fa-ticket"></i><span> Return to Tickets </span></a>
                         </p>
                     </div>
                 </div>
@@ -114,16 +175,16 @@
             <div class="card-box table-responsive">
 
                 @*<div class="dropdown pull-right">
-                        <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
-                            <i class="zmdi zmdi-more-vert"></i>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                        </ul>
+                    <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
+                    <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                    </ul>
                     </div>*@
 
                 <h4 class="header-title m-t-0 m-b-30">Additional Information</h4>
@@ -190,8 +251,8 @@
 
                                                         @{  // Allow Editing/Deleting Comments.
                                                             if (User.IsInRole("Admin") ||
-                                                               (User.IsInRole("ProjectManager") && Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
-                                                               comment.AuthorId == ViewBag.UserId)
+                                                            (User.IsInRole("ProjectManager") && Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
+                                                            comment.AuthorId == ViewBag.UserId)
                                                             {
                                                                 <div style="text-align:center">
                                                                     @Html.ActionLink("Edit Comment", "Edit", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" }) |
@@ -223,8 +284,8 @@
 
                                                                     @{  // Allow Editing/Deleting Comments.
                                                                         if (User.IsInRole("Admin") ||
-                                                                            (User.IsInRole("ProjectManager") && Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
-                                                                            comment.AuthorId == ViewBag.UserId)
+                                                                        (User.IsInRole("ProjectManager") && Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
+                                                                        comment.AuthorId == ViewBag.UserId)
                                                                         {
                                                                             <div style="text-align:center">
                                                                                 @Html.ActionLink("Edit Comment", "Edit", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" }) |

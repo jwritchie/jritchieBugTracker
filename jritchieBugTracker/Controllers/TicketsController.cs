@@ -468,12 +468,16 @@ namespace jritchieBugTracker.Controllers
                     try
                     {
                         var body = "<p>{0}</p><p>{1}</p>";
-                        var from = "BugTracker<jritchie.projects@gmail.com>";
+                        var from = "Resolve()<jritchie.projects@gmail.com>";
 
                         var email = new MailMessage(from, db.Users.Find(ticket.AssignToUserId).Email)
                         {
-                            Subject = "BugTracker Notification Email: New ticket assigned",
-                            Body = string.Format(body, "Message from BugTracker:", "Your ticket: '" + ticket.Title + "', has been updated by: '" + db.Users.Find(User.Identity.GetUserId()).Fullname +  "'."),
+                            Subject = "Resolve() Notification Email: New ticket assigned",
+                            Body = string.Format(body, "Message from Resolve():", "Ticket ID: " + ticket.Id + " has been updated by: '" +
+                                   db.Users.Find(User.Identity.GetUserId()).Fullname +  "'. The Ticket, '" + ticket.Title + "', is part of " +
+                                   "Project '" + ticket.Project.Title + "'.  This ticket's issue is '" + ticket.TicketType.Name + 
+                                   "'-related, and it's priority level is: '" + 
+                                   db.TicketPriorities.FirstOrDefault(p => p.Id == ticket.TicketPriorityId).Name + "'."),
                             IsBodyHtml = true
                         };
 
@@ -605,13 +609,14 @@ namespace jritchieBugTracker.Controllers
                     try
                     {
                         var body = "<p>{0}</p><p>{1}</p>";
-                        var from = "BugTracker<jritchie.projects@gmail.com>";
+                        var from = "Resolve()<jritchie.projects@gmail.com>";
                         var developer = db.Users.Find(model.AssignToUserId).Fullname;
 
                         var email = new MailMessage(from, db.Users.Find(model.OwnerUserId).Email)
                         {
-                            Subject = "BugTracker Notification Email: New ticket assigned",
-                            Body = string.Format(body, "Message from BugTracker:", "Your ticket: '" + model.Title + "', has been assigned to '" + developer + "' for resolution."),
+                            Subject = "Resolve() Notification Email: New ticket assigned",
+                            Body = string.Format(body, "Message from Resolve():", "Your ticket, Ticket ID: " + model.Id + ", '" + 
+                                   model.Title + "', has been assigned to '" + developer + "' for resolution."),
                             IsBodyHtml = true
                         };
 
@@ -632,12 +637,15 @@ namespace jritchieBugTracker.Controllers
                     try
                     {
                         var body = "<p>{0}</p><p>{1}</p>";
-                        var from = "BugTracker<jritchie.projects@gmail.com>";
+                        var from = "Resolve()<jritchie.projects@gmail.com>";
 
                         var email = new MailMessage(from, db.Users.Find(model.AssignToUserId).Email)
                         {
-                            Subject = "BugTracker Notification Email: New ticket assigned",
-                            Body = string.Format(body, "Message from BugTracker:", "A new ticket: '" + model.Title + "' has been assigned to you. This ticket's priority level is: '" + db.TicketPriorities.FirstOrDefault(p => p.Id == model.TicketPriorityId).Name + "'."),
+                            Subject = "Resolve() Notification Email: New ticket assigned",
+                            Body = string.Format(body, "Message from Resolve():", "A new ticket, Ticket ID: " + model.Id + ", '" + model.Title + 
+                                   "' has been assigned to you.  This Ticket is part of Project: '" + model.Project.Title + 
+                                   "'.  This ticket's issue is '" + model.TicketType.Name + "'-related, and it's priority level is: '" + 
+                                   db.TicketPriorities.FirstOrDefault(p => p.Id == model.TicketPriorityId).Name + "'."),
                             IsBodyHtml = true
                         };
 
@@ -652,6 +660,35 @@ namespace jritchieBugTracker.Controllers
                     }
                 }
 
+                // Notify previous Developer that they are no longer responsible for this Ticket.
+                if (model.AssignToUserId != null)
+                {
+                    if (model.AssignToUserId != User.Identity.GetUserId())
+                    {
+                        try
+                        {
+                            var body = "<p>{0}</p><p>{1}</p>";
+                            var from = "Resolve()<jritchie.projects@gmail.com>";
+
+                            var email = new MailMessage(from, db.Users.Find(model.AssignToUserId).Email)
+                            {
+                                Subject = "Resolve() Notification Email: Ticket reassigned",
+                                Body = string.Format(body, "Message from Resolve():", "Ticket ID: " + model.Id + ", '" + model.Title +
+                                       "' has been assigned to another Developer. You are no longer responsible for its resolution. Thank you."),
+                                IsBodyHtml = true
+                            };
+
+                            var svc = new PersonalEmail();
+                            await svc.SendAsync(email);
+                        }
+
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            await Task.FromResult(0);
+                        }
+                    }
+                }
 
 
                 return RedirectToAction("Index");

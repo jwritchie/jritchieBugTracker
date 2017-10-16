@@ -74,7 +74,7 @@
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody style="font-size:smaller">
                         @foreach (var item in Model)
                         {
                             <tr>
@@ -94,10 +94,48 @@
                                     @Html.DisplayFor(modelItem => item.Description)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                                    @if (item.TicketPriority.Name == "Urgent")
+                                    {
+                                        <span style="color:transparent">1</span>
+                                        <span class="label label-urgent">Urgent</span>
+                                    }
+                                    else if (item.TicketPriority.Name == "High")
+                                    {
+                                        <span style="color:transparent">2</span>
+                                        <span class="label label-high">High</span>
+                                    }
+                                    else if (item.TicketPriority.Name == "Medium")
+                                    {
+                                        <span style="color:transparent">3</span>
+                                        <span class="label label-medium">Medium</span>
+                                    }
+                                    else if (item.TicketPriority.Name == "Low")
+                                    {
+                                        <span style="color:transparent">4</span>
+                                        <span class="label label-low">Low</span>
+                                    }
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                                    @if (item.TicketStatus.Name == "Resolved")
+                                    {
+                                        <span style="color:transparent">4</span>
+                                        <span class="label label-success">Resolved</span>
+                                    }
+                                    else if (item.TicketStatus.Name == "In Progress")
+                                    {
+                                        <span style="color:transparent">3</span>
+                                        <span class="label label-info">In Progress</span>
+                                    }
+                                    else if (item.TicketStatus.Name == "Assigned")
+                                    {
+                                        <span style="color:transparent">2</span>
+                                        <span class="label label-purple">Assigned</span>
+                                    }
+                                    else if (item.TicketStatus.Name == "Unassigned")
+                                    {
+                                        <span style="color:transparent">1</span>
+                                        <span class="label label-inverse">Unassigned</span>
+                                    }
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.TicketType.Name)

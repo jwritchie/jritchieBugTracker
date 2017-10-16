@@ -266,7 +266,7 @@
                                     <a href="#"><i class="fa fa-user"></i><span> Users </span></a>
                                     <ul class="submenu">
                                         <li>@Html.ActionLink("Users", "Index", "Admin")</li>
-                                        <li>@Html.ActionLink("DataTables", "Datatables", "Admin")</li>
+                                        @*<li>@Html.ActionLink("DataTables", "Datatables", "Admin")</li>*@
                                     </ul>
                                 </li>
                                 @*<li>@Html.ActionLink("Users", "Index", "Admin")</li>*@
@@ -286,8 +286,10 @@
                                 }
                                 else
                                 {
-                                    <li>@Html.ActionLink("View Assigned Projects", "Index", "Projects")</li>
-
+                                    <li>
+                                        <a href="@Url.Action("Index", "Projects")"><i class="fa fa-folder-open"></i><span> Assigned Projects </span> </a>
+                                        @*<li>@Html.ActionLink("View Assigned Projects", "Index", "Projects")</li>*@
+                                    </li>
                                 }
                                 <li>
                                     <a href="@Url.Action("Index","Tickets")"><i class="fa fa-ticket"></i><span> Tickets </span></a>

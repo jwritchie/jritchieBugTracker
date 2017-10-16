@@ -4,50 +4,85 @@
     ViewBag.Title = "TicketUser";
 }
 
-<h2>Assign User (Developer) to Ticket</h2>
-<hr />
 
-@using (Html.BeginForm("AssignTicketUser", "Tickets", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
+<div class="container">
 
-    @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.Title)
-    @Html.HiddenFor(model => model.Description)
-    @Html.HiddenFor(model => model.Created)
-    @Html.HiddenFor(model => model.Updated)
-    @Html.HiddenFor(model => model.ProjectId)
-    @Html.HiddenFor(model => model.TicketTypeId)
-    @Html.HiddenFor(model => model.TicketPriorityId)
-    @Html.HiddenFor(model => model.TicketStatusId)
-    @Html.HiddenFor(model => model.OwnerUserId)
+    <div class="row" style="margin-top:10px">
+        <div class="col-sm-12">
+            <div class="card-box table-responsive">
 
-    <h3>
-        Ticket Title: @Model.Title
-    </h3>
+                <h4 class="header-title m-t-0 m-b-30">Assign Developer</h4>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.AssignToUserId, "Assign to Developer", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.AssignToUserId, (SelectList)ViewBag.AssignToUserId, "--  Select  --", new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.AssignToUserId, "", new { @class = "text-danger" })
-        </div>
-    </div>
+                <div class="row">
+                    <label class="col-md-2">Ticket ID:</label>
+                    <p class="col-md-10">@Model.Id</p>
+                </div>
 
-        @*@Html.DropDownList("AssignToUserId", null, htmlAttributes: new { @class = "form-control" } )*@
+                <div class="row">
+                    <label class="col-md-2">Ticket:</label>
+                    <p class="col-md-10">@Model.Title</p>
+                </div>
+
+                @if (Model.AssignToUserId == null)
+                {
+                    <div class="row">
+                        <label class="col-md-2">Assigned Developer:</label>
+                        <p class="col-md-10">No Developer assigned</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <label class="col-md-2">Assigned Developer:</label>
+                        <p class="col-md-10">@Model.AssignToUser.Fullname</p>
+                    </div>
+                }
+
+                <hr />
+
+                <div class="row">
+
+                    @using (Html.BeginForm("AssignTicketUser", "Tickets", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.HiddenFor(model => model.Title)
+                        @Html.HiddenFor(model => model.Description)
+                        @Html.HiddenFor(model => model.Created)
+                        @Html.HiddenFor(model => model.Updated)
+                        @Html.HiddenFor(model => model.ProjectId)
+                        @Html.HiddenFor(model => model.TicketTypeId)
+                        @Html.HiddenFor(model => model.TicketPriorityId)
+                        @Html.HiddenFor(model => model.TicketStatusId)
+                        @Html.HiddenFor(model => model.OwnerUserId)
 
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Assign Developer" class="btn btn-default" />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.AssignToUserId, "Assign new Developer", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.AssignToUserId, (SelectList)ViewBag.AssignToUserId, "--  Select  --", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.AssignToUserId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10" style="margin-top:6px">
+                                <input type="submit" value="Assign Developer" class="btn btn-default" />
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <hr />
+
+                <div class="row" style="text-align:center">
+                    <a href="@Url.Action("Details", new { id = Model.Id } )"><i class="fa fa-eye"></i><span> Return to Ticket Details </span></a>
+                    <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                    <a href="@Url.Action("Index", new { id = Model.Id } )"><i class="fa fa-ticket"></i><span> Return to Tickets </span></a>
+                </div>
+
             </div>
         </div>
-
-        @*<input type="submit" value="Assign User (Developer)" class="btn btn-primary" style="margin-top: 10px" />*@
-}
-
-<hr />
-
-<div>
-    @Html.ActionLink("Return to Tickets", "Index")
+    </div>
 </div>
