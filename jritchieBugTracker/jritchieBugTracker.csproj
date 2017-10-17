@@ -215,6 +215,7 @@
     <Compile Include="Models\CodeFirst\TicketType.cs" />
     <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\Helpers\CustomHelpers.cs" />
+    <Compile Include="Models\Helpers\DashboardViewModel.cs" />
     <Compile Include="Models\Helpers\DemoLoginsHelper.cs" />
     <Compile Include="Models\Helpers\TicketNotification.cs" />
     <Compile Include="Models\Helpers\TicketUserViewModel.cs" />
