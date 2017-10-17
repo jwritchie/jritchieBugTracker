@@ -124,13 +124,13 @@ namespace jritchieBugTracker.Controllers
                     try
                     {
                         var body = "<p>{0}</p><p>{1}</p>";
-                        var from = "BugTracker<jritchie.projects@gmail.com>";
+                        var from = "Resolve()<jritchie.projects@gmail.com>";
                         var developer = db.Users.Find(ticketAttachment.Ticket.AssignToUserId).Fullname;
 
                         var email = new MailMessage(from, db.Users.Find(ticketAttachment.Ticket.OwnerUserId).Email)
                         {
-                            Subject = "BugTracker Notification Email: New ticket assigned",
-                            Body = string.Format(body, "Message from BugTracker:", "Your ticket: '" + ticketAttachment.Ticket.Title + "', has a new Attachment."),
+                            Subject = "Resolve() Notification Email: New ticket assigned",
+                            Body = string.Format(body, "Message from Resolve():", "Your ticket: '" + ticketAttachment.Ticket.Title + "', has a new Attachment."),
                             IsBodyHtml = true
                         };
 
@@ -236,13 +236,13 @@ namespace jritchieBugTracker.Controllers
                     try
                     {
                         var body = "<p>{0}</p><p>{1}</p>";
-                        var from = "BugTracker<jritchie.projects@gmail.com>";
+                        var from = "Resolve()<jritchie.projects@gmail.com>";
                         var developer = db.Users.Find(ticketAttachment.Ticket.AssignToUserId).Fullname;
 
                         var email = new MailMessage(from, db.Users.Find(ticketAttachment.Ticket.OwnerUserId).Email)
                         {
-                            Subject = "BugTracker Notification Email: New ticket assigned",
-                            Body = string.Format(body, "Message from BugTracker:", "Your ticket: '" + ticketAttachment.Ticket.Title + "', has an edited attachment."),
+                            Subject = "Resolve() Notification Email: New ticket assigned",
+                            Body = string.Format(body, "Message from Resolve():", "Your ticket: '" + ticketAttachment.Ticket.Title + "', has an edited attachment."),
                             IsBodyHtml = true
                         };
 

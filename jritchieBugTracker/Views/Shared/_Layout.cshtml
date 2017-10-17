@@ -262,13 +262,16 @@
                         @{
                             if (User.IsInRole("Admin"))
                             {
-                                <li class="has-submenu">
+                                <li>
+                                    <a href="@Url.Action("Index","Admin")"><i class="fa fa-user"></i><span> Users </span></a>
+                                </li>
+                                @*<li class="has-submenu">
                                     <a href="#"><i class="fa fa-user"></i><span> Users </span></a>
                                     <ul class="submenu">
                                         <li>@Html.ActionLink("Users", "Index", "Admin")</li>
-                                        @*<li>@Html.ActionLink("DataTables", "Datatables", "Admin")</li>*@
+                                        <li>@Html.ActionLink("DataTables", "Datatables", "Admin")</li>
                                     </ul>
-                                </li>
+                                </li>*@
                                 @*<li>@Html.ActionLink("Users", "Index", "Admin")</li>*@
                             }
 

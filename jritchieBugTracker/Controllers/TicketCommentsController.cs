@@ -129,13 +129,13 @@ namespace jritchieBugTracker.Controllers
                 try
                 {
                     var body = "<p>{0}</p><p>{1}</p>";
-                    var from = "BugTracker<jritchie.projects@gmail.com>";
+                    var from = "Resolve()<jritchie.projects@gmail.com>";
                     var developer = db.Users.Find(ticketComment.Ticket.AssignToUserId).Fullname;
 
                     var email = new MailMessage(from, db.Users.Find(ticketComment.Ticket.OwnerUserId).Email)
                     {
-                        Subject = "BugTracker Notification Email: New ticket assigned",
-                        Body = string.Format(body, "Message from BugTracker:", "Your ticket: '" + ticketComment.Ticket.Title + "', has a new Comment."),
+                        Subject = "Resolve() Notification Email: New ticket assigned",
+                        Body = string.Format(body, "Message from Resolve():", "Your ticket: '" + ticketComment.Ticket.Title + "', has a new Comment."),
                         IsBodyHtml = true
                     };
 
@@ -215,13 +215,13 @@ namespace jritchieBugTracker.Controllers
                 try
                 {
                     var body = "<p>{0}</p><p>{1}</p>";
-                    var from = "BugTracker<jritchie.projects@gmail.com>";
+                    var from = "Resolve()<jritchie.projects@gmail.com>";
                     var developer = db.Users.Find(ticketComment.Ticket.AssignToUserId).Fullname;
 
                     var email = new MailMessage(from, db.Users.Find(ticketComment.Ticket.OwnerUserId).Email)
                     {
-                        Subject = "BugTracker Notification Email: New ticket assigned",
-                        Body = string.Format(body, "Message from BugTracker:", "Your ticket: '" + ticketComment.Ticket.Title + "', has an edited Comment."),
+                        Subject = "Resolve() Notification Email: New ticket assigned",
+                        Body = string.Format(body, "Message from Resolve():", "Your ticket: '" + ticketComment.Ticket.Title + "', has an edited Comment."),
                         IsBodyHtml = true
                     };
 
@@ -293,13 +293,13 @@ namespace jritchieBugTracker.Controllers
             try
             {
                 var body = "<p>{0}</p><p>{1}</p>";
-                var from = "BugTracker<jritchie.projects@gmail.com>";
+                var from = "Resolve()<jritchie.projects@gmail.com>";
                 var developer = db.Users.Find(ticketComment.Ticket.AssignToUserId).Fullname;
 
                 var email = new MailMessage(from, db.Users.Find(ticketComment.Ticket.OwnerUserId).Email)
                 {
-                    Subject = "BugTracker Notification Email: New ticket assigned",
-                    Body = string.Format(body, "Message from BugTracker:", "A Comment has been deleted from your ticket: '" + ticketComment.Ticket.Title + "'."),
+                    Subject = "Resolve() Notification Email: New ticket assigned",
+                    Body = string.Format(body, "Message from Resolve():", "A Comment has been deleted from your ticket: '" + ticketComment.Ticket.Title + "'."),
                     IsBodyHtml = true
                 };
 

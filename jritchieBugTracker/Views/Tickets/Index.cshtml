@@ -41,16 +41,22 @@
                                 Id
                             </th>
                             <th>
-                                Ticket Owner
+                                Submitter
                             </th>
                             <th>
-                                Project Name
+                                Created
+                            </th>
+                            <th>
+                                Updated
+                            </th>
+                            <th>
+                                Project
                             </th>
                             <th>
                                 Ticket Name
                             </th>
                             <th>
-                                Ticket Description
+                                Issue Description
                             </th>
                             <th>
                                 Priority
@@ -65,12 +71,6 @@
                                 Assigned Developer
                             </th>
                             <th></th>
-                            @*<th>
-                                    Ticket Created
-                                </th>
-                                <th>
-                                    Ticket Updated
-                                </th>*@
                         </tr>
                     </thead>
 
@@ -85,6 +85,19 @@
                                     @Html.DisplayFor(modelItem => item.OwnerUser.Fullname)
                                 </td>
                                 <td>
+                                    @Html.ToUserTime(item.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy")
+                                </td>
+                                <td>
+                                    @if (item.Updated == null)
+                                    {
+                                        <span>-</span>
+                                    }
+                                    else
+                                    {
+                                        @Html.ToUserTime(item.Updated.Value, ViewBag.UserTimeZone as string, "MM/dd/yyyy")
+                                    }
+                                </td>
+                                <td>
                                     @Html.DisplayFor(modelItem => item.Project.Title)
                                 </td>
                                 <td>
@@ -96,45 +109,45 @@
                                 <td>
                                     @if (item.TicketPriority.Name == "Urgent")
                                     {
-                                        <span style="color:transparent">1</span>
-                                        <span class="label label-urgent">Urgent</span>
+                                        <span style="display:none">1</span>
+                                        <p class="label label-urgent">Urgent</p>
                                     }
                                     else if (item.TicketPriority.Name == "High")
                                     {
-                                        <span style="color:transparent">2</span>
-                                        <span class="label label-high">High</span>
+                                        <span style="display:none">2</span>
+                                        <p class="label label-high">High</p>
                                     }
                                     else if (item.TicketPriority.Name == "Medium")
                                     {
-                                        <span style="color:transparent">3</span>
-                                        <span class="label label-medium">Medium</span>
+                                        <span style="display:none">3</span>
+                                        <p class="label label-medium">Medium</p>
                                     }
                                     else if (item.TicketPriority.Name == "Low")
                                     {
-                                        <span style="color:transparent">4</span>
-                                        <span class="label label-low">Low</span>
+                                        <span style="display:none">4</span>
+                                        <p class="label label-low">Low</p>
                                     }
                                 </td>
                                 <td>
                                     @if (item.TicketStatus.Name == "Resolved")
                                     {
-                                        <span style="color:transparent">4</span>
-                                        <span class="label label-success">Resolved</span>
+                                        <span style="display:none">4</span>
+                                        <p class="label label-success">Resolved</p>
                                     }
                                     else if (item.TicketStatus.Name == "In Progress")
                                     {
-                                        <span style="color:transparent">3</span>
-                                        <span class="label label-info">In Progress</span>
+                                        <span style="display:none">3</span>
+                                        <p class="label label-info">In Progress</p>
                                     }
                                     else if (item.TicketStatus.Name == "Assigned")
                                     {
-                                        <span style="color:transparent">2</span>
-                                        <span class="label label-purple">Assigned</span>
+                                        <span style="display:none">2</span>
+                                        <p class="label label-purple">Assigned</p>
                                     }
                                     else if (item.TicketStatus.Name == "Unassigned")
                                     {
-                                        <span style="color:transparent">1</span>
-                                        <span class="label label-inverse">Unassigned</span>
+                                        <span style="display:none">1</span>
+                                        <p class="label label-inverse">Unassigned</p>
                                     }
                                 </td>
                                 <td>
@@ -144,27 +157,22 @@
                                     @Html.DisplayFor(modelItem => item.AssignToUser.Fullname)
                                 </td>
                                 <td>
-                                    @*@Html.ActionLink("Details", "Details", new { id = item.Id }, new { style = "display:block" })*@
                                     <a href="@Url.Action("Details", new { id = item.Id } )" style="display:block"><i class="fa fa-eye"></i><span> Details </span></a>
-
-                                    @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { style = "display:block" })*@
-                                    <a href="@Url.Action("Edit", new { id = item.Id } )" style="display:block"><i class="fa fa-pencil-square-o"></i><span> Edit </span></a>
-
-
                                     @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                                     {
+                                        <span>---</span>
                                         <a href="@Url.Action("AssignTicketUser", new { ticketId = item.Id } )" style="display:block"><i class="fa fa-user-plus"></i><span> Assign Dev. </span></a>
-                                        @*@Html.ActionLink("Assign Developer", "AssignTicketUser", new { ticketId = item.Id }, new { style = "display:block" })*@
-
-                                        @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
                                     }
                                 </td>
                                 @*<td>
-                                        @Html.DisplayFor(modelItem => item.Created)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Updated)
-                                    </td>*@
+                                    <a href="@Url.Action("Details", new { id = item.Id } )" style="display:block"><i class="fa fa-eye"></i><span> Details </span></a>
+                                    <a href="@Url.Action("Edit", new { id = item.Id } )" style="display:block"><i class="fa fa-pencil-square-o"></i><span> Edit </span></a>
+                                    @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                                    {
+                                        <a href="@Url.Action("AssignTicketUser", new { ticketId = item.Id } )" style="display:block"><i class="fa fa-user-plus"></i><span> Assign Dev. </span></a>
+                                        @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                                    }
+                                </td>*@
                             </tr>
                         }
                     </tbody>

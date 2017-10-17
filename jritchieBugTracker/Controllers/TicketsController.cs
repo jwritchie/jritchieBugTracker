@@ -52,6 +52,8 @@ namespace jritchieBugTracker.Controllers
             //return View();
             //*************************************************************************
 
+            ViewBag.UserTimeZone = db.Users.Find(User.Identity.GetUserId()).TimeZone;
+
             List<Ticket> UsersTickets = new List<Ticket>();
             var user = db.Users.Find(User.Identity.GetUserId());
             if (User.IsInRole("Admin"))
@@ -574,22 +576,22 @@ namespace jritchieBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var ticketCreator = db.Tickets.Find(model.Id).OwnerUserId;
-                
-                //model.AssignToUserId = AssignToUserId;
+
+                string priorDev = db.Tickets.AsNoTracking().First(t => t.Id == model.Id).AssignToUserId;
+
                 model.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Assigned").Id;
 
                 TicketHistory ticketHistory = new TicketHistory();
                 ticketHistory.TicketId = model.Id;
                 ticketHistory.Property = "Ticket Developer";
 
-                if (model.AssignToUserId == null)
+                if (db.Tickets.AsNoTracking().First(t => t.Id == model.Id).AssignToUserId == null)
                 {
                     ticketHistory.OldValue = "No Developer Assigned";
                 }
                 else
                 {
-                    ticketHistory.OldValue = db.Users.FirstOrDefault(u => u.Id == (db.Tickets.FirstOrDefault(t => t.Id == model.Id).AssignToUserId)).Fullname;
+                    ticketHistory.OldValue = db.Tickets.AsNoTracking().First(t => t.Id == model.Id).AssignToUser.Fullname;
                 }
                 ticketHistory.NewValue = db.Users.FirstOrDefault(u => u.Id == model.AssignToUserId).Fullname;
                 ticketHistory.Created = DateTimeOffset.UtcNow;
@@ -638,14 +640,17 @@ namespace jritchieBugTracker.Controllers
                     {
                         var body = "<p>{0}</p><p>{1}</p>";
                         var from = "Resolve()<jritchie.projects@gmail.com>";
+                        string message = "Ticket ID: " + model.Id + ", '" + model.Title +
+                                   "' has been assigned to you.  This Ticket is part of Project: '" + 
+                                   db.Projects.AsNoTracking().FirstOrDefault(p => p.Id == model.ProjectId).Title +
+                                   "'.  This ticket's issue is '" + db.TicketTypes.AsNoTracking().FirstOrDefault(t => t.Id == model.TicketTypeId).Name + 
+                                   "-related', and its priority level is: '" +
+                                   db.TicketPriorities.AsNoTracking().FirstOrDefault(p => p.Id == model.TicketPriorityId).Name + "'.";
 
                         var email = new MailMessage(from, db.Users.Find(model.AssignToUserId).Email)
                         {
                             Subject = "Resolve() Notification Email: New ticket assigned",
-                            Body = string.Format(body, "Message from Resolve():", "A new ticket, Ticket ID: " + model.Id + ", '" + model.Title + 
-                                   "' has been assigned to you.  This Ticket is part of Project: '" + model.Project.Title + 
-                                   "'.  This ticket's issue is '" + model.TicketType.Name + "'-related, and it's priority level is: '" + 
-                                   db.TicketPriorities.FirstOrDefault(p => p.Id == model.TicketPriorityId).Name + "'."),
+                            Body = string.Format(body, "Message from Resolve():", message),
                             IsBodyHtml = true
                         };
 
@@ -661,7 +666,7 @@ namespace jritchieBugTracker.Controllers
                 }
 
                 // Notify previous Developer that they are no longer responsible for this Ticket.
-                if (model.AssignToUserId != null)
+                if (priorDev != null && priorDev != model.AssignToUserId)
                 {
                     if (model.AssignToUserId != User.Identity.GetUserId())
                     {
@@ -670,7 +675,7 @@ namespace jritchieBugTracker.Controllers
                             var body = "<p>{0}</p><p>{1}</p>";
                             var from = "Resolve()<jritchie.projects@gmail.com>";
 
-                            var email = new MailMessage(from, db.Users.Find(model.AssignToUserId).Email)
+                            var email = new MailMessage(from, db.Users.AsNoTracking().FirstOrDefault(u => u.Id == priorDev).Email)
                             {
                                 Subject = "Resolve() Notification Email: Ticket reassigned",
                                 Body = string.Format(body, "Message from Resolve():", "Ticket ID: " + model.Id + ", '" + model.Title +
