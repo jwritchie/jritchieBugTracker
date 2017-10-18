@@ -17,35 +17,9 @@ namespace jritchieBugTracker.Controllers
     public class TicketCommentsController : UniversalController
     {
         // GET: TicketComments
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public ActionResult Index()
         {
-            //var ticketComments = db.TicketComments.Include(t => t.Author).Include(t => t.Ticket);
-            //return View(ticketComments.ToList());
-
-            //*************************************************************************************
-            //var user = db.Users.Find(User.Identity.GetUserId());
-            //if (User.IsInRole("Admin"))
-            //{
-            //    return View(db.Tickets.ToList());
-            //}
-            //if (User.IsInRole("ProjectManager"))
-            //{
-            //    return View(db.Tickets.Where(t => t.Project.Users.Any(u => u.Id == user.Id)).ToList());
-            //}
-            //if (User.IsInRole("Developer"))
-            //{
-            //    return View(db.Tickets.Where(t => t.AssignToUserId == user.Id).ToList());
-            //}
-            //if (User.IsInRole("Submitter"))
-            //{
-            //    return View(db.Tickets.Where(t => t.OwnerUserId == user.Id).ToList());
-            //}
-
-            ////return View("NoTickets");
-            //return RedirectToAction("Index", "Home");
-            //*************************************************************************************
-
             List<Ticket> UsersTickets = new List<Ticket>();
             var user = db.Users.Find(User.Identity.GetUserId());
             if (User.IsInRole("Admin"))
@@ -75,7 +49,7 @@ namespace jritchieBugTracker.Controllers
         }
 
         // GET: TicketComments/Details/5
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public ActionResult Details(int? id)
         {
             if (id == null)

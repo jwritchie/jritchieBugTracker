@@ -24,7 +24,7 @@
     <link href="~/assets/css/menu.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/css/responsive.css" rel="stylesheet" type="text/css" />
 
-    <!-- DataTables -->
+        <!-- DataTables -->
     <link href="~/assets/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/plugins/datatables/buttons.bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/plugins/datatables/fixedHeader.bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -139,6 +139,7 @@
                             </li>
                          }
 
+<div>
                         @*<li class="has-submenu">
                             <a href="#"><i class="fa fa-folder-open"></i><span> Demo Users </span> </a>
                             <ul class="submenu">
@@ -258,6 +259,7 @@
                                     </li>
                                 </ul>
                             </li>*@
+</div>
 
                         @{
                             if (User.IsInRole("Admin"))
@@ -447,6 +449,8 @@
     <!--Morris Chart-->
     <script src="~/assets/plugins/morris/morris.min.js"></script>
     <script src="~/assets/plugins/raphael/raphael-min.js"></script>
+    <script src="~/assets/pages/jquery.morris.init.js"></script>
+
 
     <!-- Dashboard init -->
     <script src="~/assets/pages/jquery.dashboard.js"></script>

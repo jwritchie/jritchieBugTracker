@@ -1,0 +1,37 @@
+﻿
+Dashboard:
+----------
+	Admin		sees ?
+	PM			sees ?
+	Dev			sees ?
+	Submitter	sees ?
+
+
+Prevent:
+--------
+	Demo Users shouldn't be able to alter a Profile's information
+
+Styling:
+--------
+	ForgotPassword		layout=null (use Login as base)
+	Register			layout=null (use Login as base)
+
+	Projects/ Details
+	Projects/ Edit		(refer to Ticket Details)
+	Projects/ Create
+
+	Tickets/ Create
+
+	Manage/ Index
+	Manage/ ChangeProfile
+	Manage/ ChangePassword
+
+	Home/ About
+	Home/ Contact
+	
+Add:
+----
+	3rd-party logins to Login View
+	Archiving
+	Attachment file & folder handling (create Ticket-specific folders, test for duplicate file names)
+	SignalR in-app notifications

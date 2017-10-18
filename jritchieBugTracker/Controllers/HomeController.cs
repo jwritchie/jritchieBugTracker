@@ -11,8 +11,10 @@ using System.Web.Mvc;
 
 namespace jritchieBugTracker.Controllers
 {
+    [Authorize]
     public class HomeController : UniversalController
     {
+        [AllowAnonymous]
         public ActionResult LandingPage()
         {
             return View();
@@ -35,7 +37,17 @@ namespace jritchieBugTracker.Controllers
             //    dashboard.Add(dashVM);
             //}
 
-            ViewBag.Dashboard = dashboard.Projects.Count();
+            //ViewBag.Dashboard = dashboard.Projects.Count();
+            ViewBag.AssignedTk = 6;
+            ViewBag.UnassignedTk = 2;
+            ViewBag.InProgressTk = 12;
+            ViewBag.ResolvedTk = 4;
+
+            ViewBag.UrgentTk = 6;
+            ViewBag.HighTk = 2;
+            ViewBag.MediumTk = 12;
+            ViewBag.LowTk = 4;
+
             return View(dashboard);
 
             //dashboard.Projects = db.Projects.

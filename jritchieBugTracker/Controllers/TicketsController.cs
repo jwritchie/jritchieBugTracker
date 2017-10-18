@@ -146,7 +146,7 @@ namespace jritchieBugTracker.Controllers
         [Authorize(Roles = "Submitter")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,Created,Updated,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignToUserId")] Ticket ticket)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Title,Description,Created,Updated,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignToUserId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -252,13 +252,50 @@ namespace jritchieBugTracker.Controllers
                 db.SaveChanges();
                 //*****************************************************************
 
+                // Find all PMs on the Ticket's Project, loop through and notify each that a Ticket has been created.
+                ICollection<ApplicationUser> projectManagers = db.Projects.Find(ticket.ProjectId).Users.ToList();
+                UserRoleHelper rHelper = new UserRoleHelper();
+                foreach (ApplicationUser pm in projectManagers)
+                {
+                    if (rHelper.IsUserInRole(pm.Id, "ProjectManager"))
+                    {
+                        try
+                        {
+                            var body = "<p>{0}</p><p>{1}</p>";
+                            var from = "Resolve()<jritchie.projects@gmail.com>";
+
+                            var email = new MailMessage(from, db.Users.Find(pm.Id).Email)
+                            {
+                                Subject = "Resolve() Notification Email: New ticket assigned",
+                                Body = string.Format(body, "Message from Resolve():", "Ticket ID: " + ticket.Id + " has been submitted by: '" +
+                                        ticket.OwnerUser.Fullname + "'. The Ticket, '" + ticket.Title + "', is part of " +
+                                        "Project '" + ticket.Project.Title + "'.  This ticket's issue is '" + ticket.TicketType.Name +
+                                        "'-related, and it's priority level is: '" +
+                                        db.TicketPriorities.FirstOrDefault(p => p.Id == ticket.TicketPriorityId).Name + "'."),
+                                IsBodyHtml = true
+                            };
+
+                            var svc = new PersonalEmail();
+                            await svc.SendAsync(email);
+                        }
+
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            await Task.FromResult(0);
+                        }
+                    }
+                }
+
+                //*****************************************************************
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
             // Restrict to only Projects to which a Submitter belongs.
-            ProjectAssignHelper helper = new ProjectAssignHelper();
-            var projects = helper.ListUserProjects(db.Users.Find(User.Identity.GetUserId()).Id);
+            ProjectAssignHelper pHelper = new ProjectAssignHelper();
+            var projects = pHelper.ListUserProjects(db.Users.Find(User.Identity.GetUserId()).Id);
             ViewBag.ProjectId = new SelectList(projects, "Id", "Title");
 
             ViewBag.AssignToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignToUserId);
