@@ -1525,6 +1525,14 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
   position: relative;
   width: 420px;
 }
+
+.wrapper-page-2 {
+    margin: 5% auto;
+    position: relative;
+    width: 420px;
+}
+
+
 .wrapper-page .card-box {
   box-shadow: 0 0px 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);
 }
