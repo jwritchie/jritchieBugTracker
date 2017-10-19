@@ -7,10 +7,6 @@ Dashboard:
 	Submitter	sees ?
 
 
-Prevent:
---------
-	Demo Users shouldn't be able to alter a Profile's information
-
 Styling:
 --------
 	ForgotPassword		layout=null (use Login as base)
@@ -22,9 +18,7 @@ Styling:
 
 	Tickets/ Create
 
-	Manage/ Index
-	Manage/ ChangeProfile
-	Manage/ ChangePassword
+	Manage/ Index		Add Demo Account messages?
 
 	Home/ About
 	Home/ Contact

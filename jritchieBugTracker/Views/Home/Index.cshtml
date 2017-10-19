@@ -1,7 +1,7 @@
 ﻿@model jritchieBugTracker.Models.Helpers.DashboardViewModel
 
 @{
-    ViewBag.Title = "Home Index";
+    ViewBag.Title = "Dashboard (Home Index)";
 }
 
 
@@ -95,59 +95,46 @@
 
             <div class="col-lg-4">
                 <div class="card-box">
-                    <h4 class="header-title m-t-0 m-b-30"> Ticket Status </h4>
+                    <h4 class="header-title m-t-0 m-b-30"> Status: All Tickets </h4>
                     <div id="donut-ticketStatus" style="height: 200px;"></div>
 
                     <div class="text-center">
                         <ul class="list-inline chart-detail-list">
                             <li>
-                                <h5 style="color: #10c469;"><i class="fa fa-circle m-r-5"></i>Resolved</h5>
+                                <span class="label label-purple">Assigned</span>
                             </li>
                             <li>
-                                <h5 style="color: #35b8e0;"><i class="fa fa-circle m-r-5"></i>In Progress</h5>
+                                <span class="label label-info">In Progress</span>
                             </li>
-                            @*<li>
-                                <h5 style="color: #5b69bc;"><i class="fa fa-circle m-r-5"></i>Assigned</h5>
-                            </li>
-                            <li>
-                                <h5 style="color: #ff8acc;"><i class="fa fa-circle m-r-5"></i>Unassigned</h5>
-                            </li>*@
                         </ul>
                     </div>
 
                     <div class="text-center">
                         <ul class="list-inline chart-detail-list">
-                            @*<li>
-                                <h5 style="color: #10c469;"><i class="fa fa-circle m-r-5"></i>Resolved</h5>
+                            <li>
+                                <span class="label label-pink">Unassigned</span>
                             </li>
                             <li>
-                                <h5 style="color: #35b8e0;"><i class="fa fa-circle m-r-5"></i>In Progress</h5>
-                            </li>*@
-                            <li>
-                                <h5 style="color: #5b69bc; background-color: #435966; padding:4px !important"><i class="fa fa-circle m-r-5"></i>Assigned</h5>
-                            </li>
-                            <li>
-                                <h5 style="color: #ff8acc; background-color: #435966; padding:4px !important"><i class="fa fa-circle m-r-5"></i>Unassigned</h5>
+                                <span class="label label-success">Resolved</span>
                             </li>
                         </ul>
                     </div>
-
                 </div>
             </div><!-- end col-->
 
 
             <div class="col-lg-4">
                 <div class="card-box">
-                    <h4 class="header-title m-t-0 m-b-30"> Ticket Priority </h4>
+                    <h4 class="header-title m-t-0 m-b-30"> Priority: All Tickets </h4>
                     <div id="donut-ticketPriority" style="height: 200px;"></div>
 
                     <div class="text-center">
                         <ul class="list-inline chart-detail-list">
                             <li>
-                                <h5 style="color: #ff0000;"><i class="fa fa-circle m-r-5"></i>Urgent</h5>
+                                <span class="label label-medium">Medium</span>
                             </li>
                             <li>
-                                <h5 style="color: #ff8000;"><i class="fa fa-circle m-r-5"></i>High</h5>
+                                <span class="label label-high">High</span>
                             </li>
                         </ul>
                     </div>
@@ -155,14 +142,13 @@
                     <div class="text-center">
                         <ul class="list-inline chart-detail-list">
                             <li>
-                                <h5 style="color: #ffff00; background-color: #435966; padding:4px !important"><i class="fa fa-circle m-r-5"></i>Medium</h5>
+                                <span class="label label-low">Low</span>
                             </li>
                             <li>
-                                <h5 style="color: #40ff00;"><i class="fa fa-circle m-r-5"></i>Low</h5>
+                                <span class="label label-urgent">Urgent</span>
                             </li>
                         </ul>
                     </div>
-
                 </div>
             </div><!-- end col-->
 
@@ -628,7 +614,7 @@
         });
     </script>
 
-<script>
+    <script>
         Morris.Donut({
             element: 'donut-ticketPriority',
             data: [
@@ -639,6 +625,6 @@
             ],
             colors: ["#ff0000", "#ff8000", "#ffff00", "#40ff00"]
         });
-</script>
+    </script>
 
 }

@@ -8,12 +8,6 @@ namespace jritchieBugTracker.Models.Helpers
 {
     public class DashboardViewModel
     {
-        //public string[] UsersName { get; set; }
-
-        //public ApplicationUser User { get; set; }
-        //public Project Project { get; set; }
-        //public Ticket Ticket { get; set; }
-
         public DashboardViewModel()
         {
             // HashSets allow faster access to the data.
