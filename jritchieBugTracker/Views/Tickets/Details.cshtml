@@ -174,19 +174,6 @@
         <div class="col-sm-12">
             <div class="card-box table-responsive">
 
-                @*<div class="dropdown pull-right">
-                    <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
-                    <i class="zmdi zmdi-more-vert"></i>
-                    </a>
-                    <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                    </ul>
-                    </div>*@
-
                 <h4 class="header-title m-t-0 m-b-30">Additional Information</h4>
 
                 <div class="row">
@@ -222,17 +209,15 @@
                                 <div class="panel-body">
 
                                     <div class="row">
-                                        <hr />
-
                                         @{
                                             // Alternate background-color of Comments display.
-                                            bool commentFieldBlue = true;
+                                            bool commentFieldLight = true;
 
                                             foreach (var comment in Model.Comments.OrderByDescending(c => c.Id))
                                             {
-                                                if (commentFieldBlue)   // Comment with Blue background.
+                                                if (commentFieldLight)   // Comment with light background.
                                                 {
-                                                    <div style="padding:6px; background-color:rgba(30, 80, 150, 0.05); box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
+                                                    <div style="padding:6px; background-color:#ebeff2; box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
                                                         <p style="font-size:smaller">
                                                             <span style="font-weight:bold">
                                                                 Posted:
@@ -243,7 +228,7 @@
                                                         @{  // Display Comment-Update information if available.
                                                             if (comment.Updated != null)
                                                             {
-                                                                <div style="border:1px solid #009999; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
+                                                                <div style="border:1px solid #93a8b8; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
                                                                     <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@Html.ToUserTime(comment.Updated.Value, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")</p>
                                                                 </div>
                                                             }
@@ -255,51 +240,54 @@
                                                             comment.AuthorId == ViewBag.UserId)
                                                             {
                                                                 <div style="text-align:center">
-                                                                    @Html.ActionLink("Edit Comment", "Edit", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" }) |
-                                                                    @Html.ActionLink("Delete Comment", "Delete", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" })
+                                                                    <a href="@Url.Action("Edit", "TicketComments", new { id = comment.Id } )"><i class="fa fa-pencil-square-o"></i><span> Edit Comment </span></a>
+                                                                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                                                                    <a href="@Url.Action("Delete", "TicketComments", new { id = comment.Id } )"><i class="fa fa-trash"></i><span> Delete Comment </span></a>
                                                                 </div>
                                                             }
                                                         }
                                                     </div>
-                                                                commentFieldBlue = false;
-                                                            }
-                                                            else                    // Comment with Green background.
+
+                                                    commentFieldLight = false;
+                                                }
+                                                else                    // Comment with Dark background.
+                                                {
+                                                    <div style="padding:6px; background-color:#d1dae1; box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
+                                                        <p style="font-size:smaller">
+                                                            <span style="font-weight:bold">
+                                                                Posted:
+                                                            </span>@Html.ToUserTime(comment.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss"): &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:
+                                                        </p>
+                                                        <p>@comment.Body</p>
+
+                                                        @{  // Display Comment-Update information if available.
+                                                            if (comment.Updated != null)
                                                             {
-                                                                <div style="padding:6px; background-color:rgba(0, 153, 153, 0.05); box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
-                                                                    <p style="font-size:smaller">
-                                                                        <span style="font-weight:bold">
-                                                                            Posted:
-                                                                        </span>@Html.ToUserTime(comment.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss"): &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:
-                                                                    </p>
-                                                                    <p>@comment.Body</p>
-
-                                                                    @{  // Display Comment-Update information if available.
-                                                                        if (comment.Updated != null)
-                                                                        {
-                                                                            <div style="border:1px solid #009999; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
-                                                                                <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@Html.ToUserTime(comment.Updated.Value, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")</p>
-                                                                            </div>
-                                                                        }
-                                                                    }
-
-                                                                    @{  // Allow Editing/Deleting Comments.
-                                                                        if (User.IsInRole("Admin") ||
-                                                                        (User.IsInRole("ProjectManager") && Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
-                                                                        comment.AuthorId == ViewBag.UserId)
-                                                                        {
-                                                                            <div style="text-align:center">
-                                                                                @Html.ActionLink("Edit Comment", "Edit", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" }) |
-                                                                                @Html.ActionLink("Delete Comment", "Delete", "TicketComments", new { id = comment.Id }, new { style = "color:rgb(30,80,150)" })
-                                                                            </div>
-                                                                        }
-                                                                    }
+                                                                <div style="border:1px solid #93a8b8; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
+                                                                    <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@Html.ToUserTime(comment.Updated.Value, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")</p>
                                                                 </div>
-                                                                            commentFieldBlue = true;
-                                                                        }
-                                                                        <hr class="blue-small" />
-                                                                        }
-                                        }
+                                                            }
+                                                        }
 
+                                                        @{  // Allow Editing/Deleting Comments.
+                                                            if (User.IsInRole("Admin") ||
+                                                            (User.IsInRole("ProjectManager") && Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
+                                                            comment.AuthorId == ViewBag.UserId)
+                                                            {
+                                                                <div style="text-align:center">
+                                                                    <a href="@Url.Action("Edit", "TicketComments", new { id = comment.Id } )"><i class="fa fa-pencil-square-o"></i><span> Edit Comment </span></a>
+                                                                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                                                                    <a href="@Url.Action("Delete", "TicketComments", new { id = comment.Id } )"><i class="fa fa-trash"></i><span> Delete Comment </span></a>
+                                                                </div>
+                                                            }
+                                                        }
+                                                    </div>
+
+                                                    commentFieldLight = true;
+                                                }
+                                                <hr />
+                                            }
+                                        }
 
                                         @{if (Request.IsAuthenticated)    // Confirm user is logged in before allowing Comment creation.
                                             {
@@ -383,16 +371,18 @@
                                         </tbody>
                                     </table>
 
+                                    <hr />
+
                                     @using (Html.BeginForm("Create", "TicketAttachments", new { TicketId = Model.Id }, FormMethod.Post, new { enctype = "Multipart/form-data" }))
                                     {
                                         @Html.AntiForgeryToken()
 
-                                        <p style="font-weight:bold">Upload attachment(s)</p>
+                                        <h4>Upload attachment(s)</h4>
                                         <div class="row">
                                             <div class="form-group">
                                                 <label class="control-label col-md-2">New file(s)</label>
                                                 <div class="col-md-10">
-                                                    <input name="attachment" type="file" class="form-control" />
+                                                    <input name="attachment" type="file" class="form-control" multiple />
                                                 </div>
                                             </div>
 
@@ -405,7 +395,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <div class="col-md-offset-2 col-md-10">
+                                                <div class="col-md-offset-2 col-md-10" style="margin-top:10px">
                                                     <!-- Input/Button to submit the data. -->
                                                     <input type="submit" value="Create attachment" class="btn btn-primary" />
                                                 </div>

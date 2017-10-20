@@ -93,13 +93,12 @@ namespace jritchieBugTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,TicketId,Description,Created,AuthorId,FileUrl")] TicketAttachment ticketAttachment, HttpPostedFileBase attachment)
         {
-
             // Validate file.
             if (attachment != null && attachment.ContentLength > 0)                                         // Confirm file has data
             {
                 var ext = Path.GetExtension(attachment.FileName).ToLower();
                 if (ext != ".png" && ext != ".jpg" && ext != ".jpeg" && ext != ".gif" && ext != ".bmp" &&
-                    ext != ".doc" && ext != ".docx" && ext != ".rtf" && ext != ".txt" && ext !=".pdf" &&
+                    ext != ".doc" && ext != ".docx" && ext != ".rtf" && ext != ".txt" && ext != ".pdf" &&
                     ext != ".xls" && ext != ".xlsx" && ext != ".ppt" && ext != ".pptx")
                 {
                     ModelState.AddModelError("attachment", "Invalid Format.");                              // Validation message
@@ -108,8 +107,15 @@ namespace jritchieBugTracker.Controllers
                 // Test whether all properties were received.
                 if (ModelState.IsValid)
                 {
-                    var filePath = "/FileAttachments/";                                 // FileUrl
-                    var absPath = Server.MapPath("~" + filePath);                       // Physical file
+                    var filePath = "/FileAttachments/" + ticketAttachment.TicketId.ToString() + "/";          // FileUrl - file location for View to access
+                    var absPath = Server.MapPath("~" + filePath);                       // Physical file - server location - entire root path
+                    var existingfilePath = db.TicketAttachments.Where(a => a.TicketId == ticketAttachment.TicketId).Any(a => a.FileUrl == filePath);
+                    if(existingfilePath == false)
+                    {
+                        Directory.CreateDirectory(absPath);                            // ticket-specific Directory to create
+                    }
+
+                    var existingFileName = System.IO.File.Exists(absPath + attachment.FileName);
 
                     ticketAttachment.FileUrl = filePath + attachment.FileName;          // Sets path of file in database
                     attachment.SaveAs(Path.Combine(absPath, attachment.FileName));      // Saves (adds) the physical file to the application

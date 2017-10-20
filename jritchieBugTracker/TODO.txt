@@ -9,14 +9,13 @@ Dashboard:
 
 Styling:
 --------
-	Tickets/ Comments	restyle ?!
+
 	
 Add:
 ----
 	3rd-party logins to Login View
 	Archiving
 	Attachment file & folder handling (create Ticket-specific folders, test for duplicate file names)
-	SignalR in-app notifications
 
 
 Optional:
