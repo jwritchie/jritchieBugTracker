@@ -179,21 +179,21 @@ namespace jritchieBugTracker.Controllers
             return View(project);
         }
 
-        // GET: Projects/Delete/5
-        [Authorize(Roles = "Admin")]
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Project project = db.Projects.Find(id);
-            if (project == null)
-            {
-                return HttpNotFound();
-            }
-            return View();
-        }
+        //// GET: Projects/Delete/5
+        //[Authorize(Roles = "Admin")]
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Project project = db.Projects.Find(id);
+        //    if (project == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View();
+        //}
 
         // POST: Projects/Delete/5
         //[Authorize(Roles = "Admin")]

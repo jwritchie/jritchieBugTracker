@@ -267,14 +267,6 @@
                                 <li>
                                     <a href="@Url.Action("Index","Admin")"><i class="fa fa-user"></i><span> Users </span></a>
                                 </li>
-                                @*<li class="has-submenu">
-                                        <a href="#"><i class="fa fa-user"></i><span> Users </span></a>
-                                        <ul class="submenu">
-                                            <li>@Html.ActionLink("Users", "Index", "Admin")</li>
-                                            <li>@Html.ActionLink("DataTables", "Datatables", "Admin")</li>
-                                        </ul>
-                                    </li>*@
-                                @*<li>@Html.ActionLink("Users", "Index", "Admin")</li>*@
                             }
 
                             if (User.Identity.IsAuthenticated)
@@ -293,7 +285,6 @@
                                 {
                                     <li>
                                         <a href="@Url.Action("Index", "Projects")"><i class="fa fa-folder-open"></i><span> Assigned Projects </span> </a>
-                                        @*<li>@Html.ActionLink("View Assigned Projects", "Index", "Projects")</li>*@
                                     </li>
                                 }
                                 <li>
@@ -324,21 +315,16 @@
                         <div class="col-xs-6">
                             © 2017 — John Ritchie
                         </div>
-                        <div class="col-xs-6">
+                        @*<div class="col-xs-6">
                             <ul class="pull-right list-inline m-b-0">
                                 <li>
-                                    @*<a href="#">About</a>*@
                                     @Html.ActionLink("About", "About", "Home")
                                 </li>
-                                @*<li>
-                                        <a href="#">Help</a>
-                                    </li>*@
                                 <li>
-                                    @*<a href="#">Contact</a>*@
                                     @Html.ActionLink("Contact", "Contact", "Home")
                                 </li>
                             </ul>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
             </footer>

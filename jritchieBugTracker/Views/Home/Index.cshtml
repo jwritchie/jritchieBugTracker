@@ -605,10 +605,10 @@
         Morris.Donut({
             element: 'donut-ticketStatus',
             data: [
-                { label: "Resolved", value: @ViewBag.ResolvedTk },
-                { label: "In Progress", value: @ViewBag.InProgressTk },
-                { label: "Assigned", value: @ViewBag.AssignedTk },
-                { label: "Unassigned", value: @ViewBag.UnassignedTk }
+                { label: "Resolved", value: @Model.Tickets.Where(t => t.TicketStatusId == 1).Count() },     //@ViewBag.ResolvedTk },
+                { label: "In Progress", value: @Model.Tickets.Where(t => t.TicketStatusId == 2).Count() },     //@ViewBag.InProgressTk },
+                { label: "Assigned", value: @Model.Tickets.Where(t => t.TicketStatusId == 3).Count() },     //@ViewBag.AssignedTk },
+                { label: "Unassigned", value: @Model.Tickets.Where(t => t.TicketStatusId == 4).Count() },     //@ViewBag.UnassignedTk }
             ],
             colors: ["#10c469", "#35b8e0", "#5b69bc", "#ff8acc"]
         });
@@ -618,10 +618,10 @@
         Morris.Donut({
             element: 'donut-ticketPriority',
             data: [
-                { label: "Urgent", value: @ViewBag.UrgentTk },
-                { label: "High", value: @ViewBag.HighTk },
-                { label: "Medium", value: @ViewBag.MediumTk },
-                { label: "Low", value: @ViewBag.LowTk }
+                { label: "Urgent", value: @Model.Tickets.Where(t => t.TicketPriorityId == 1).Count() },     //@ViewBag.UrgentTk },
+                { label: "High", value: @Model.Tickets.Where(t => t.TicketPriorityId == 2).Count() },     //@ViewBag.HighTk },
+                { label: "Medium", value: @Model.Tickets.Where(t => t.TicketPriorityId == 3).Count() },     //@ViewBag.MediumTk },
+                { label: "Low", value: @Model.Tickets.Where(t => t.TicketPriorityId == 4).Count() },     //@ViewBag.LowTk }
             ],
             colors: ["#ff0000", "#ff8000", "#ffff00", "#40ff00"]
         });

@@ -9,7 +9,7 @@
     <div class="col-lg-12">
         <div class="card-box m-t-10" style="padding-bottom:40px">
 
-            <h4 class="header-title m-t-0 m-b-30">Assign User(s) to Project: @Model.AssignProject.Title</h4>
+            <h4 class="header-title m-t-0 m-b-30">Assign User(s) to Project: <span style="font-style:italic">@Model.AssignProject.Title</span></h4>
 
             @using (Html.BeginForm("AssignProjectUser", "Projects", FormMethod.Post))
             {
@@ -31,7 +31,9 @@
             <hr />
 
             <div class="col-lg-12" style="text-align:center; margin-bottom:20px">
-                @Html.ActionLink("Back to Project List", "Index")
+                <a href="@Url.Action("Details", new { id = Model.AssignProject.Id } )"><i class="fa fa-eye"></i><span> Return to Project Details </span></a>
+                <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                <a href="@Url.Action("Index")"><i class="fa fa-folder-open"></i><span> Return to Projects </span></a>
             </div>
 
         </div>

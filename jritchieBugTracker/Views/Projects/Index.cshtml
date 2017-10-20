@@ -57,12 +57,10 @@
                 @{
                     if (ViewBag.IndexType == "All")
                     {
-                        @*<h2><span style="font-weight:bold">All</span> Projects Index</h2>*@
                         <h4 class="header-title m-t-0 m-b-30"><span style="text-decoration-line:underline">All</span> Projects</h4>
                     }
                     else
                     {
-                        @*<h2><span style="font-weight:bold">Assigned</span> Projects Index</h2>*@
                         <h4 class="header-title m-t-0 m-b-30"><span style="text-decoration-line:underline">Assigned</span> Projects</h4>
                     }
                 }
@@ -74,6 +72,9 @@
                     <thead>
                         <!-- <thead> required by datatables  -->
                         <tr>
+                            <th>
+                                ID
+                            </th>
                             @*<th>
                                     @Html.DisplayNameFor(model => model.Created)
                                 </th>*@
@@ -104,6 +105,9 @@
                         @foreach (var item in Model)
                         {
                             <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AssignProjectId)
+                                </td>
                                 @*<td>
                                         @Html.DisplayFor(modelItem => item.Created)
                                     </td>*@
@@ -130,14 +134,11 @@
 
                                     @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                                     {
-                                        <a href="@Url.Action("Edit", new { id = item.AssignProject.Id } )" style="display:block" ><i class="fa fa-pencil-square-o"></i><span> Edit </span></a>
-                                    }
-
-                                    @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
-                                    {
+                                        <span>---</span>
+                                        @*<a href="@Url.Action("Edit", new { id = item.AssignProject.Id } )" style="display:block" ><i class="fa fa-pencil-square-o"></i><span> Edit </span></a>*@
                                         <a href="@Url.Action("AssignProjectUser", new { id = item.AssignProject.Id } )" style="display:block"><i class="fa fa-user-plus"></i><span> Assign User </span></a>
-                                        
-                                        @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
+                                        @*<span>---</span>
+                                        @Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
                                     }
                                 </td>
                             </tr>

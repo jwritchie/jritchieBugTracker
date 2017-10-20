@@ -2,19 +2,129 @@
 @model jritchieBugTracker.Models.Helpers.ProjectUserViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Project Details";
 }
 
-<h2>Project Details</h2>
+<div class="container">
 
-<div>
-    @*<h4>Project</h4>*@
+    <div class="row" style="margin-top:10px">
+        <div class="col-sm-12">
+            <div class="card-box table-responsive">
+
+                <div class="row">
+                    <h4 class="header-title m-t-0 m-b-30">Project Details</h4>
+
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Project ID
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.AssignProject.Id)
+                            </dd>
+                            <dt>
+                                Project Name
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.AssignProject.Title)
+                            </dd>
+                            <dt>&nbsp;</dt>
+                            <dd>&nbsp;</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Created
+                            </dt>
+                            <dd>
+                                @Html.ToUserTime(Model.AssignProject.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.AssignProject.Updated)
+                            </dt>
+                            <dd>
+                                @if (Model.AssignProject.Updated == null)
+                                {
+                                    <span>-</span>
+                                }
+                                else
+                                {
+                                    @Html.ToUserTime(Model.AssignProject.Updated.Value, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")
+                                }
+                            </dd>
+                            <dt>&nbsp;</dt>
+                            <dd>&nbsp;</dd>
+                            <dt>
+                                Project Owner
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.AssignProject.Author)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Project Description
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.AssignProject.Description)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-12" style="text-align:center">
+                        <p>
+                            @{
+                                if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                                {
+                                    <a href="@Url.Action("Edit", new { id = Model.AssignProject.Id } )"><i class="fa fa-pencil-square-o"></i><span> Edit Project </span></a>
+                                    <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                                    <a href="@Url.Action("AssignProjectUser", new { id = Model.AssignProject.Id } )"><i class="fa fa-user-plus"></i><span> Assign User </span></a>
+                                    <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                                    @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
+                                    @*<span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>*@
+                                }
+                            }
+                            @*@Html.ActionLink("Return to Projects", "Index")*@
+                            <a href="@Url.Action("Index")"><i class="fa fa-folder-open"></i><span> Return to Projects </span></a>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @*<h2>Project Details</h2>
+
     <hr />
 
     <dl class="dl-horizontal">
         <dt>
-            Date Created: 
-            @*@Html.DisplayNameFor(model => model.Created)*@
+            Date Created:
         </dt>
 
         <dd>
@@ -22,8 +132,7 @@
         </dd>
 
         <dt>
-            Date Updated: 
-            @*@Html.DisplayNameFor(model => model.Updated)*@
+            Date Updated:
         </dt>
 
         <dd>
@@ -33,12 +142,10 @@
                     @Html.ToUserTime(Model.AssignProject.Updated.Value, ViewBag.UserTimeZone as string, "MM-dd-yyyy | hh:mm:ss")
                 }
             }
-            @*@Html.DisplayFor(model => model.AssignProject.Updated)*@
-</dd>
+        </dd>
 
         <dt>
             Name (Title)
-            @*@Html.DisplayNameFor(model => model.Title)*@
         </dt>
 
         <dd>
@@ -53,16 +160,8 @@
             @Html.DisplayFor(model => model.AssignProject.Description)
         </dd>
 
-        @*<dt>
-            @Html.DisplayNameFor(model => model.AuthorId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AuthorId)
-        </dd>*@
         <dt>
             Owner
-            @*@Html.DisplayNameFor(model => model.Author)*@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.AssignProject.Author)
@@ -80,14 +179,7 @@
 
 
     </dl>
-</div>
-<p>
-    @{ 
-        if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
-        {
-            @Html.ActionLink("Edit Project", "Edit", new { id = Model.AssignProject.Id })
-            <span> |</span>
-        }
-    }
-    @Html.ActionLink("Return to Projects", "Index")
-</p>
+</div>*@
+
+
+

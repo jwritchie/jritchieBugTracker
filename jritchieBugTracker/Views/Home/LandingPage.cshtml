@@ -125,10 +125,10 @@
     </div>
     <!-- end wrapper page -->
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer text-right">
         <div class="container">
             <div class="row">
-                <div class="col-md-12 text-center">
+                <div class="col-xs-6">
                     © 2017 — John Ritchie
                 </div>
             </div>
@@ -137,7 +137,6 @@
     <!-- End Footer -->
 
 
-    <!-- *********************************************************************************** -->
         <!--Roles modal-->
     <div id="roles-Modal" class="modal fade" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -148,12 +147,12 @@
                             <i class="fa fa-times" aria-hidden="true">&nbsp;&nbsp;</i>
                         </button>
                         <br />
-                        <div style="background-color:black; margin-top:4px; border-radius:6px; border:1px solid black;  padding:20px 0px">
+                        <div style="background-color:#435966; margin-top:4px; border-radius:6px; border:1px solid #435966;  padding:20px 0px">
                             <p style="text-align:center; font-size:20px; color:white">User Roles & Authorizations</p>
                         </div>
                     </div>
                     <div class="modal-body">
-                        <table class="table">
+                        <table class="table table-condensed table-striped">
                             <thead>
                                 <tr>
                                     <th></th>
@@ -171,7 +170,6 @@
                                     <td>No</td>
                                     <td>No</td>
                                 </tr>
-
                                 <tr>
                                     <td>View Projects
                                     <td>Must be able to view all projects and their own projects separately</td>
@@ -186,7 +184,6 @@
                                     <td>No</td>
                                     <td>No</td>
                                 </tr>
-
                                 <tr>
                                     <td>Edit Project Name, Details</td>
                                     <td>Yes</td>
@@ -201,13 +198,13 @@
                                     <td>No</td>
                                     <td>No</td>
                                 </tr>
-                                <tr>
+                                @*<tr>
                                     <td>Archive Projects*</td>
                                     <td>Yes</td>
                                     <td>Yes</td>
                                     <td>No</td>
                                     <td>No</td>
-                                </tr>
+                                </tr>*@
                                 <tr>
                                     <td>View Ticket Details</td>
                                     <td>All tickets for all projects</td>
@@ -265,19 +262,19 @@
                                     <td>Only tickets they have created</td>
                                 </tr>
                                 <tr>
-                                    <td>Edit/Delete Ticket Comment*</td>
+                                    <td>Edit/Delete Ticket Comment</td>
                                     <td>Yes</td>
                                     <td>Only tickets for projects they belong to</td>
                                     <td>Only their own</td>
                                     <td>Only their own</td>
                                 </tr>
-                                <tr>
-                                    <td>Edit/Delete Ticket Attachment*</td>
+                                @*<tr>
+                                    <td>Edit/Delete Ticket Attachment</td> Delete
                                     <td>Yes</td>
                                     <td>Only tickets for projects they belong to</td>
                                     <td>Only their own</td>
                                     <td>Only their own</td>
-                                </tr>
+                                </tr>*@
                                 <tr>
                                     <td>View Ticket History</td>
                                     <td>Yes</td>
@@ -285,12 +282,8 @@
                                     <td>Only tickets they are assigned to</td>
                                     <td>Only tickets they have created</td>
                                 </tr>
-
                             </tbody>
                         </table>
-                    </div>
-                    <div class="modal-footer">
-                        <p>* Optional -- may not be implemented at this time.</p>
                     </div>
                 </div>
             </div>
