@@ -14,10 +14,12 @@ namespace jritchieBugTracker.Models.Helpers
             Users = new HashSet<ApplicationUser>();     // Assign multiple users to projects.
             Tickets = new HashSet<Ticket>();            // Assign multiple tickets.
             Projects = new HashSet<Project>();
+            AssignedProjects = new HashSet<Project>();
         }
 
         public virtual ICollection<ApplicationUser> Users { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<Project> AssignedProjects { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

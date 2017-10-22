@@ -1,5 +1,7 @@
 ﻿using jritchieBugTracker.Models;
+using jritchieBugTracker.Models.CodeFirst;
 using jritchieBugTracker.Models.Helpers;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -22,57 +24,51 @@ namespace jritchieBugTracker.Controllers
 
         public ActionResult Index()
         {
+            var user = db.Users.Find(User.Identity.GetUserId());
+
             DashboardViewModel dashboard = new DashboardViewModel();
             dashboard.Users = db.Users.ToList();
-            dashboard.Projects = db.Projects.ToList();
-            dashboard.Tickets = db.Tickets.ToList();
 
-            //foreach (var project in db.Projects.ToList())
-            //{
-            //    DashboardViewModel dashVM = new DashboardViewModel();
-            //    //dashVM.UsersName = project.Users.OrderBy(u => u.LastName).Select(u => u.Fullname).ToArray();
+            // Projects.
+            //dashboard.Projects = db.Projects.ToList();
+            if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+            {
+                dashboard.Projects = db.Projects.ToList();
+            }
+            
+            ProjectAssignHelper helper = new ProjectAssignHelper();
+            dashboard.AssignedProjects = helper.ListUserProjects(user.Id).ToList();
 
-            //    dashVM.Project = project;
+            //***********************************************************
 
-            //    dashboard.Add(dashVM);
-            //}
+                // Tickets.
+                List<Ticket> UsersTickets = new List<Ticket>();
+            if (User.IsInRole("Admin"))
+            {
+                dashboard.Tickets = db.Tickets.ToList();
+            }
+            if (User.IsInRole("ProjectManager"))
+            {
+                UsersTickets.AddRange(db.Tickets.Where(t => t.Project.Users.Any(u => u.Id == user.Id)).ToList());
+            }
+            if (User.IsInRole("Developer"))
+            {
+                UsersTickets.AddRange(db.Tickets.Where(t => t.AssignToUserId == user.Id).ToList());
+            }
+            if (User.IsInRole("Submitter"))
+            {
+                UsersTickets.AddRange(db.Tickets.Where(t => t.OwnerUserId == user.Id).ToList());
+            }
 
-            //ViewBag.Dashboard = dashboard.Projects.Count();
-            ViewBag.AssignedTk = 6;
-            ViewBag.UnassignedTk = 2;
-            ViewBag.InProgressTk = 12;
-            ViewBag.ResolvedTk = 4;
+            if (UsersTickets.Count != 0)
+            {
+                dashboard.Tickets = UsersTickets.Distinct().ToList();
+            }
 
-            ViewBag.UrgentTk = 6;
-            ViewBag.HighTk = 2;
-            ViewBag.MediumTk = 12;
-            ViewBag.LowTk = 4;
 
             return View(dashboard);
-
-            //dashboard.Projects = db.Projects.
-
-            //List < DashboardViewModel > projects = new List<DashboardViewModel>();
-            //foreach (var project in db.Projects.ToList())
-            //{
-            //    ProjectUserViewModel projectUserVM = new ProjectUserViewModel();
-
-            //    projectUserVM.AssignProject = project;
-            //    projectUserVM.AssignProjectId = project.Id;
-            //    projectUserVM.SelectedUsers = project.Users.Select(u => u.Id).ToArray();    // existing users.
-            //    projectUserVM.Users = new MultiSelectList(db.Users.ToList(), "Id", "Fullname", projectUserVM.SelectedUsers);
-            //    projectUserVM.SelectedUsersName = project.Users.OrderBy(u => u.LastName).Select(u => u.Fullname).ToArray();
-
-            //    ViewBag.UserTimeZone = db.Users.Find(User.Identity.GetUserId()).TimeZone;
-
-            //    projects.Add(projectUserVM);
-            //}
-
-            //return View(projects.OrderBy(p => p.AssignProjectId).ToList());
-
-
-            //return View();
         }
+
 
         //*****************************************************************************
 

@@ -5,98 +5,131 @@
 }
 
 
-
-
-@*<div class="wrapper-page">
-        <div class="m-t-0 card-box">
-
-            <div class="text-center">
-                <a href="#" class="logo"><span>Resolve<span>()</span></span></a>
-                <h4 class="text-muted m-t-0 m-b-30 font-600">Issue Management</h4>
-            </div>
-
-        </div>
-        <!-- end card-box-->
-    </div>
-    <!-- end wrapper page -->*@
-
-
 <div class="wrapper" style="padding-top:50px">
     <div class="container">
 
-        <!-- Page-Title -->
-        @*<div class="row">
-                <div class="col-sm-12">
-                    <div class="btn-group pull-right m-t-15">
-                        <button type="button" class="btn btn-custom dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false">Settings <span class="m-l-5"><i class="fa fa-cog"></i></span></button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                        </ul>
-                    </div>
-                    <h4 class="page-title">Dashboard</h4>
-                </div>
-            </div>*@
-
-
         <div class="row">
-            <div class="col-lg-3 col-md-6">
+
+            <div class="col-lg-4">
                 <div class="card-box">
-                    @*<div class="dropdown pull-right">
-                            <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown"
-                               aria-expanded="false">
-                                <i class="zmdi zmdi-more-vert"></i>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </div>*@
+                    <div class="row">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-                    <h4 class="header-title m-t-0 m-b-30">Projects</h4>
+                            <!-- Assigned Projects -->
+                            <div class="panel panel-default bx-shadow-none">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <p class="panel-title" style="font-weight:500">
+                                        <a class="collapsed waves-effect waves-block" role="button" data-toggle="collapse"
+                                           data-parent="#accordion" href="#collapseOne"
+                                           aria-expanded="false" aria-controls="collapseOne">
+                                            @if (Model.AssignedProjects.Count != 0)
+                                            {
+                                                if (Model.AssignedProjects.Count == 1)
+                                                {
+                                                    @Model.AssignedProjects.Count<span> Assigned Project</span>
+                                                }
+                                                else
+                                                {
+                                                    @Model.AssignedProjects.Count<span> Assigned Projects</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span>No Projects have been Assigned</span>
+                                            }
+                                        </a>
+                                    </p>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse"
+                                     role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="inbox-widget nicescroll" style="height: 315px;">
+                                                @foreach (var project in Model.AssignedProjects)
+                                                {
+                                                    <div class="inbox-item">
+                                                        <p><span style="font-weight:bold">Name: </span>@project.Title</p>
+                                                        <p><span style="font-weight:bold">Description: </span>@project.Description</p>
+                                                        <p><span style="font-weight:bold">Total tickets: </span>@project.Tickets.Count</p>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <div class="widget-chart-1">
-                        <div class="widget-chart-box-1">
-                            <input data-plugin="knob" data-width="80" data-height="80" data-fgColor="#f05050 "
-                                   data-bgColor="#F9B9B9" value=@Model.Projects.Count
-                                   @*data-bgColor="#F9B9B9" value="33"*@
-                                   data-skin="tron" data-angleOffset="0" data-readOnly=true
-                                   data-thickness=".15" />
-                        </div>
-                        <div class="widget-detail-1">
-                            <h2 class="p-t-10 m-b-0"> Value </h2>
-                            <p class="text-muted">Description</p>
+                            <!-- All Projects -->
+                            @{
+                                if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                                {
+                                    <div class="panel panel-default bx-shadow-none">
+                                        <div class="panel-heading" role="tab" id="headingTwo">
+                                            <p class="panel-title" style="font-weight:500">
+                                                <a class="collapsed waves-effect waves-block" role="button" data-toggle="collapse"
+                                                   data-parent="#accordion" href="#collapseTwo"
+                                                   aria-expanded="false" aria-controls="collapseTwo">
+                                                    @if (Model.Projects.Count != 0)
+                                                    {
+                                                        if (Model.Projects.Count == 1)
+                                                        {
+                                                            @Model.Projects.Count<span> Project</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            @Model.Projects.Count<span> total Projects</span>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>No Projects exist</span>
+                                                    }
+                                                </a>
+                                            </p>
+                                        </div>
+                                        <div id="collapseTwo" class="panel-collapse collapse"
+                                             role="tabpanel" aria-labelledby="headingTwo">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="inbox-widget nicescroll" style="height: 315px;">
+                                                        @foreach (var project in Model.Projects)
+                                                        {
+                                                            <div class="inbox-item">
+                                                                <p><span style="font-weight:bold">Name: </span>@project.Title</p>
+                                                                <p><span style="font-weight:bold">Description: </span>@project.Description</p>
+                                                                <p><span style="font-weight:bold">Total tickets: </span>@project.Tickets.Count</p>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
                         </div>
                     </div>
-                    <hr />
-                    @*<h4 class="header-title m-t-0 m-b-30">Total Revenue</h4>
-
-                    <div class="widget-chart-1">
-                        <div class="widget-chart-box-1">
-                            <input data-plugin="knob" data-width="80" data-height="80" data-fgColor="#f05050 "
-                                   data-bgColor="#F9B9B9" value="58"
-                                   data-skin="tron" data-angleOffset="180" data-readOnly=true
-                                   data-thickness=".15" />
-                        </div>
-                        <div class="widget-detail-1">
-                            <h2 class="p-t-10 m-b-0"> 256 </h2>
-                            <p class="text-muted">Revenue today</p>
-                        </div>
-                    </div>*@
                 </div>
-            </div><!-- end col -->
+            </div>  <!-- end of Projects col -->
 
 
             <div class="col-lg-4">
                 <div class="card-box">
-                    <h4 class="header-title m-t-0 m-b-30"> Status: All Tickets </h4>
-                    <div id="donut-ticketStatus" style="height: 200px;"></div>
+                    @{
+                        if (User.IsInRole("Admin"))
+                        {
+                            <h4 class="header-title m-t-0 m-b-30"> Status: All Tickets </h4>
+                        }
+                        else if (User.IsInRole("ProjectManager"))
+                        {
+                            <h4 class="header-title m-t-0 m-b-30"> Status: All Tickets on Assigned Projects </h4>
+                        }
+                        else
+                        {
+                            <h4 class="header-title m-t-0 m-b-30"> Status: Tickets on Assigned Projects </h4>
+                        }
+                    }
+                    <div id="donut-ticketStatus" style="height: 150px;"></div>
 
                     <div class="text-center">
                         <ul class="list-inline chart-detail-list">
@@ -120,13 +153,26 @@
                         </ul>
                     </div>
                 </div>
-            </div><!-- end col-->
+            </div><!-- end of Ticket Status col-->
 
 
             <div class="col-lg-4">
                 <div class="card-box">
-                    <h4 class="header-title m-t-0 m-b-30"> Priority: All Tickets </h4>
-                    <div id="donut-ticketPriority" style="height: 200px;"></div>
+                    @{
+                        if (User.IsInRole("Admin"))
+                        {
+                            <h4 class="header-title m-t-0 m-b-30"> Priority: All Tickets </h4>
+                        }
+                        else if (User.IsInRole("ProjectManager"))
+                        {
+                            <h4 class="header-title m-t-0 m-b-30"> Priority: All Tickets on Assigned Projects </h4>
+                        }
+                        else
+                        {
+                            <h4 class="header-title m-t-0 m-b-30"> Priority: Tickets on Assigned Projects </h4>
+                        }
+                    }
+                    <div id="donut-ticketPriority" style="height: 150px;"></div>
 
                     <div class="text-center">
                         <ul class="list-inline chart-detail-list">
@@ -150,450 +196,9 @@
                         </ul>
                     </div>
                 </div>
-            </div><!-- end col-->
+            </div><!-- end of Ticket Priority col-->
 
-
-
-
-
-            <div>
-                @*<div class="col-lg-3 col-md-6">
-                        <div class="card-box">
-                            <div class="dropdown pull-right">
-                                <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <i class="zmdi zmdi-more-vert"></i>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                </ul>
-                            </div>
-
-                            <h4 class="header-title m-t-0 m-b-30">Sales Analytics</h4>
-
-                            <div class="widget-box-2">
-                                <div class="widget-detail-2">
-                                    <span class="badge badge-success pull-left m-t-20">
-                                        32% <i class="zmdi zmdi-trending-up"></i>
-                                    </span>
-                                    <h2 class="m-b-0"> 8451 </h2>
-                                    <p class="text-muted m-b-25">Revenue today</p>
-                                </div>
-                                <div class="progress progress-bar-success-alt progress-sm m-b-0">
-                                    <div class="progress-bar progress-bar-success" role="progressbar"
-                                         aria-valuenow="77" aria-valuemin="0" aria-valuemax="100"
-                                         style="width: 77%;">
-                                        <span class="sr-only">77% Complete</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> end col*@
-
-                @*<div class="col-lg-3 col-md-6">
-                        <div class="card-box">
-                            <div class="dropdown pull-right">
-                                <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <i class="zmdi zmdi-more-vert"></i>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                </ul>
-                            </div>
-
-                            <h4 class="header-title m-t-0 m-b-30">Statistics</h4>
-
-                            <div class="widget-chart-1">
-                                <div class="widget-chart-box-1">
-                                    <input data-plugin="knob" data-width="80" data-height="80" data-fgColor="#ffbd4a"
-                                           data-bgColor="#FFE6BA" value="80"
-                                           data-skin="tron" data-angleOffset="180" data-readOnly=true
-                                           data-thickness=".15" />
-                                </div>
-                                <div class="widget-detail-1">
-                                    <h2 class="p-t-10 m-b-0"> 4569 </h2>
-                                    <p class="text-muted">Revenue today</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div> end col*@
-
-                @*<div class="col-lg-3 col-md-6">
-                        <div class="card-box">
-                            <div class="dropdown pull-right">
-                                <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <i class="zmdi zmdi-more-vert"></i>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                </ul>
-                            </div>
-
-                            <h4 class="header-title m-t-0 m-b-30">Daily Sales</h4>
-
-                            <div class="widget-box-2">
-                                <div class="widget-detail-2">
-                                    <span class="badge badge-pink pull-left m-t-20">
-                                        32% <i class="zmdi zmdi-trending-up"></i>
-                                    </span>
-                                    <h2 class="m-b-0"> 158 </h2>
-                                    <p class="text-muted m-b-25">Revenue today</p>
-                                </div>
-                                <div class="progress progress-bar-pink-alt progress-sm m-b-0">
-                                    <div class="progress-bar progress-bar-pink" role="progressbar"
-                                         aria-valuenow="77" aria-valuemin="0" aria-valuemax="100"
-                                         style="width: 77%;">
-                                        <span class="sr-only">77% Complete</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> end col*@
-
-            </div>
-            <!-- end row -->
-        </div>
-
-        <div>
-            @*<div class="row">
-                    <div class="col-lg-4">
-                        <div class="card-box">
-                            <div class="dropdown pull-right">
-                                <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <i class="zmdi zmdi-more-vert"></i>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                </ul>
-                            </div>
-
-                            <h4 class="header-title m-t-0">Daily Sales</h4>
-
-                            <div class="widget-chart text-center">
-                                <div id="morris-donut-example" style="height: 245px;"></div>
-                                <ul class="list-inline chart-detail-list m-b-0">
-                                    <li>
-                                        <h5 style="color: #ff8acc;"><i class="fa fa-circle m-r-5"></i>Series A</h5>
-                                    </li>
-                                    <li>
-                                        <h5 style="color: #5b69bc;"><i class="fa fa-circle m-r-5"></i>Series B</h5>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div><!-- end col -->
-
-                    <div class="col-lg-4">
-                        <div class="card-box">
-                            <div class="dropdown pull-right">
-                                <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <i class="zmdi zmdi-more-vert"></i>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                </ul>
-                            </div>
-                            <h4 class="header-title m-t-0">Statistics</h4>
-                            <div id="morris-bar-example" style="height: 280px;"></div>
-                        </div>
-                    </div><!-- end col -->
-
-                    <div class="col-lg-4">
-                        <div class="card-box">
-                            <div class="dropdown pull-right">
-                                <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <i class="zmdi zmdi-more-vert"></i>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                </ul>
-                            </div>
-                            <h4 class="header-title m-t-0">Total Revenue</h4>
-                            <div id="morris-line-example" style="height: 280px;"></div>
-                        </div>
-                    </div><!-- end col -->
-
-                </div>
-                <!-- end row -->
-
-
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card-box widget-user">
-                            <div>
-                                <img src="assets/images/users/avatar-3.jpg" class="img-responsive img-circle"
-                                     alt="user">
-                                <div class="wid-u-info">
-                                    <h4 class="m-t-0 m-b-5 font-600">Chadengle</h4>
-                                    <p class="text-muted m-b-5 font-13">coderthemes@gmail.com</p>
-                                    <small class="text-warning"><b>Admin</b></small>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- end col -->
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card-box widget-user">
-                            <div>
-                                <img src="assets/images/users/avatar-2.jpg" class="img-responsive img-circle"
-                                     alt="user">
-                                <div class="wid-u-info">
-                                    <h4 class="m-t-0 m-b-5 font-600"> Michael Zenaty</h4>
-                                    <p class="text-muted m-b-5 font-13">coderthemes@gmail.com</p>
-                                    <small class="text-custom"><b>Support Lead</b></small>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- end col -->
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card-box widget-user">
-                            <div>
-                                <img src="assets/images/users/avatar-1.jpg" class="img-responsive img-circle"
-                                     alt="user">
-                                <div class="wid-u-info">
-                                    <h4 class="m-t-0 m-b-5 font-600">Stillnotdavid</h4>
-                                    <p class="text-muted m-b-5 font-13">coderthemes@gmail.com</p>
-                                    <small class="text-success"><b>Designer</b></small>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- end col -->
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card-box widget-user">
-                            <div>
-                                <img src="assets/images/users/avatar-10.jpg" class="img-responsive img-circle"
-                                     alt="user">
-                                <div class="wid-u-info">
-                                    <h4 class="m-t-0 m-b-5 font-600">Tomaslau</h4>
-                                    <p class="text-muted m-b-5 font-13">coderthemes@gmail.com</p>
-                                    <small class="text-info"><b>Developer</b></small>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- end col -->
-                </div>
-                <!-- end row -->*@
-        </div>
-
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="card-box">
-                    @*<div class="dropdown pull-right">
-                            <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown"
-                               aria-expanded="false">
-                                <i class="zmdi zmdi-more-vert"></i>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </div>*@
-
-                    <h4 class="header-title m-t-0 m-b-30">Inbox</h4>
-
-                    <div class="inbox-widget nicescroll" style="height: 315px;">
-
-                        @foreach (var project in Model.Projects)
-                        {
-                            <div class="inbox-item">
-                                <p>@project.Title</p>
-                            </div>
-                        }
-
-                        @*<a href="#">
-                            <div class="inbox-item">
-                                <div class="inbox-item-img">
-                                    <img src="~/assets/images/users/avatar-1.jpg"
-                                         class="img-circle" alt="">
-                                </div>
-                                <p class="inbox-item-author">Chadengle</p>
-                                <p class="inbox-item-text">Hey! there I'm available...</p>
-                                <p class="inbox-item-date">13:40 PM</p>
-                            </div>
-                        </a>
-                        <a href="#">
-                            <div class="inbox-item">
-                                <div class="inbox-item-img">
-                                    <img src="assets/images/users/avatar-2.jpg"
-                                         class="img-circle" alt="">
-                                </div>
-                                <p class="inbox-item-author">Tomaslau</p>
-                                <p class="inbox-item-text">I've finished it! See you so...</p>
-                                <p class="inbox-item-date">13:34 PM</p>
-                            </div>
-                        </a>
-                        <a href="#">
-                            <div class="inbox-item">
-                                <div class="inbox-item-img">
-                                    <img src="assets/images/users/avatar-3.jpg"
-                                         class="img-circle" alt="">
-                                </div>
-                                <p class="inbox-item-author">Stillnotdavid</p>
-                                <p class="inbox-item-text">This theme is awesome!</p>
-                                <p class="inbox-item-date">13:17 PM</p>
-                            </div>
-                        </a>
-                        <a href="#">
-                            <div class="inbox-item">
-                                <div class="inbox-item-img">
-                                    <img src="assets/images/users/avatar-4.jpg"
-                                         class="img-circle" alt="">
-                                </div>
-                                <p class="inbox-item-author">Kurafire</p>
-                                <p class="inbox-item-text">Nice to meet you</p>
-                                <p class="inbox-item-date">12:20 PM</p>
-                            </div>
-                        </a>
-                        <a href="#">
-                            <div class="inbox-item">
-                                <div class="inbox-item-img">
-                                    <img src="assets/images/users/avatar-5.jpg"
-                                         class="img-circle" alt="">
-                                </div>
-                                <p class="inbox-item-author">Shahedk</p>
-                                <p class="inbox-item-text">Hey! there I'm available...</p>
-                                <p class="inbox-item-date">10:15 AM</p>
-                            </div>
-                        </a>*@
-                    </div>
-                </div>
-            </div><!-- end col -->
-
-            <div class="col-lg-8">
-                <div class="card-box">
-                    @*<div class="dropdown pull-right">
-                            <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown"
-                               aria-expanded="false">
-                                <i class="zmdi zmdi-more-vert"></i>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </div>*@
-
-                    <h4 class="header-title m-t-0 m-b-30">Latest Projects</h4>
-
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Project Name</th>
-                                    <th>Start Date</th>
-                                    <th>Due Date</th>
-                                    <th>Status</th>
-                                    <th>Assign</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @*<tr>
-                                    <td>1</td>
-                                    <td>Adminto Admin v1</td>
-                                    <td>01/01/2016</td>
-                                    <td>26/04/2016</td>
-                                    <td><span class="label label-danger">Released</span></td>
-                                    <td>Coderthemes</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Adminto Frontend v1</td>
-                                    <td>01/01/2016</td>
-                                    <td>26/04/2016</td>
-                                    <td><span class="label label-success">Released</span></td>
-                                    <td>Adminto admin</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Adminto Admin v1.1</td>
-                                    <td>01/05/2016</td>
-                                    <td>10/05/2016</td>
-                                    <td><span class="label label-pink">Pending</span></td>
-                                    <td>Coderthemes</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Adminto Frontend v1.1</td>
-                                    <td>01/01/2016</td>
-                                    <td>31/05/2016</td>
-                                    <td>
-                                        <span class="label label-purple">Work in Progress</span>
-                                    </td>
-                                    <td>Adminto admin</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>Adminto Admin v1.3</td>
-                                    <td>01/01/2016</td>
-                                    <td>31/05/2016</td>
-                                    <td><span class="label label-warning">Coming soon</span></td>
-                                    <td>Coderthemes</td>
-                                </tr>
-
-                                <tr>
-                                    <td>6</td>
-                                    <td>Adminto Admin v1.3</td>
-                                    <td>01/01/2016</td>
-                                    <td>31/05/2016</td>
-                                    <td><span class="label label-primary">Coming soon</span></td>
-                                    <td>Adminto admin</td>
-                                </tr>
-
-                                <tr>
-                                    <td>7</td>
-                                    <td>Adminto Admin v1.3</td>
-                                    <td>01/01/2016</td>
-                                    <td>31/05/2016</td>
-                                    <td><span class="label label-primary">Coming soon</span></td>
-                                    <td>Adminto admin</td>
-                                </tr>*@
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div><!-- end col -->
-
-        </div>
-        <!-- end row -->
-        <!-- ******************************************************************************************************************** -->
+        </div><!-- end of row -->
 
     </div>
 </div>
@@ -605,10 +210,10 @@
         Morris.Donut({
             element: 'donut-ticketStatus',
             data: [
-                { label: "Resolved", value: @Model.Tickets.Where(t => t.TicketStatusId == 1).Count() },     //@ViewBag.ResolvedTk },
-                { label: "In Progress", value: @Model.Tickets.Where(t => t.TicketStatusId == 2).Count() },     //@ViewBag.InProgressTk },
-                { label: "Assigned", value: @Model.Tickets.Where(t => t.TicketStatusId == 3).Count() },     //@ViewBag.AssignedTk },
-                { label: "Unassigned", value: @Model.Tickets.Where(t => t.TicketStatusId == 4).Count() },     //@ViewBag.UnassignedTk }
+                { label: "Resolved", value: @Model.Tickets.Where(t => t.TicketStatus.Name == "Resolved").Count() },
+                { label: "In Progress", value: @Model.Tickets.Where(t => t.TicketStatus.Name == "In Progress").Count() },
+                { label: "Assigned", value: @Model.Tickets.Where(t => t.TicketStatus.Name == "Assigned").Count() },
+                { label: "Unassigned", value: @Model.Tickets.Where(t => t.TicketStatus.Name == "Unassigned").Count() },
             ],
             colors: ["#10c469", "#35b8e0", "#5b69bc", "#ff8acc"]
         });
@@ -618,10 +223,10 @@
         Morris.Donut({
             element: 'donut-ticketPriority',
             data: [
-                { label: "Urgent", value: @Model.Tickets.Where(t => t.TicketPriorityId == 1).Count() },     //@ViewBag.UrgentTk },
-                { label: "High", value: @Model.Tickets.Where(t => t.TicketPriorityId == 2).Count() },     //@ViewBag.HighTk },
-                { label: "Medium", value: @Model.Tickets.Where(t => t.TicketPriorityId == 3).Count() },     //@ViewBag.MediumTk },
-                { label: "Low", value: @Model.Tickets.Where(t => t.TicketPriorityId == 4).Count() },     //@ViewBag.LowTk }
+                { label: "Urgent", value: @Model.Tickets.Where(t => t.TicketPriority.Name == "Urgent").Count() },
+                { label: "High", value: @Model.Tickets.Where(t => t.TicketPriority.Name == "High").Count() },
+                { label: "Medium", value: @Model.Tickets.Where(t => t.TicketPriority.Name == "Medium").Count() },
+                { label: "Low", value: @Model.Tickets.Where(t => t.TicketPriority.Name == "Low").Count() },
             ],
             colors: ["#ff0000", "#ff8000", "#ffff00", "#40ff00"]
         });
