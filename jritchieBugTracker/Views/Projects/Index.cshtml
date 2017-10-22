@@ -134,7 +134,7 @@
 
                                     @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                                     {
-                                        <span>---</span>
+                                        <hr style="margin:3px 0px 3px 0px" />
                                         @*<a href="@Url.Action("Edit", new { id = item.AssignProject.Id } )" style="display:block" ><i class="fa fa-pencil-square-o"></i><span> Edit </span></a>*@
                                         <a href="@Url.Action("AssignProjectUser", new { id = item.AssignProject.Id } )" style="display:block"><i class="fa fa-user-plus"></i><span> Assign User </span></a>
                                         @*<span>---</span>

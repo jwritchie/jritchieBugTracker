@@ -47,7 +47,7 @@
 
                 <!-- LOGO -->
                 <div class="topbar-left">
-                    <a href="#" class="logo"><span>Resolve<span>()</span></span></a>
+                    <a class="logo"><span>Resolve<span>()</span></span></a>
                 </div>
                 <!-- End Logo container-->
 
@@ -56,74 +56,91 @@
     </header>
     <!-- End Navigation Bar-->
 
-    <div class="wrapper-page">
-        <div class="card-box" style="margin-top:120px !important">
+    <div class="wrapper" style="padding-top:120px">
+        <div class="container">
 
-            <div class="text-center">
-                <a href="#" class="logo"><span>Resolve<span>()</span></span></a>
-                <h4 class="text-muted m-t-0 m-b-30 font-600">Issue Management</h4>
+            <div class="row" style="padding: 20px;
+                                    box-shadow: 0 0px 8px 0 rgba(0,0,0,0.06), 0 1px 0px 0 rgba(0,0,0,0.02);
+                                    border-radius: 5px;
+                                    background-color: #ffffff;
+                                    max-width: 385px;
+                                    margin:0 auto">
+
+                <div class="text-center">
+                    <div class="row">
+                        <a class="logo" style="float:none"><span>Resolve<span>()</span></span></a>
+                    </div>
+                    <div class="row">
+                        <h4 class="text-muted m-t-0 m-b-10 font-600">Issue Management</h4>
+                    </div>
+                    <hr />
+                    <div class="text-center">
+                        <h4 class="font-bold m-b-4">Sign in using a demo User account:</h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <a class="btn btn-default" style="width:135px; margin-bottom:4px" href="@Url.Action("DemoLogin", "Account", new { userType = "Admin" } )">Administrator</a>
+                            <a class="btn btn-default" style="width:135px; margin-bottom:4px" href="@Url.Action("DemoLogin", "Account", new { userType = "ProjectManager" } )">Project Manager</a>
+                        </div>
+                        <div class="col-sm-12 text-center">
+                            <a class="btn btn-default" style="width:135px; margin-bottom:4px" href="@Url.Action("DemoLogin", "Account", new { userType = "Developer" } )">Developer</a>
+                            <a class="btn btn-default" style="width:135px; margin-bottom:4px" href="@Url.Action("DemoLogin", "Account", new { userType = "Submitter" } )">Submitter</a>
+                        </div>
+                    </div>
+
+                    <div class="text-muted" style="text-align:center">
+                        <a id="rolesModal" data-toggle="modal" data-target="#roles-Modal">
+                            What can these Roles do?
+                        </a>
+                    </div>
+
+                    <div class="text-center" style="margin-top:14px">
+                        <h4 class="font-bold">OR</h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <a class="btn btn-default" style="width:135px" href="@Url.Action("Login", "Account")">Login</a>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="text-center">
-                <h4 class="font-bold m-b-0">Sign in using a demo User account:</h4>
-            </div>
+            <div class="row" style="padding: 20px;
+                                    box-shadow: 0 0px 8px 0 rgba(0,0,0,0.06), 0 1px 0px 0 rgba(0,0,0,0.02);
+                                    border-radius: 5px;
+                                    background-color: #ffffff;
+                                    max-width: 700px;
+                                    margin:20px auto">
 
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <a class="btn btn-default" style="width:135px; margin-bottom:4px" href="@Url.Action("DemoLogin", "Account", new { userType = "Admin" } )">Administrator</a>
-                        <a class="btn btn-default" style="width:135px; margin-bottom:4px" href="@Url.Action("DemoLogin", "Account", new { userType = "ProjectManager" } )">Project Manager</a>
-                    </div>
-                    <div class="col-sm-12 text-center">
-                        <a class="btn btn-default" style="width:135px; margin-bottom:4px" href="@Url.Action("DemoLogin", "Account", new { userType = "Developer" } )">Developer</a>
-                        <a class="btn btn-default" style="width:135px; margin-bottom:4px" href="@Url.Action("DemoLogin", "Account", new { userType = "Submitter" } )">Submitter</a>
-                    </div>
+                <div class="text-center">
+                    <h4>
+                        <span style="font-family:Courgette; color:#188ae2">Resolve</span><span style="font-family:Courgette; color:#ff6600">()</span> is a Web-based ticketing application built with ASP.NET MVC using C#
+                    </h4>
                 </div>
 
-                <div class="text-muted" style="text-align:center">
-                    <a id="rolesModal" data-toggle="modal" data-target="#roles-Modal">
-                        What can these Roles do?
-                    </a>
-                </div>
-
-                <div class="text-center" style="margin-top:14px">
-                    <h4 class="font-bold">OR</h4>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <a class="btn btn-default" style="width:135px" href="@Url.Action("Login", "Account")">Login</a>
-                    </div>
+                <div style="margin:0px 20px 0px 7px">
+                    <ul>
+                        <li>
+                            Code-First SQL Server database implementation using Entity Framework with Authentication and Authorization for user- and role-level security.
+                        </li>
+                        <li>
+                            LINQ server-side database queries to prevent SQL injection attacks.
+                        </li>
+                        <li>
+                            Front-end Web pages built with HTML5, CSS, Bootstrap, model binding with Razor, JavaScript, and jQuery.
+                        </li>
+                        <li>
+                            SMTP Email notifications for Ticket submissions/edits.
+                        </li>
+                    </ul>
                 </div>
 
             </div>
-            <!-- end panel-body -->
         </div>
-        <!-- end card-box-->
-
-
-        <div class="card-box">
-            <p style="text-align:center">
-                Resolve() is a Web-based ticketing application built with ASP.NET MVC using C#.
-            </p>
-            <ul style="margin-left:-14px">
-                <li>
-                    Code-First SQL Server database implementation using Entity Framework with Authentication and Authorization for user- and role-level security.
-                </li>
-                <li>
-                    LINQ server-side database queries to prevent SQL injection attacks.
-                </li>
-                <li>
-                    Front-end Web pages built with HTML5, CSS, Bootstrap, model binding with Razor, JavaScript, and jQuery.
-                </li>
-                <li>
-                    SMTP Email notifications for Ticket submissions/edits.
-                </li>
-            </ul>
-        </div>
-
     </div>
-    <!-- end wrapper page -->
+
     <!-- Footer -->
     <footer class="footer text-right">
         <div class="container">
@@ -136,8 +153,7 @@
     </footer>
     <!-- End Footer -->
 
-
-        <!--Roles modal-->
+    <!--Roles modal-->
     <div id="roles-Modal" class="modal fade" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -199,12 +215,12 @@
                                     <td>No</td>
                                 </tr>
                                 @*<tr>
-                                    <td>Archive Projects*</td>
-                                    <td>Yes</td>
-                                    <td>Yes</td>
-                                    <td>No</td>
-                                    <td>No</td>
-                                </tr>*@
+                                        <td>Archive Projects*</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                        <td>No</td>
+                                        <td>No</td>
+                                    </tr>*@
                                 <tr>
                                     <td>View Ticket Details</td>
                                     <td>All tickets for all projects</td>
@@ -242,8 +258,8 @@
                                 </tr>
                                 <tr>
                                     <td>Edit Ticket: Status</td>
-                                    <td>Yes (back-end may be automated)</td>
-                                    <td>Yes (back-end may be automated)</td>
+                                    <td>Yes (Dev. assignment automated)</td>
+                                    <td>Yes (Dev. assignment automated)</td>
                                     <td>No</td>
                                     <td>No</td>
                                 </tr>
@@ -269,12 +285,12 @@
                                     <td>Only their own</td>
                                 </tr>
                                 @*<tr>
-                                    <td>Edit/Delete Ticket Attachment</td> Delete
-                                    <td>Yes</td>
-                                    <td>Only tickets for projects they belong to</td>
-                                    <td>Only their own</td>
-                                    <td>Only their own</td>
-                                </tr>*@
+                                        <td>Edit/Delete Ticket Attachment</td> Delete
+                                        <td>Yes</td>
+                                        <td>Only tickets for projects they belong to</td>
+                                        <td>Only their own</td>
+                                        <td>Only their own</td>
+                                    </tr>*@
                                 <tr>
                                     <td>View Ticket History</td>
                                     <td>Yes</td>

@@ -4,61 +4,96 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+@*<h2>Delete</h2>*@
+<div class="container">
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>TicketAttachment</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Author.FirstName)
-        </dt>
+    <div class="row" style="margin-top:10px">
+        <div class="col-sm-12">
+            <div class="card-box table-responsive">
 
-        <dd>
-            @Html.DisplayFor(model => model.Author.FirstName)
-        </dd>
+                <h4 class="header-title m-t-0 m-b-30">Delete Attachment</h4>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Ticket.Title)
-        </dt>
+                <hr />
 
-        <dd>
-            @Html.DisplayFor(model => model.Ticket.Title)
-        </dd>
+                <h5 style="margin-bottom:20px">Are you sure you want to delete this?</h5>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+                <div class="form-horizontal">
+                    <div class="row">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Ticket Name
+                                @*@Html.DisplayNameFor(model => model.Ticket.Title)*@
+                            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+                            <dd>
+                                @Html.DisplayFor(model => model.Ticket.Title)
+                            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
+                            <dt>
+                                File uploaded by
+                                @*@Html.DisplayNameFor(model => model.Author.FirstName)*@
+                            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
+                            <dd>
+                                @Html.DisplayFor(model => model.Author.Fullname)
+                            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FileUrl)
-        </dt>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Created)
+                            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.FileUrl)
-        </dd>
+                            <dd>
+                                @Html.ToUserTime(Model.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")
+                            </dd>
 
-    </dl>
+                            <dt>
+                                File Name
+                                @*@Html.DisplayNameFor(model => model.FileUrl)*@
+                            </dt>
 
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
+                            <dd>
+                                <a href="@Model.FileUrl" target="_blank">@Model.FileUrl.Substring(Model.FileUrl.LastIndexOf("/") + 1)</a>
+                                @*@Html.DisplayFor(model => model.FileUrl)*@
+                            </dd>
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+                            <dt>
+                                File Description
+                                @*@Html.DisplayNameFor(model => model.Description)*@
+                            </dt>
+
+                            <dd>
+                                @{
+                                    if (Model.Description == null)
+                                    {
+                                        <span>-</span>
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(model => model.Description)
+
+                                    }
+                                }
+                            </dd>
+                        </dl>
+
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-actions no-color col-md-2">
+                                <input type="submit" value="Delete" class="btn btn-default" />
+                            </div>
+                        }
+                    </div>
+
+                    <hr />
+
+                    <div class="row" style="text-align:center">
+                        <a href="@Url.Action("Details", "Tickets", new { id = Model.TicketId } )"><i class="fa fa-eye"></i><span> Return to Ticket Details </span></a>
+                    </div>
+
+                </div>
+            </div>
         </div>
-    }
+    </div>
 </div>

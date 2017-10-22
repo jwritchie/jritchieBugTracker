@@ -160,7 +160,7 @@
                                     <a href="@Url.Action("Details", new { id = item.Id } )" style="display:block"><i class="fa fa-eye"></i><span> Details </span></a>
                                     @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                                     {
-                                        <span>---</span>
+                                        <hr style="margin:3px 0px 3px 0px"/>
                                         <a href="@Url.Action("AssignTicketUser", new { ticketId = item.Id } )" style="display:block"><i class="fa fa-user-plus"></i><span> Assign Dev. </span></a>
                                     }
                                 </td>

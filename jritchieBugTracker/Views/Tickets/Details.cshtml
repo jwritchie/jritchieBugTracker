@@ -348,6 +348,7 @@
                                                 <th>
                                                     Description
                                                 </th>
+                                                <th></th>
                                             </tr>
                                         </thead>
 
@@ -356,15 +357,26 @@
                                             {
                                                 <tr>
                                                     <td>
-                                                        @*@file.Created*@
                                                         @Html.ToUserTime(file.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")
                                                     </td>
                                                     <td>
                                                         <a href="@file.FileUrl" target="_blank">@file.FileUrl.Substring(file.FileUrl.LastIndexOf("/") + 1)</a>
                                                     </td>
                                                     <td>
-                                                        @file.Description
-                                                        @*@Html.ActionLink("Edit attachment", "Edit", "TicketAttachments", new { id = file.Id }, null )*@
+                                                        @{
+                                                            if (file.Description == null)
+                                                            {
+                                                                <span>-</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>@file.Description</span>
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @*@Html.ActionLink("Delete file", "Delete", "TicketAttachments", new { id = file.Id }, null )*@
+                                                        <a href="@Url.Action("Delete", "TicketAttachments", new { id = file.Id } )"><i class="fa fa-trash"></i><span> Delete File </span></a>
                                                     </td>
                                                 </tr>
                                             }
@@ -377,12 +389,18 @@
                                     {
                                         @Html.AntiForgeryToken()
 
-                                        <h4>Upload attachment(s)</h4>
+                                        <h4>Upload attachment</h4>
+                                        <div class="row">
+                                            <div class="col-md-10 col-md-offset-2">
+                                                <p>Allowed file formats: .png, .jpg, .jpeg, .gif, .bmp, .doc, .docx, .rtf, .txt, .pdf, .xls, .xlsx, .ppt, .pptx </p>
+                                            </div>
+                                        </div>
+                                        
                                         <div class="row">
                                             <div class="form-group">
-                                                <label class="control-label col-md-2">New file(s)</label>
+                                                <label class="control-label col-md-2">New file</label>
                                                 <div class="col-md-10">
-                                                    <input name="attachment" type="file" class="form-control" multiple />
+                                                    <input name="attachment" type="file" class="form-control" />
                                                 </div>
                                             </div>
 
@@ -397,7 +415,7 @@
                                             <div class="form-group">
                                                 <div class="col-md-offset-2 col-md-10" style="margin-top:10px">
                                                     <!-- Input/Button to submit the data. -->
-                                                    <input type="submit" value="Create attachment" class="btn btn-primary" />
+                                                    <input type="submit" value="Upload attachment" class="btn btn-primary" />
                                                 </div>
                                             </div>
                                         </div>
@@ -720,7 +738,7 @@
                                                         <th>Property</th>
                                                         <th>Old Value</th>
                                                         <th>New Value</th>
-                                                        <th>Submitter</th>
+                                                        <th>Updated by</th>
                                                     </tr>
                                                 </thead>
 

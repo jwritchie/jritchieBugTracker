@@ -15,40 +15,5 @@ Add:
 ----
 	3rd-party logins to Login View
 	Archiving
-	Attachment file & folder handling (create Ticket-specific folders, test for duplicate file names)
 
 
-Optional:
----------
-	Manage/ Index		Add Demo Role descriptions?
-
-	Home/ About			Not used. Do I want to implement?
-	Home/ Contact		Not used. Do I want to implement?
-
-	*************************************************************************************************
-
-System.IO.Directory.CreateDirectory
-
-
-string curFile = @"c:\temp\test.txt";
-Console.WriteLine(File.Exists(curFile) ? "File exists." : "File does not exist.");
-
-
-----------------------------------------------------------------------------------
-
-string result = "myfile.txt".AppendTimeStamp();
-//myfile20130604234625642.txt
-
-Extension method
-
-public static class MyExtensions
-{
-    public static string AppendTimeStamp(this string fileName)
-    {
-        return string.Concat(
-            Path.GetFileNameWithoutExtension(fileName),
-            DateTime.Now.ToString("yyyyMMddHHmmssfff"),
-            Path.GetExtension(fileName)
-            );
-    }
-}

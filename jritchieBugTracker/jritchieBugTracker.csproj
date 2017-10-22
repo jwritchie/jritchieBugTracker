@@ -1658,6 +1658,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
+    <Content Include="FileAttachments\5\EcuadorMantis.jpg" />
     <Content Include="FileAttachments\EcuadorMantis.jpg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1859,6 +1860,7 @@
     <Content Include="Assets\plugins\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="Assets\plugins\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <Content Include="Assets\plugins\toastr\toastr.js.map" />
+    <Content Include="FileAttachments\Project Deliverables - Week 6 - BugTracker.pdf" />
     <None Include="Properties\PublishProfiles\jritchie-bugtracker - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\jritchie-bugtracker - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
