@@ -21,5 +21,7 @@ namespace jritchieBugTracker.Models.Helpers
         public virtual ICollection<Project> Projects { get; set; }
         public virtual ICollection<Project> AssignedProjects { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }
+
+        public ApplicationUser CurrentUser { get; set; }
     }
 }

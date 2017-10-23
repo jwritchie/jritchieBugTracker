@@ -49,8 +49,15 @@
                                                 {
                                                     <div class="inbox-item">
                                                         <p><span style="font-weight:bold">Name: </span>@project.Title</p>
-                                                        <p><span style="font-weight:bold">Description: </span>@project.Description</p>
-                                                        <p><span style="font-weight:bold">Total tickets: </span>@project.Tickets.Count</p>
+                                                        <p style="margin-top:0px"><span style="font-weight:bold">Description: </span>@project.Description</p>
+                                                        <p>
+                                                            @{
+                                                                int TotalDevTickets = project.Tickets.Where(t => t.AssignToUserId == Model.CurrentUser.Id).Count();
+                                                                int TotalSubTickets = project.Tickets.Where(t => t.OwnerUserId == Model.CurrentUser.Id).Count();
+                                                                int TotalAssignedTickets = TotalDevTickets + TotalSubTickets;
+                                                                <span style="font-weight:bold">Total tickets: </span><span>@TotalAssignedTickets (Submitter: @TotalSubTickets, Developer: @TotalDevTickets)</span>
+                                                            }
+                                                        </p>
                                                     </div>
                                                 }
                                             </div>
@@ -96,7 +103,7 @@
                                                         {
                                                             <div class="inbox-item">
                                                                 <p><span style="font-weight:bold">Name: </span>@project.Title</p>
-                                                                <p><span style="font-weight:bold">Description: </span>@project.Description</p>
+                                                                <p style="margin-top:0px"><span style="font-weight:bold">Description: </span>@project.Description</p>
                                                                 <p><span style="font-weight:bold">Total tickets: </span>@project.Tickets.Count</p>
                                                             </div>
                                                         }

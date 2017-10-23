@@ -42,7 +42,7 @@
                                 user != "developer@coderfoundry.com" && user != "submitter@coderfoundry.com")
                                 {
                                     <dl class="dl-horizontal">
-                                        <dt>Name:</dt>
+                                        <dt>Profile:</dt>
                                         <dd>
                                             [
                                             @Html.ActionLink("Update Profile", "ChangeProfile")
@@ -61,6 +61,30 @@
                                             }
                                             ]
                                         </dd>
+                                        @*<dt style="margin-top:10px">Picture:</dt>
+                                        <dd style="margin-top:10px">
+                                            <span class="text-muted">Allowed file formats: .png, .jpg, .jpeg, .gif, .bmp </span>
+                                            @using (Html.BeginForm("ChangeProfilePicture", "Manage", new { Id = User.Identity.GetUserId() }, FormMethod.Post, new { enctype = "Multipart/form-data" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <div class="col-md-10">
+                                                            <input name="profilePicture" type="file" class="form-control" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-10" style="margin-top:6px">
+                                                             Input/Button to submit the data. 
+                                                            <input type="submit" value="Upload picture" class="btn btn-primary" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            &nbsp;&nbsp;
+                                        </dd>*@
                                     </dl>
                                 }
                                 else
@@ -78,6 +102,7 @@
                             @*<p>Hi I'm Alexandra Clarkson,has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type.Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC,making it over 2000 years old.Contrary to popular belief, Lorem Ipsum is not simplyrandom text. It has roots in a piece of classical Latin literature from 45 BC.</p>*@
 
                         </div>
+
                         <div class="clearfix"></div>
                     </div>
                 </div>

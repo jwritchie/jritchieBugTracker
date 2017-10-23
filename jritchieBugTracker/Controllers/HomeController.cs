@@ -27,6 +27,9 @@ namespace jritchieBugTracker.Controllers
             var user = db.Users.Find(User.Identity.GetUserId());
 
             DashboardViewModel dashboard = new DashboardViewModel();
+            dashboard.CurrentUser = user;
+
+            // Users.
             dashboard.Users = db.Users.ToList();
 
             // Projects.
@@ -45,7 +48,9 @@ namespace jritchieBugTracker.Controllers
                 List<Ticket> UsersTickets = new List<Ticket>();
             if (User.IsInRole("Admin"))
             {
-                dashboard.Tickets = db.Tickets.ToList();
+                UsersTickets.AddRange(db.Tickets.ToList());
+                //dashboard.Tickets = db.Tickets.ToList();
+                //return View(dashboard);
             }
             if (User.IsInRole("ProjectManager"))
             {

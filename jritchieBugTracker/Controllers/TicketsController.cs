@@ -616,6 +616,35 @@ namespace jritchieBugTracker.Controllers
 
                 string priorDev = db.Tickets.AsNoTracking().First(t => t.Id == model.Id).AssignToUserId;
 
+                if (model.AssignToUserId == null && priorDev != null)
+                {
+                    var role = db.Roles.FirstOrDefault(r => r.Name == "Developer");
+                    var developers = db.Users.Where(u => u.Roles.Any(r => r.RoleId == role.Id));
+                    var devsInTicketProj = developers.Where(d => d.Projects.Any(p => p.Id == model.ProjectId));
+                    ViewBag.AssignToUserId = new SelectList(devsInTicketProj.OrderBy(d => d.LastName), "Id", "FullName", model.AssignToUserId);
+
+                    //***************
+                    model.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Unassigned").Id;
+
+                    TicketHistory noDevticketHistory = new TicketHistory();
+                    noDevticketHistory.TicketId = model.Id;
+                    noDevticketHistory.Property = "Ticket Developer";
+                    noDevticketHistory.OldValue = db.Users.Find(priorDev).Fullname;
+                    noDevticketHistory.NewValue = "No Developer Assigned";
+                    noDevticketHistory.Created = DateTimeOffset.UtcNow;
+                    noDevticketHistory.AuthorId = User.Identity.GetUserId();
+                    noDevticketHistory.HistoricPriority = model.TicketPriorityId;
+                    noDevticketHistory.HistoricStatus = model.TicketStatusId;
+                    db.TicketHistories.Add(noDevticketHistory);
+                    db.SaveChanges();
+
+                    db.Entry(model).State = EntityState.Modified;
+                    db.SaveChanges();
+                    //***************
+
+                    return View(model);
+                }
+
                 model.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Assigned").Id;
 
                 TicketHistory ticketHistory = new TicketHistory();
