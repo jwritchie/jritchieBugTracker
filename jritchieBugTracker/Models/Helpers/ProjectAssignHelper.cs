@@ -40,7 +40,7 @@ namespace jritchieBugTracker.Models.Helpers
         public ICollection<Project> ListUserProjects(string userId)
         {
             var user = db.Users.Find(userId);
-            return user.Projects.ToList();
+            return user.Projects.OrderBy(p => p.Title).ToList();
         }
         
         // List all Users on a Project.

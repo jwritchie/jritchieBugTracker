@@ -21,6 +21,7 @@ namespace jritchieBugTracker.Controllers
                 ViewBag.FirstName = user.FirstName;
                 ViewBag.LastName = user.LastName;
                 ViewBag.FullName = user.Fullname;
+                ViewBag.CurrentUser = user;
             }
 
             base.OnActionExecuting(filterContext);

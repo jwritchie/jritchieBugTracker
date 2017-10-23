@@ -146,18 +146,46 @@
                     </div>
                 </div>
 
+                <!-- Developer Acknowledgement of Ticket assignment -->
+                @if (User.IsInRole("Developer") && Model.TicketStatusId == 3 && ViewBag.CurrentUser.Id == Model.AssignToUserId)
+                {
+                    using (Html.BeginForm("Edit", "Tickets", new { TicketId = Model.Id }, FormMethod.Post, null))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.HiddenFor(model => model.Created)
+                        @Html.HiddenFor(model => model.Updated)
+                        @Html.HiddenFor(model => model.ProjectId)
+                        @Html.HiddenFor(model => model.OwnerUserId)
+                        @Html.HiddenFor(model => model.AssignToUserId)
+                        @Html.HiddenFor(model => model.Title)
+                        @Html.HiddenFor(model => model.Description)
+                        @Html.HiddenFor(model => model.TicketTypeId)
+                        @Html.HiddenFor(model => model.TicketPriorityId)
+
+                        <select name="TicketStatusId" style="display:none">
+                            <option value="2" selected>In Progress</option>
+                        </select>
+                        <input type="submit" value="Acknowledge Assignment" class="btn btn-default col-md-offset-2" />
+                    }
+                }
+                <!-- -->
+
                 <hr />
 
                 <div class="row">
                     <div class="col-md-12" style="text-align:center">
                         <p>
-                            <a href="@Url.Action("Edit", new { id = Model.Id } )"><i class="fa fa-pencil-square-o"></i><span> Edit Ticket</span></a> 
+                            <a href="@Url.Action("Edit", new { id = Model.Id } )"><i class="fa fa-pencil-square-o"></i><span> Edit Ticket</span></a>
 
                             @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                             {
                                 <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-                                <a href="@Url.Action("AssignTicketUser", new { ticketId = Model.Id } )"><i class="fa fa-user-plus"></i><span> Assign Developer </span></a>
-                                @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
+                                    <a href="@Url.Action("AssignTicketUser", new { ticketId = Model.Id } )"><i class="fa fa-user-plus"></i><span> Assign Developer </span></a>
+                                    @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
                             }
                             <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
                             <a href="@Url.Action("Index")"><i class="fa fa-ticket"></i><span> Return to Tickets </span></a>
@@ -248,45 +276,45 @@
                                                         }
                                                     </div>
 
-                                                    commentFieldLight = false;
-                                                }
-                                                else                    // Comment with Dark background.
-                                                {
-                                                    <div style="padding:6px; background-color:#d1dae1; box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
-                                                        <p style="font-size:smaller">
-                                                            <span style="font-weight:bold">
-                                                                Posted:
-                                                            </span>@Html.ToUserTime(comment.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss"): &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:
-                                                        </p>
-                                                        <p>@comment.Body</p>
-
-                                                        @{  // Display Comment-Update information if available.
-                                                            if (comment.Updated != null)
-                                                            {
-                                                                <div style="border:1px solid #93a8b8; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
-                                                                    <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@Html.ToUserTime(comment.Updated.Value, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")</p>
-                                                                </div>
+                                                                commentFieldLight = false;
                                                             }
-                                                        }
-
-                                                        @{  // Allow Editing/Deleting Comments.
-                                                            if (User.IsInRole("Admin") ||
-                                                            (User.IsInRole("ProjectManager") && Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
-                                                            comment.AuthorId == ViewBag.UserId)
+                                                            else                    // Comment with Dark background.
                                                             {
-                                                                <div style="text-align:center">
-                                                                    <a href="@Url.Action("Edit", "TicketComments", new { id = comment.Id } )"><i class="fa fa-pencil-square-o"></i><span> Edit Comment </span></a>
-                                                                    &nbsp;&nbsp;|&nbsp;&nbsp;
-                                                                    <a href="@Url.Action("Delete", "TicketComments", new { id = comment.Id } )"><i class="fa fa-trash"></i><span> Delete Comment </span></a>
-                                                                </div>
-                                                            }
-                                                        }
-                                                    </div>
+                                                                <div style="padding:6px; background-color:#d1dae1; box-shadow:2px 2px 3px rgba(30,30,30,0.25)">
+                                                                    <p style="font-size:smaller">
+                                                                        <span style="font-weight:bold">
+                                                                            Posted:
+                                                                        </span>@Html.ToUserTime(comment.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss"): &nbsp;<span style="font-weight:bold">@comment.Author.Fullname</span> said:
+                                                                    </p>
+                                                                    <p>@comment.Body</p>
 
-                                                    commentFieldLight = true;
-                                                }
-                                                <hr />
-                                            }
+                                                                    @{  // Display Comment-Update information if available.
+                                                                        if (comment.Updated != null)
+                                                                        {
+                                                                            <div style="border:1px solid #93a8b8; margin: 0px 10px 6px 10px; padding: 10px 10px 0px 10px">
+                                                                                <p style="font-size:smaller"><span style="font-weight:bold">Edited: </span>@Html.ToUserTime(comment.Updated.Value, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")</p>
+                                                                            </div>
+                                                                        }
+                                                                    }
+
+                                                                    @{  // Allow Editing/Deleting Comments.
+                                                                        if (User.IsInRole("Admin") ||
+                                                                        (User.IsInRole("ProjectManager") && Model.Project.Users.Any(u => u.Id == ViewBag.UserId)) ||
+                                                                        comment.AuthorId == ViewBag.UserId)
+                                                                        {
+                                                                            <div style="text-align:center">
+                                                                                <a href="@Url.Action("Edit", "TicketComments", new { id = comment.Id } )"><i class="fa fa-pencil-square-o"></i><span> Edit Comment </span></a>
+                                                                                &nbsp;&nbsp;|&nbsp;&nbsp;
+                                                                                <a href="@Url.Action("Delete", "TicketComments", new { id = comment.Id } )"><i class="fa fa-trash"></i><span> Delete Comment </span></a>
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                </div>
+
+                                                                            commentFieldLight = true;
+                                                                        }
+                                                                        <hr />
+                                                                        }
                                         }
 
                                         @{if (Request.IsAuthenticated)    // Confirm user is logged in before allowing Comment creation.
@@ -379,7 +407,7 @@
                                                         <a href="@Url.Action("Delete", "TicketAttachments", new { id = file.Id } )"><i class="fa fa-trash"></i><span> Delete File </span></a>
                                                     </td>
                                                 </tr>
-                                            }
+                                                            }
                                         </tbody>
                                     </table>
 
@@ -390,35 +418,35 @@
                                         @Html.AntiForgeryToken()
 
                                         <h4>Upload attachment</h4>
-                                        <div class="row">
-                                            <div class="col-md-10 col-md-offset-2">
-                                                <p>Allowed file formats: .png, .jpg, .jpeg, .gif, .bmp, .doc, .docx, .rtf, .txt, .pdf, .xls, .xlsx, .ppt, .pptx </p>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="row">
-                                            <div class="form-group">
-                                                <label class="control-label col-md-2">New file</label>
-                                                <div class="col-md-10">
-                                                    <input name="attachment" type="file" class="form-control" />
-                                                </div>
-                                            </div>
+                                                        <div class="row">
+                                                            <div class="col-md-10 col-md-offset-2">
+                                                                <p>Allowed file formats: .png, .jpg, .jpeg, .gif, .bmp, .doc, .docx, .rtf, .txt, .pdf, .xls, .xlsx, .ppt, .pptx </p>
+                                                            </div>
+                                                        </div>
 
-                                            <div class="form-group">
-                                                <label class="control-label col-md-2">File description</label>
-                                                <div class="col-md-10">
-                                                    <textarea name="Description" class="form-control" style="max-width:none !important; width:100%"></textarea>
-                                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>
+                                                        <div class="row">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-2">New file</label>
+                                                                <div class="col-md-10">
+                                                                    <input name="attachment" type="file" class="form-control" />
+                                                                </div>
+                                                            </div>
 
-                                            <div class="form-group">
-                                                <div class="col-md-offset-2 col-md-10" style="margin-top:10px">
-                                                    <!-- Input/Button to submit the data. -->
-                                                    <input type="submit" value="Upload attachment" class="btn btn-primary" />
-                                                </div>
-                                            </div>
-                                        </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-2">File description</label>
+                                                                <div class="col-md-10">
+                                                                    <textarea name="Description" class="form-control" style="max-width:none !important; width:100%"></textarea>
+                                                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <div class="col-md-offset-2 col-md-10" style="margin-top:10px">
+                                                                    <!-- Input/Button to submit the data. -->
+                                                                    <input type="submit" value="Upload attachment" class="btn btn-primary" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                     }
                                 </div>
                             </div>
@@ -628,101 +656,101 @@
                                                                                         }
                                                                                     }
                                                                                     <p class="timeline-date text-muted"><small>@Html.ToUserTime(history.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")</small></p>
-                                                                                    <p style="text-align:left"><span style="font-weight:bold">Old Value: </span>@history.OldValue</p>
-                                                                                    <p style="margin-top:-4px !important; text-align:left"><span style="font-weight:bold">New Value: </span>@history.NewValue</p>
+                                                                                    <p style="text-align:left"><span style="font-weight:bold">New Value: </span>@history.NewValue</p>
+                                                                                    <p style="margin-top:-4px !important; text-align:left"><span style="font-weight:bold">Old Value: </span>@history.OldValue</p>
                                                                                     <p style="text-align:left"><span style="font-weight:bold">Updated by: </span>@history.Author.Fullname</p>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </article>
 
-                                                                    alternateLeft = false;
-                                                                }
-                                                                else
-                                                                {
-                                                                    <article class="timeline-item ">
-                                                                        <div class="timeline-desk">
-                                                                            <div class="panel" style="margin-right:30px">
-                                                                                <div class="panel-body">
-                                                                                    <span class="arrow"></span>
-                                                                                    @{
-                                                                                        if (history.HistoricStatus == 1)
-                                                                                        {
-                                                                                            <span class="timeline-icon bg-success"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
-                                                                                        }
-                                                                                        else if (history.HistoricStatus == 2)
-                                                                                        {
-                                                                                            <span class="timeline-icon bg-info"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
-                                                                                        }
-                                                                                        else if (history.HistoricStatus == 3)
-                                                                                        {
-                                                                                            <span class="timeline-icon bg-purple"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
-                                                                                        }
-                                                                                        else if (history.HistoricStatus == 4)
-                                                                                        {
-                                                                                            <span class="timeline-icon bg-pink"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
+                                                                                            alternateLeft = false;
                                                                                         }
                                                                                         else
                                                                                         {
-                                                                                            <span class="timeline-icon bg-muted"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
-                                                                                        }
+                                                                                            <article class="timeline-item ">
+                                                                                                <div class="timeline-desk">
+                                                                                                    <div class="panel" style="margin-right:30px">
+                                                                                                        <div class="panel-body">
+                                                                                                            <span class="arrow"></span>
+                                                                                                            @{
+                                                                                                                if (history.HistoricStatus == 1)
+                                                                                                                {
+                                                                                                                    <span class="timeline-icon bg-success"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
+                                                                                                                }
+                                                                                                                else if (history.HistoricStatus == 2)
+                                                                                                                {
+                                                                                                                    <span class="timeline-icon bg-info"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
+                                                                                                                }
+                                                                                                                else if (history.HistoricStatus == 3)
+                                                                                                                {
+                                                                                                                    <span class="timeline-icon bg-purple"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
+                                                                                                                }
+                                                                                                                else if (history.HistoricStatus == 4)
+                                                                                                                {
+                                                                                                                    <span class="timeline-icon bg-pink"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                    <span class="timeline-icon bg-muted"><i class="zmdi zmdi-circle" style="margin-top:3px"></i></span>
+                                                                                                                }
 
 
-                                                                                        if (history.HistoricPriority == 1)
-                                                                                        {
-                                                                                            <span class="label label-urgent pull-right">Urgent</span>
-                                                                                        }
-                                                                                        else if (history.HistoricPriority == 2)
-                                                                                        {
-                                                                                            <span class="label label-high pull-right">High</span>
-                                                                                        }
-                                                                                        else if (history.HistoricPriority == 3)
-                                                                                        {
-                                                                                            <span class="label label-medium pull-right">Medium</span>
-                                                                                        }
-                                                                                        else if (history.HistoricPriority == 4)
-                                                                                        {
-                                                                                            <span class="label label-low pull-right">Low</span>
-                                                                                        }
-                                                                                        else
-                                                                                        {
-                                                                                            <span class="label pull-right" style="color:rgb(0,0,0)"></span>
-                                                                                        }
+                                                                                                                if (history.HistoricPriority == 1)
+                                                                                                                {
+                                                                                                                    <span class="label label-urgent pull-right">Urgent</span>
+                                                                                                                }
+                                                                                                                else if (history.HistoricPriority == 2)
+                                                                                                                {
+                                                                                                                    <span class="label label-high pull-right">High</span>
+                                                                                                                }
+                                                                                                                else if (history.HistoricPriority == 3)
+                                                                                                                {
+                                                                                                                    <span class="label label-medium pull-right">Medium</span>
+                                                                                                                }
+                                                                                                                else if (history.HistoricPriority == 4)
+                                                                                                                {
+                                                                                                                    <span class="label label-low pull-right">Low</span>
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                    <span class="label pull-right" style="color:rgb(0,0,0)"></span>
+                                                                                                                }
 
 
-                                                                                        if (history.HistoricStatus == 1)
-                                                                                        {
-                                                                                            <h4 class="text text-success" style="margin-top:-10px">@history.Property</h4>
-                                                                                        }
-                                                                                        else if (history.HistoricStatus == 2)
-                                                                                        {
-                                                                                            <h4 class="text text-info" style="margin-top:-10px">@history.Property</h4>
-                                                                                        }
-                                                                                        else if (history.HistoricStatus == 3)
-                                                                                        {
-                                                                                            <h4 class="text text-purple" style="margin-top:-10px">@history.Property</h4>
-                                                                                        }
-                                                                                        else if (history.HistoricStatus == 4)
-                                                                                        {
-                                                                                            <h4 class="text text-pink" style="margin-top:-10px">@history.Property</h4>
-                                                                                        }
-                                                                                        else
-                                                                                        {
-                                                                                            <h4 class="text text-muted" style="margin-top:-10px">@history.Property</h4>
-                                                                                        }
-                                                                                    }
-                                                                                    <p class="timeline-date text-muted"><small>@Html.ToUserTime(history.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")</small></p>
-                                                                                    <p style="text-align:left"><span style="font-weight:bold">Old Value: </span>@history.OldValue</p>
-                                                                                    <p style="margin-top:-4px !important; text-align:left"><span style="font-weight:bold">New Value: </span>@history.NewValue</p>
-                                                                                    <p style="text-align:left"><span style="font-weight:bold">Updated by: </span>@history.Author.Fullname</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </article>
+                                                                                                                if (history.HistoricStatus == 1)
+                                                                                                                {
+                                                                                                                    <h4 class="text text-success" style="margin-top:-10px">@history.Property</h4>
+                                                                                                                }
+                                                                                                                else if (history.HistoricStatus == 2)
+                                                                                                                {
+                                                                                                                    <h4 class="text text-info" style="margin-top:-10px">@history.Property</h4>
+                                                                                                                }
+                                                                                                                else if (history.HistoricStatus == 3)
+                                                                                                                {
+                                                                                                                    <h4 class="text text-purple" style="margin-top:-10px">@history.Property</h4>
+                                                                                                                }
+                                                                                                                else if (history.HistoricStatus == 4)
+                                                                                                                {
+                                                                                                                    <h4 class="text text-pink" style="margin-top:-10px">@history.Property</h4>
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                    <h4 class="text text-muted" style="margin-top:-10px">@history.Property</h4>
+                                                                                                                }
+                                                                                                            }
+                                                                                                            <p class="timeline-date text-muted"><small>@Html.ToUserTime(history.Created, ViewBag.UserTimeZone as string, "MM/dd/yyyy | hh:mm:ss")</small></p>
+                                                                                                            <p style="text-align:left"><span style="font-weight:bold">New Value: </span>@history.NewValue</p>
+                                                                                                            <p style="margin-top:-4px !important; text-align:left"><span style="font-weight:bold">Old Value: </span>@history.OldValue</p>
+                                                                                                            <p style="text-align:left"><span style="font-weight:bold">Updated by: </span>@history.Author.Fullname</p>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </article>
 
-                                                                    alternateLeft = true;
-                                                                }
-                                                            }
+                                                                                                                        alternateLeft = true;
+                                                                                                                    }
+                                                                                                                }
 
                                                         }
                                                     </div>
