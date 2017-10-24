@@ -11,6 +11,7 @@ using jritchieBugTracker.Models.CodeFirst;
 
 namespace jritchieBugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize(Roles ="Admin")]
     public class TicketHistoriesController : UniversalController
     {

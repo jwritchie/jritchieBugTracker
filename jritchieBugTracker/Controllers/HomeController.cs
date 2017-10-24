@@ -13,6 +13,7 @@ using System.Web.Mvc;
 
 namespace jritchieBugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class HomeController : UniversalController
     {

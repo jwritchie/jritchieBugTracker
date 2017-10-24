@@ -15,6 +15,7 @@ using System.Net.Mail;
 
 namespace jritchieBugTracker.Controllers
 {
+    [RequireHttps]
     public class TicketAttachmentsController : UniversalController
     {
         // GET: TicketAttachments
@@ -52,7 +53,7 @@ namespace jritchieBugTracker.Controllers
         }
 
         // GET: TicketAttachments/Details/5
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         //public ActionResult Details(int? id)
         //{
         //    if (id == null)

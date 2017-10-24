@@ -13,6 +13,7 @@ using jritchieBugTracker.Models.Helpers;
 
 namespace jritchieBugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class AccountController : UniversalController
     {

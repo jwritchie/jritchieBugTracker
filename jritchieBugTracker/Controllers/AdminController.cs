@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace jritchieBugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize(Roles = "Admin")]
     public class AdminController : UniversalController
     {

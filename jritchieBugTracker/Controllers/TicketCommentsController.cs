@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace jritchieBugTracker.Controllers
 {
+    [RequireHttps]
     public class TicketCommentsController : UniversalController
     {
         // GET: TicketComments

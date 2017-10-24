@@ -16,6 +16,7 @@ using System.Configuration;
 
 namespace jritchieBugTracker.Controllers
 {
+    [RequireHttps]
     public class TicketsController : UniversalController
     {
         // GET: Tickets

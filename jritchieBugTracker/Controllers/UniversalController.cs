@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace jritchieBugTracker.Controllers
 {
+    [RequireHttps]
     public class UniversalController : Controller
     {
         // Allow communication with database.

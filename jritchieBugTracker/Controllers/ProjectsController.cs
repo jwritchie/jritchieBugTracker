@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity;
 
 namespace jritchieBugTracker.Controllers
 {
+    [RequireHttps]
     public class ProjectsController : UniversalController
     {
         // GET: Projects
